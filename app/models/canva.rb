@@ -1,0 +1,2 @@
+class Canva < ApplicationRecord
+end
