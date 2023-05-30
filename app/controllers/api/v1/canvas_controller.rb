@@ -1,30 +1,30 @@
 class Api::V1::CanvasController < ApplicationController
   before_action :set_canva, only: %i[ show update destroy ]
 
-  # GET /canvas
+  # GET api/v1/canvas
   def index
     @canvas = Canva.all
 
     render json: @canvas
   end
 
-  # GET /canvas/1
+  # GET api/v1/canvas/1
   def show
     render json: @canva
   end
 
-  # POST /canvas
+  # POST api/v1/canvas
   def create
     @canva = Canva.new(canva_params)
 
     if @canva.save
-      render json: @canva, status: :created, location: @canva
+      render json: @canva, status: :created
     else
       render json: @canva.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /canvas/1
+  # PATCH/PUT api/v1/canvas/1
   def update
     if @canva.update(canva_params)
       render json: @canva
@@ -33,7 +33,7 @@ class Api::V1::CanvasController < ApplicationController
     end
   end
 
-  # DELETE /canvas/1
+  # DELETE api/v1/canvas/1
   def destroy
     @canva.destroy
   end
