@@ -19,6 +19,15 @@ RSpec.describe 'api/v1/canvas', type: :request do
     end
 
     post('create canva') do
+      parameter name: :canvas, in: :body, schema: {
+        type: :object,
+        properties: {
+          image: { type: :string },
+          title: { type: :string },
+        },
+        required: ["image", "title"],
+      }
+
       response(200, 'successful') do
 
         after do |example|

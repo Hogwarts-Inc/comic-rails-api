@@ -12,6 +12,8 @@ paths:
           description: successful
     post:
       summary: create canva
+      requestBody:
+        $ref: '#/components/requestBodies/canvaBody'
       responses:
         '200':
           description: successful
@@ -30,11 +32,15 @@ paths:
           description: successful
     patch:
       summary: update canva
+      requestBody:
+        $ref: '#/components/requestBodies/canvaBody'
       responses:
         '200':
           description: successful
     put:
       summary: update canva
+      requestBody:
+        $ref: '#/components/requestBodies/canvaBody'
       responses:
         '200':
           description: successful
@@ -43,8 +49,27 @@ paths:
       responses:
         '200':
           description: successful
+components:
+  schemas:
+    Canva:
+      type: object
+      required:
+        - image
+        - title
+  requestBodies:
+    canvaBody:
+      description: A JSON object containing pet information
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Canva'
+          example:
+            canva:
+              title: Canva number 1#
+              image: "{canva image json}"
 servers:
-- url: https://{defaultHost}
+- url: http://{defaultHost}
   variables:
     defaultHost:
-      default: www.example.com
+      default: localhost:3000
