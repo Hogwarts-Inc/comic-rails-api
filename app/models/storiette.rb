@@ -1,0 +1,2 @@
+class Storiette < ApplicationRecord
+end

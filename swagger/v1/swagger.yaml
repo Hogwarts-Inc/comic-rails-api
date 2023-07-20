@@ -49,6 +49,51 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v1/storiettes":
+    get:
+      summary: list storiettes
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create storiette
+      requestBody:
+        $ref: '#/components/requestBodies/storietteBody'
+      responses:
+        '200':
+          description: successful
+  "/api/v1/storiettes/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show storiette
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update storiette
+      requestBody:
+        $ref: '#/components/requestBodies/storietteBody'
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update storiette
+      requestBody:
+        $ref: '#/components/requestBodies/storietteBody'
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete storiette
+      responses:
+        '200':
+          description: successful
 components:
   schemas:
     Canva:
@@ -56,9 +101,15 @@ components:
       required:
         - image
         - title
+    Storiette:
+      type: object
+      required:
+        - image
+        - title
+        - description
   requestBodies:
     canvaBody:
-      description: A JSON object containing pet information
+      description: A JSON object containing canva information
       required: true
       content:
         application/json:
@@ -68,6 +119,18 @@ components:
             canva:
               title: Canva number 1#
               image: "{canva image json}"
+    storietteBody:
+      description: A JSON object containing storiette information
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Storiette'
+          example:
+            storiette:
+              title: Storiette number 1#
+              image: "{storiette image json}"
+              description: "Storiette number 1"
 servers:
 - url: http://{defaultHost}
   variables:
