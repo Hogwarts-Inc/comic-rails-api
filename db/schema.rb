@@ -10,12 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_20_181049) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_20_191045) do
   create_table "canvas", force: :cascade do |t|
     t.string "image"
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "chapter_id"
+    t.index ["chapter_id"], name: "index_canvas_on_chapter_id"
+  end
+
+  create_table "chapters", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "storiette_id"
+    t.index ["storiette_id"], name: "index_chapters_on_storiette_id"
   end
 
   create_table "storiettes", force: :cascade do |t|
@@ -26,4 +37,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_20_181049) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "canvas", "chapters"
+  add_foreign_key "chapters", "storiettes"
 end
