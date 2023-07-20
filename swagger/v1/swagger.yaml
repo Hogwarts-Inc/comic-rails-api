@@ -94,6 +94,51 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v1/chapters":
+    get:
+      summary: list chapters
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create chapter
+      requestBody:
+        $ref: '#/components/requestBodies/chapterBody'
+      responses:
+        '200':
+          description: successful
+  "/api/v1/chapters/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show chapter
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update chapter
+      requestBody:
+        $ref: '#/components/requestBodies/chapterBody'
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update chapter
+      requestBody:
+        $ref: '#/components/requestBodies/chapterBody'
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete chapter
+      responses:
+        '200':
+          description: successful
 components:
   schemas:
     Canva:
@@ -101,24 +146,20 @@ components:
       required:
         - image
         - title
+        - chapter_id
     Storiette:
       type: object
       required:
         - image
         - title
         - description
+    Chapter:
+      type: object
+      required:
+        - title
+        - description
+        - storiette_id
   requestBodies:
-    canvaBody:
-      description: A JSON object containing canva information
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Canva'
-          example:
-            canva:
-              title: Canva number 1#
-              image: "{canva image json}"
     storietteBody:
       description: A JSON object containing storiette information
       required: true
@@ -131,6 +172,31 @@ components:
               title: Storiette number 1#
               image: "{storiette image json}"
               description: "Storiette number 1"
+    chapterBody:
+      description: A JSON object containing chapter information
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Chapter'
+          example:
+            chapter:
+              title: Chapter number 1#
+              image: "{chapter image json}"
+              description: "Chapter number 1"
+              storiette_id: 1
+    canvaBody:
+      description: A JSON object containing canva information
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Canva'
+          example:
+            canva:
+              title: Canva number 1#
+              image: "{canva image json}"
+              chapter_id: 1
 servers:
 - url: http://{defaultHost}
   variables:

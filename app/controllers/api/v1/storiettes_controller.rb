@@ -1,19 +1,19 @@
 class Api::V1::StoriettesController < ApplicationController
   before_action :set_storiette, only: %i[ show update destroy ]
 
-  # GET /storiettes
+  # GET /api/v1/storiettes
   def index
     @storiettes = Storiette.all
 
-    render json: @storiettes
+    render json: @storiettes, include: :chapters
   end
 
-  # GET /storiettes/1
+  # GET /api/v1/storiettes/1
   def show
-    render json: @storiette
+    render json: @storiette, include: :chapters
   end
 
-  # POST /storiettes
+  # POST /api/v1/storiettes
   def create
     @storiette = Storiette.new(storiette_params)
 
@@ -24,7 +24,7 @@ class Api::V1::StoriettesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /storiettes/1
+  # PATCH/PUT /api/v1/storiettes/1
   def update
     if @storiette.update(storiette_params)
       render json: @storiette
@@ -33,7 +33,7 @@ class Api::V1::StoriettesController < ApplicationController
     end
   end
 
-  # DELETE /storiettes/1
+  # DELETE /api/v1/storiettes/1
   def destroy
     @storiette.destroy
   end

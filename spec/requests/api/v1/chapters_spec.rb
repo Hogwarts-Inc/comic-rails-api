@@ -1,10 +1,10 @@
 require 'swagger_helper'
 
-RSpec.describe 'api/v1/canvas', type: :request do
+RSpec.describe 'api/v1/chapters', type: :request do
 
-  path '/api/v1/canvas' do
+  path '/api/v1/chapters' do
 
-    get('list canvas') do
+    get('list chapters') do
       response(200, 'successful') do
 
         after do |example|
@@ -18,15 +18,15 @@ RSpec.describe 'api/v1/canvas', type: :request do
       end
     end
 
-    post('create canva') do
-      parameter name: :canvas, in: :body, schema: {
+    post('create chapter') do
+      parameter name: :chapters, in: :body, schema: {
         type: :object,
         properties: {
-          image: { type: :string },
           title: { type: :string },
-          chapter_id: { type: :integer },
+          description: { type: :string },
+          storiette_id: { type: :integer },
         },
-        required: ['image', 'title', 'chapter_id'],
+        required: ['title', 'description', 'storiette_id'],
       }
 
       response(200, 'successful') do
@@ -43,11 +43,11 @@ RSpec.describe 'api/v1/canvas', type: :request do
     end
   end
 
-  path '/api/v1/canvas/{id}' do
+  path '/api/v1/chapters/{id}' do
     # You'll want to customize the parameter types...
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
-    get('show canva') do
+    get('show chapter') do
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -62,7 +62,7 @@ RSpec.describe 'api/v1/canvas', type: :request do
       end
     end
 
-    patch('update canva') do
+    patch('update chapter') do
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -77,7 +77,7 @@ RSpec.describe 'api/v1/canvas', type: :request do
       end
     end
 
-    put('update canva') do
+    put('update chapter') do
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -92,7 +92,7 @@ RSpec.describe 'api/v1/canvas', type: :request do
       end
     end
 
-    delete('delete canva') do
+    delete('delete chapter') do
       response(200, 'successful') do
         let(:id) { '123' }
 
