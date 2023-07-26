@@ -1,16 +1,16 @@
-class Api::V1::CanvasController < ApplicationController
+class Api::V1::CanvasController < ApiController
   before_action :set_canva, only: %i[ show update destroy ]
 
   # GET /api/v1/canvas
   def index
     @canvas = Canva.all
 
-    render json: @canvas
+    render json: @canvas, include: [:image]
   end
 
   # GET /api/v1/canvas/1
   def show
-    render json: @canva
+    render json: @canva, include: [:image]
   end
 
   # POST /api/v1/canvas
@@ -18,7 +18,7 @@ class Api::V1::CanvasController < ApplicationController
     @canva = Canva.new(canva_params)
 
     if @canva.save
-      render json: @canva, status: :created
+      render json: @canva, include: [:image]
     else
       render json: @canva.errors, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class Api::V1::CanvasController < ApplicationController
   # PATCH/PUT /api/v1/canvas/1
   def update
     if @canva.update(canva_params)
-      render json: @canva
+      render json: @canva, include: [:image]
     else
       render json: @canva.errors, status: :unprocessable_entity
     end
@@ -46,6 +46,6 @@ class Api::V1::CanvasController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def canva_params
-      params.require(:canva).permit(:image, :title, :chapter_id)
+      params.permit(:image, :title, :chapter_id)
     end
 end
