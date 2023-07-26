@@ -1,12 +1,11 @@
+# frozen_string_literal: true
+
 require 'swagger_helper'
 
 RSpec.describe 'api/v1/canvas', type: :request do
-
   path '/api/v1/canvas' do
-
     get('list canvas') do
       response(200, 'successful') do
-
         after do |example|
           example.metadata[:response][:content] = {
             'application/json' => {
@@ -24,13 +23,12 @@ RSpec.describe 'api/v1/canvas', type: :request do
         properties: {
           image: { type: :string },
           title: { type: :string },
-          chapter_id: { type: :integer },
+          chapter_id: { type: :integer }
         },
-        required: ['image', 'title', 'chapter_id'],
+        required: %w[image title chapter_id]
       }
 
       response(200, 'successful') do
-
         after do |example|
           example.metadata[:response][:content] = {
             'application/json' => {
