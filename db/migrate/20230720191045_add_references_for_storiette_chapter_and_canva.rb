@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddReferencesForStorietteChapterAndCanva < ActiveRecord::Migration[7.0]
   def change
     add_reference :canvas, :chapter, null: true, foreign_key: true

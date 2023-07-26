@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Chapter < ApplicationRecord
   belongs_to :storiette, class_name: 'Storiette', foreign_key: 'storiette_id'
 
