@@ -5,9 +5,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.0'
 
-gem 'activeadmin'
-gem 'activeadmin_addons'
-gem 'devise'
+gem 'pg', '~> 1.1'
+gem 'pg_search', '~> 2.3', '>= 2.3.2'
 gem 'pry'
 gem 'puma', '~> 5.0'
 gem 'rack-cors'
@@ -15,9 +14,13 @@ gem 'rails', '~> 7.0.4', '>= 7.0.4.2'
 gem 'rspec-rails'
 gem 'rswag'
 gem 'rubocop', require: false
+gem 'sqlite3', '~> 1.4'
+
+gem 'activeadmin'
+gem 'activeadmin_addons'
+gem 'devise'
 gem 'sass-rails'
 gem 'sprockets', '<4'
-gem 'sqlite3', '~> 1.4'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
