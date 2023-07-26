@@ -147,6 +147,14 @@ components:
         - image
         - title
         - chapter_id
+      properties:
+        title:
+          type: string
+        image:
+          type: string
+          format: base64
+        chapter_id:
+          type: integer
     Storiette:
       type: object
       required:
@@ -170,7 +178,6 @@ components:
           example:
             storiette:
               title: Storiette number 1#
-              image: "{storiette image json}"
               description: "Storiette number 1"
     chapterBody:
       description: A JSON object containing chapter information
@@ -182,21 +189,15 @@ components:
           example:
             chapter:
               title: Chapter number 1#
-              image: "{chapter image json}"
               description: "Chapter number 1"
               storiette_id: 1
     canvaBody:
       description: A JSON object containing canva information
       required: true
       content:
-        application/json:
+        multipart/form-data:
           schema:
             $ref: '#/components/schemas/Canva'
-          example:
-            canva:
-              title: Canva number 1#
-              image: "{canva image json}"
-              chapter_id: 1
 servers:
 - url: http://{defaultHost}
   variables:

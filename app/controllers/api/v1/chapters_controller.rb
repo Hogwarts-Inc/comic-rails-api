@@ -1,4 +1,4 @@
-class Api::V1::ChaptersController < ApplicationController
+class Api::V1::ChaptersController < ApiController
   before_action :set_chapter, only: %i[ show update destroy ]
 
   # GET /api/v1/chapters

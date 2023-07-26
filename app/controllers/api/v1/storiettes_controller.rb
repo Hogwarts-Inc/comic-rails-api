@@ -1,4 +1,4 @@
-class Api::V1::StoriettesController < ApplicationController
+class Api::V1::StoriettesController < ApiController
   before_action :set_storiette, only: %i[ show update destroy ]
 
   # GET /api/v1/storiettes
