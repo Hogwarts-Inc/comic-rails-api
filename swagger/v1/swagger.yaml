@@ -139,6 +139,64 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v1/graphic_resources":
+    get:
+      summary: list graphic_resources
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create graphic_resource
+      requestBody:
+        $ref: '#/components/requestBodies/graphicResourceBody'
+      responses:
+        '200':
+          description: successful
+  "/api/v1/graphic_resources/resource_for_type?resource_type={resource_type}":
+    parameters:
+    - name: resource_type
+      in: path
+      description: resource_type
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list graphic_resource by type
+      responses:
+        '200':
+          description: successful
+  "/api/v1/graphic_resources/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show graphic_resource
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update graphic_resource
+      requestBody:
+        $ref: '#/components/requestBodies/graphicResourceBody'
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update graphic_resource
+      requestBody:
+        $ref: '#/components/requestBodies/graphicResourceBody'
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete graphic_resource
+      responses:
+        '200':
+          description: successful
 components:
   schemas:
     Canva:
@@ -167,6 +225,17 @@ components:
         - title
         - description
         - storiette_id
+    GraphicResource:
+      type: object
+      required:
+        - image
+        - resource_type
+      properties:
+        resource_type:
+          type: integer
+        image:
+          type: string
+          format: base64
   requestBodies:
     storietteBody:
       description: A JSON object containing storiette information
@@ -198,6 +267,13 @@ components:
         multipart/form-data:
           schema:
             $ref: '#/components/schemas/Canva'
+    graphicResourceBody:
+      description: A JSON object containing graphic resource information
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/GraphicResource'
 servers:
 - url: http://{defaultHost}
   variables:

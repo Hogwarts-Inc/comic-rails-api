@@ -11,6 +11,11 @@ Rails.application.routes.draw do
       resources :chapters
       resources :canvas
       resources :storiettes
+      resources :graphic_resources do
+        collection do
+          get :resource_for_type
+        end
+      end
     end
   end
 end
