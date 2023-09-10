@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ChaptersController < ApiController
+    class ChaptersController < BaseController
       before_action :set_chapter, only: %i[show update destroy]
 
       # GET /api/v1/chapters
