@@ -6,8 +6,7 @@ COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
 RUN bundle install
 
-COPY /app .
-COPY /config .
+COPY . .
 
 EXPOSE 3000
 
