@@ -11,13 +11,16 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2023_08_27_154023) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
     t.string "resource_type"
-    t.integer "resource_id"
+    t.bigint "resource_id"
     t.string "author_type"
-    t.integer "author_id"
+    t.bigint "author_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
@@ -69,7 +72,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_27_154023) do
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "chapter_id"
+    t.bigint "chapter_id"
     t.index ["chapter_id"], name: "index_canvas_on_chapter_id"
   end
 
@@ -78,7 +81,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_27_154023) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "storiette_id"
+    t.bigint "storiette_id"
     t.index ["storiette_id"], name: "index_chapters_on_storiette_id"
   end
 
