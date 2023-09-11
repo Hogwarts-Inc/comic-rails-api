@@ -1,0 +1,7 @@
+development:
+  domain: <%= ENV['AUTH0_DOMAIN'] %>
+  audience: <%= ENV['AUTH0_AUDIENCE'] %>
+
+production:
+  domain: <%= ENV['AUTH0_DOMAIN'] %>
+  audience: <%= ENV['AUTH0_AUDIENCE'] %>

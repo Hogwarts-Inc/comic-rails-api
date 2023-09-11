@@ -2,8 +2,9 @@
 
 module Api
   module V1
-    class StoriettesController < ApiController
+    class StoriettesController < BaseController
       before_action :set_storiette, only: %i[show update destroy]
+      before_action :authorize, except: [:index]
 
       # GET /api/v1/storiettes
       def index

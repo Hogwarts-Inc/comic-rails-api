@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class CanvasController < ApiController
+    class CanvasController < BaseController
       before_action :set_canva, only: %i[show update destroy]
 
       # GET /api/v1/canvas

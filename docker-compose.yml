@@ -6,11 +6,6 @@ services:
       - ./tmp/db:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  redis:
-    image: redis
-    command: redis-server
-    volumes:
-      - 'redis:/data'
   web:
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
@@ -20,14 +15,11 @@ services:
       - "3000:3000"
     depends_on:
       - db
-      - redis
     environment:
-      - REDIS_URL_CACHING=redis://redis:6379/0
       - POSTGRES_DB=${DATABASE_NAME}
       - DATABASE_USERNAME=${DATABASE_USERNAME}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_HOST=${DOCKER_DATABASE_HOST}
 
 volumes:
-  redis:
   postgres:
