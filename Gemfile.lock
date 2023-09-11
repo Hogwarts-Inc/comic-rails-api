@@ -108,6 +108,10 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.5.0)
+    dotenv (2.8.1)
+    dotenv-rails (2.8.1)
+      dotenv (= 2.8.1)
+      railties (>= 3.2)
     erubi (1.12.0)
     ffi (1.15.5)
     formtastic (4.0.0)
@@ -135,6 +139,7 @@ GEM
     json (2.6.3)
     json-schema (3.0.0)
       addressable (>= 2.8)
+    jwt (2.7.1)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -159,8 +164,10 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
+    mini_portile2 (2.8.4)
     minitest (5.18.0)
     msgpack (1.7.0)
+    multi_json (1.15.0)
     net-imap (0.3.4)
       date
       net-protocol
@@ -171,6 +178,9 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.9)
+    nokogiri (1.14.4)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
     nokogiri (1.14.4-arm64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
@@ -298,7 +308,6 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    sqlite3 (1.6.2-arm64-darwin)
     thor (1.2.2)
     tilt (2.2.0)
     timeout (0.3.2)
@@ -317,6 +326,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  ruby
 
 DEPENDENCIES
   activeadmin
@@ -324,6 +334,9 @@ DEPENDENCIES
   bootsnap
   debug
   devise
+  dotenv-rails
+  jwt
+  multi_json
   pg (~> 1.1)
   pg_search (~> 2.3, >= 2.3.2)
   pry
@@ -335,7 +348,6 @@ DEPENDENCIES
   rubocop
   sass-rails
   sprockets (< 4)
-  sqlite3 (~> 1.4)
   tzinfo-data
 
 RUBY VERSION

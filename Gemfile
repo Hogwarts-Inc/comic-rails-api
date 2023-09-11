@@ -14,25 +14,15 @@ gem 'rails', '~> 7.0.4', '>= 7.0.4.2'
 gem 'rspec-rails'
 gem 'rswag'
 gem 'rubocop', require: false
-gem 'sqlite3', '~> 1.4'
 
 gem 'activeadmin'
 gem 'activeadmin_addons'
 gem 'devise'
 gem 'sass-rails'
 gem 'sprockets', '<4'
-
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
-# gem "jbuilder"
-
-# Use Redis adapter to run Action Cable in production
-# gem "redis", "~> 4.0"
-
-# Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
-# gem "kredis"
-
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+gem 'jwt'
+gem 'dotenv-rails'
+gem 'multi_json'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
