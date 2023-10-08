@@ -9,12 +9,14 @@ module Api
       def index
         @canvas = Canva.all
 
-        render json: @canvas, include: [:image]
+        render json: @canvas.map { |canva|
+          canva.as_json.merge({ image_url: url_for(canva.image) })
+        }
       end
 
       # GET /api/v1/canvas/1
       def show
-        render json: @canva, include: [:image]
+        render json: @canva.as_json.merge({ image_url: url_for(@canva.image) })
       end
 
       # POST /api/v1/canvas
@@ -22,7 +24,7 @@ module Api
         @canva = Canva.new(canva_params)
 
         if @canva.save
-          render json: @canva, include: [:image]
+          render json: @canva.as_json.merge({ image_url: url_for(@canva.image) })
         else
           render json: @canva.errors, status: :unprocessable_entity
         end
@@ -31,7 +33,7 @@ module Api
       # PATCH/PUT /api/v1/canvas/1
       def update
         if @canva.update(canva_params)
-          render json: @canva, include: [:image]
+          render json: @canva.as_json.merge({ image_url: url_for(@canva.image) })
         else
           render json: @canva.errors, status: :unprocessable_entity
         end

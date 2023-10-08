@@ -7,12 +7,14 @@ module Api
       def index
         @graphic_resources = GraphicResource.all
 
-        render json: @graphic_resources, include: [:image]
+        render json: @graphic_resources.map { |graphic_resource|
+          graphic_resource.as_json.merge({ image_url: url_for(graphic_resource.image) })
+        }
       end
 
       # GET /api/v1/graphic_resources/1
       def show
-        render json: @graphic_resource, include: [:image]
+        render json: @graphic_resource.as_json.merge({ image_url: url_for(@graphic_resource.image) })
       end
 
       # POST /api/v1/graphic_resources
@@ -20,7 +22,7 @@ module Api
         @graphic_resource = GraphicResource.new(graphic_resource_params)
 
         if @graphic_resource.save
-          render json: @graphic_resource, include: [:image]
+          render json: @graphic_resource.as_json.merge({ image_url: url_for(@graphic_resource.image) })
         else
           render json: @graphic_resource.errors, status: :unprocessable_entity
         end
@@ -29,7 +31,7 @@ module Api
       # PATCH/PUT /api/v1/graphic_resources/1
       def update
         if @graphic_resource.update(graphic_resource_params)
-          render json: @graphic_resource, include: [:image]
+          render json: @graphic_resource.as_json.merge({ image_url: url_for(@graphic_resource.image) })
         else
           render json: @graphic_resource.errors, status: :unprocessable_entity
         end
@@ -46,7 +48,9 @@ module Api
 
         @graphic_resources = GraphicResource.where(resource_type: resource_type)
 
-        render json: @graphic_resources, include: [:image]
+        render json: @graphic_resources.map { |graphic_resource|
+          graphic_resource.as_json.merge({ image_url: url_for(graphic_resource.image) })
+        }
       end
 
       private
