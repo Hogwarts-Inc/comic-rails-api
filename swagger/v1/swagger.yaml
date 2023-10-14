@@ -288,6 +288,51 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v1/conventions":
+    get:
+      summary: list conventions
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create convention
+      requestBody:
+        $ref: '#/components/requestBodies/conventionBody'
+      responses:
+        '200':
+          description: successful
+  "/api/v1/conventions/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show convention
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update convention
+      requestBody:
+        $ref: '#/components/requestBodies/conventionBody'
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update convention
+      requestBody:
+        $ref: '#/components/requestBodies/conventionBody'
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete convention
+      responses:
+        '200':
+          description: successful
 components:
   schemas:
     Canva:
@@ -346,6 +391,20 @@ components:
           format: base64
         description_ids:
           type: array
+    Convention:
+      type: object
+      required:
+        - image
+        - name
+        - active
+      properties:
+        name:
+          type: string
+        images:
+          type: string
+          format: base64
+        active:
+          type: boolean
     Description:
       type: object
       required:
@@ -414,6 +473,13 @@ components:
               descriptionable_type: 'Character'
               descriptionable_id: 1
               active: true
+    conventionBody:
+      description: A JSON object containing convention information
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/Convention'
 servers:
 - url: http://{defaultHost}
   variables:

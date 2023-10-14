@@ -24,7 +24,7 @@ ActiveAdmin.register Description do
       f.input :title, required: true
       f.input :text, required: true
       f.input :active, as: :select
-      f.input :descriptionable_type, as: :select, collection: ['Character'], prompt: 'Select Type', input_html: { class: 'descriptionable-type-select' }
+      f.input :descriptionable_type, as: :select, collection: ['Convention', 'Character'], prompt: 'Select Type', input_html: { class: 'descriptionable-type-select' }
       f.input :descriptionable_id, as: :select, input_html: { class: 'descriptionable-id-select' }
     end
 

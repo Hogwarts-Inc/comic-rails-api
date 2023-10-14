@@ -4,7 +4,7 @@
 $(document).on('DOMContentLoaded', function() {
   // Define a mapping of descriptionable types to their associated models
   var descriptionableTypeMapping = {
-    // 'Convention': 'conventions',
+    'Convention': 'conventions',
     'Character': 'characters'
     // Add more mappings as needed
   };
