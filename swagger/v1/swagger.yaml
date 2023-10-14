@@ -198,6 +198,96 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v1/characters":
+    get:
+      summary: list characters
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create character
+      requestBody:
+        $ref: '#/components/requestBodies/characterBody'
+      responses:
+        '200':
+          description: successful
+  "/api/v1/characters/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show character
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update character
+      requestBody:
+        $ref: '#/components/requestBodies/characterBody'
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update character
+      requestBody:
+        $ref: '#/components/requestBodies/characterBody'
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete character
+      responses:
+        '200':
+          description: successful
+  "/api/v1/descriptions":
+    get:
+      summary: list descriptions
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create description
+      requestBody:
+        $ref: '#/components/requestBodies/descriptionBody'
+      responses:
+        '200':
+          description: successful
+  "/api/v1/descriptions/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show description
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update description
+      requestBody:
+        $ref: '#/components/requestBodies/descriptionBody'
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update description
+      requestBody:
+        $ref: '#/components/requestBodies/descriptionBody'
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete description
+      responses:
+        '200':
+          description: successful
 components:
   schemas:
     Canva:
@@ -238,6 +328,25 @@ components:
         image:
           type: string
           format: base64
+    Character:
+      type: object
+      required:
+        - image
+        - name
+      properties:
+        name:
+          type: string
+        image:
+          type: string
+          format: base64
+    Chapter:
+      type: object
+      required:
+        - title
+        - text
+        - descriptionable_type
+        - descriptionable_id
+        - active
   requestBodies:
     storietteBody:
       description: A JSON object containing storiette information
@@ -276,6 +385,20 @@ components:
         multipart/form-data:
           schema:
             $ref: '#/components/schemas/GraphicResource'
+    characterBody:
+      description: A JSON object containing character information
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/Character'
+    descriptionBody:
+      description: A JSON object containing character information
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/Description'
 servers:
 - url: http://{defaultHost}
   variables:
