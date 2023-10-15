@@ -18,6 +18,10 @@ jobs:
         run: |
           docker build -t docker-back-staging:latest .
 
+      - name: Copy docker compose
+        run: |
+          cp docker-compose.staging.yml ~/back/docker-compose.yml
+
       - name: Deploy Application
         run: |
           cd ~/back &&
