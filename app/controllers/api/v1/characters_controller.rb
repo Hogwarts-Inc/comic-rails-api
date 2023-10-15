@@ -22,7 +22,7 @@ module Api
         @character = Character.new(character_params)
 
         if @character.save
-          render json: @character, status: :created
+          render json: @character.merge_image_and_description, status: :created
         else
           render json: @character.errors, status: :unprocessable_entity
         end
@@ -31,7 +31,7 @@ module Api
       # PATCH/PUT /api/v1/characters/1
       def update
         if @character.update(character_params)
-          render json: @character
+          render json: @character.merge_image_and_description
         else
           render json: @character.errors, status: :unprocessable_entity
         end
@@ -51,7 +51,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def character_params
-        params.require(:character).permit(:name, :images, :description_ids)
+        params.permit(:name, :images, :description_ids)
       end
     end
   end
