@@ -10,7 +10,7 @@ ActiveAdmin.register Canva do
     column :chapter
     column :image do |canva|
       if canva.image.present?
-        image_tag url_for(canva.image), style: 'width: 10%;'
+        image_tag(url_for(canva.image), width: '100px', height: '100px', class: 'object-contain')
       else
         content_tag(:span, 'La viñeta no tiene imagen')
       end
@@ -39,7 +39,7 @@ ActiveAdmin.register Canva do
       row :chapter
       row :image do |canva|
         if canva.image.present?
-          image_tag url_for(canva.image), style: 'width: 10%;'
+          image_tag(url_for(canva.image), width: '100px', height: '100px', class: 'object-contain')
         else
           content_tag(:span, 'La viñeta no tiene imagen')
         end

@@ -9,7 +9,7 @@ ActiveAdmin.register GraphicResource do
     column :resource_type
     column :image do |graphic_resource|
       if graphic_resource.image.present?
-        image_tag url_for(graphic_resource.image), style: 'width: 10%;'
+        image_tag(url_for(graphic_resource.image), width: '100px', height: '100px', class: 'object-contain')
       else
         content_tag(:span, 'El recurso grafico no tiene imagen')
       end
@@ -35,7 +35,7 @@ ActiveAdmin.register GraphicResource do
       row :resource_type
       row :image do |graphic_resource|
         if graphic_resource.image.present?
-          image_tag url_for(graphic_resource.image), style: 'width: 10%;'
+          image_tag(url_for(graphic_resource.image), width: '100px', height: '100px', class: 'object-contain')
         else
           content_tag(:span, 'El recurso grafico no tiene imagen')
         end

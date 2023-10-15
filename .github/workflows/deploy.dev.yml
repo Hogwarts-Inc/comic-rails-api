@@ -1,0 +1,29 @@
+name: Build, Test, and Deploy (Development)
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  build-test-and-deploy:
+    runs-on:
+      labels: staging
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Build Docker Image
+        run: |
+          docker build -t docker-back-staging:latest .
+
+      - name: Copy docker compose
+        run: |
+          cp docker-compose.staging.yml ~/back/docker-compose.yml
+
+      - name: Deploy Application
+        run: |
+          cd ~/back &&
+          docker compose down &&
+          docker compose up -d

@@ -160,6 +160,7 @@ paths:
       required: true
       schema:
         type: string
+        enum: [character, dialog, object, background]
     get:
       summary: list graphic_resource by type
       responses:
@@ -233,6 +234,7 @@ components:
       properties:
         resource_type:
           type: integer
+          enum: [character, dialog, object, background]
         image:
           type: string
           format: base64
@@ -278,4 +280,4 @@ servers:
 - url: http://{defaultHost}
   variables:
     defaultHost:
-      default: localhost:3000
+      default: localhost:4000
