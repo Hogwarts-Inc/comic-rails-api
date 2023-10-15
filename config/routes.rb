@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       resources :storiettes
       resources :characters
       resources :descriptions
+      resources :conventions
       resources :graphic_resources do
         collection do
           get :resource_for_type
