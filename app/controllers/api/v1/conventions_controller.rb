@@ -22,7 +22,7 @@ module Api
         @convention = Convention.new(convention_params)
 
         if @convention.save
-          render json: @convention, status: :created
+          render json: @convention.merge_image_and_description, status: :created
         else
           render json: @convention.errors, status: :unprocessable_entity
         end
@@ -31,7 +31,7 @@ module Api
       # PATCH/PUT /api/v1/conventions/1
       def update
         if @convention.update(convention_params)
-          render json: @convention
+          render json: @convention.merge_image_and_description
         else
           render json: @convention.errors, status: :unprocessable_entity
         end
@@ -51,7 +51,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def convention_params
-        params.require(:convention).permit(:name, :image, :active, :description_ids)
+        params.permit(:name, :image, :active, :description_ids)
       end
     end
   end

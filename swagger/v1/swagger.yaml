@@ -394,17 +394,21 @@ components:
     Convention:
       type: object
       required:
-        - image
         - name
+        - image
+      optional:
         - active
+        - description_ids
       properties:
         name:
           type: string
-        images:
+        image:
           type: string
           format: base64
         active:
           type: boolean
+        description_ids:
+          type: array
     Description:
       type: object
       required:
