@@ -5,11 +5,7 @@ class Canva < ApplicationRecord
 
   belongs_to :chapter, class_name: 'Chapter', foreign_key: 'chapter_id'
 
-  # validates :image, presence: true
-
-  def imageUrl
-    Rails.application.routes.url_helpers.url_for(image) if image.attached?
-  end
+  validates_presence_of :image
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[chapter_id created_at id title updated_at]
