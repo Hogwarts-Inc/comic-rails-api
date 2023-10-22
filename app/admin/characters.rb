@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Character do
-  permit_params :name, description_ids: [], images: []
+  permit_params :name, :active, description_ids: [], images: []
 
   index do
     selectable_column
@@ -14,12 +14,14 @@ ActiveAdmin.register Character do
         end
       end
     end
+    toggle_bool_column :active, success_message: 'El personaje fue activado correctamente!'
 
     actions
   end
 
   filter :name
   filter :descriptions
+  filter :active
 
   form do |f|
     f.inputs do
@@ -29,6 +31,7 @@ ActiveAdmin.register Character do
         span image_tag(image, width: '100px', height: '100px', class: 'object-contain')
       end
     end
+    f.input :active, as: :boolean
 
     f.actions
   end
@@ -45,6 +48,7 @@ ActiveAdmin.register Character do
           end
         end
       end
+      row :active
     end
 
     active_admin_comments

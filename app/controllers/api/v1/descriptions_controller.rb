@@ -7,7 +7,7 @@ module Api
 
       # GET /api/v1/descriptions
       def index
-        @descriptions = Description.all
+        @descriptions = Description.active
 
         render json: @descriptions
       end

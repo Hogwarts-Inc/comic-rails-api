@@ -7,7 +7,7 @@ module Api
 
       # GET /api/v1/conventions
       def index
-        @conventions = Convention.all
+        @conventions = Convention.active
 
         render json: @conventions.map { |convention| convention.merge_image_and_description }
       end

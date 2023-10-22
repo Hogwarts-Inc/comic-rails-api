@@ -7,7 +7,7 @@ module Api
 
       # GET /api/v1/canvas
       def index
-        @canvas = Canva.all
+        @canvas = Canva.active
 
         render json: @canvas.map { |canva|
           canva.as_json.merge({ image_url: url_for(canva.image) })
@@ -53,7 +53,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def canva_params
-        params.permit(:image, :title, :chapter_id)
+        params.permit(:image, :title, :active, :chapter_id)
       end
     end
   end

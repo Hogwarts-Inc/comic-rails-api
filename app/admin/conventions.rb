@@ -12,7 +12,7 @@ ActiveAdmin.register Convention do
         span image_tag(convention.image, width: '100px', height: '100px', class: 'object-contain')
       end
     end
-    toggle_bool_column :active
+    toggle_bool_column :active, success_message: 'El evento fue activado correctamente!'
 
     actions
   end
@@ -25,7 +25,7 @@ ActiveAdmin.register Convention do
     f.inputs do
       f.input :name, required: true
       f.input :image, as: :file
-      f.input :active, as: :select
+      f.input :active, as: :boolean
     end
 
     f.actions
