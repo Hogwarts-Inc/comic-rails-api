@@ -9,12 +9,12 @@ module Api
       def index
         @conventions = Convention.active
 
-        render json: @conventions.map { |convention| convention.merge_image_and_description }
+        render json: @conventions.map { |convention| merge_image_and_description(convention) }
       end
 
       # GET /api/v1/conventions/1
       def show
-        render json: @convention.merge_image_and_description
+        render json: merge_image_and_description(@convention)
       end
 
       # POST /api/v1/conventions
@@ -22,7 +22,7 @@ module Api
         @convention = Convention.new(convention_params)
 
         if @convention.save
-          render json: @convention.merge_image_and_description, status: :created
+          render json: merge_image_and_description(@convention), status: :created
         else
           render json: @convention.errors, status: :unprocessable_entity
         end
@@ -31,7 +31,7 @@ module Api
       # PATCH/PUT /api/v1/conventions/1
       def update
         if @convention.update(convention_params)
-          render json: @convention.merge_image_and_description
+          render json: merge_image_and_description(@convention)
         else
           render json: @convention.errors, status: :unprocessable_entity
         end
@@ -52,6 +52,16 @@ module Api
       # Only allow a list of trusted parameters through.
       def convention_params
         params.permit(:name, :image, :active, :description_ids)
+      end
+
+
+      def merge_image_and_description(convention)
+        convention.as_json.merge({
+          image_url: url_for(convention.image),
+          descriptions: convention.descriptions.active.map { |description| description.slice(
+            :id, :title, :text, :active
+          )}
+        })
       end
     end
   end

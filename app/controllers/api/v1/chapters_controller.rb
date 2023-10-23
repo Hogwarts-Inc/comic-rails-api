@@ -9,12 +9,12 @@ module Api
       def index
         @chapters = Chapter.active
 
-        render json: @chapters.map { |chapter| chapter.as_json.merge({ canvas: chapters.canvas.active }) }
+        render json: @chapters.map { |chapter| chapter.as_json.merge({ canvas: chapter.canvas.active }) }
       end
 
       # GET /api/v1/chapters/1
       def show
-        render json: @chapter.as_json.merge({ canvas: chapters.canvas.active })
+        render json: @chapter.as_json.merge({ canvas: @chapter.canvas.active })
       end
 
       # POST /api/v1/chapters
@@ -22,7 +22,7 @@ module Api
         @chapter = Chapter.new(chapter_params)
 
         if @chapter.save
-          render json: @chapter.as_json.merge({ canvas: chapters.canvas.active })
+          render json: @chapter.as_json.merge({ canvas: @chapter.canvas.active })
         else
           render json: @chapter.errors, status: :unprocessable_entity
         end
@@ -31,7 +31,7 @@ module Api
       # PATCH/PUT /api/v1/chapters/1
       def update
         if @chapter.update(chapter_params)
-          render json: @chapter.as_json.merge({ canvas: chapters.canvas.active })
+          render json: @chapter.as_json.merge({ canvas: @chapter.canvas.active })
         else
           render json: @chapter.errors, status: :unprocessable_entity
         end

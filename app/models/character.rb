@@ -1,21 +1,10 @@
 class Character < ApplicationRecord
-  include Rails.application.routes.url_helpers
-
   has_many :descriptions, dependent: :destroy, as: :descriptionable
   has_many_attached :images
 
   validates_presence_of :name, :images
 
   scope :active, -> { where(active: true) }
-
-  def merge_image_and_description
-    as_json.merge({
-      images_urls: images.map { |image| url_for(image) },
-      descriptions: descriptions.active.map { |description| description.slice(
-        :id, :title, :text, :active
-      )}
-    })
-  end
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[created_at id name updated_at active]
