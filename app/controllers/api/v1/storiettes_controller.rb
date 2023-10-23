@@ -8,14 +8,14 @@ module Api
 
       # GET /api/v1/storiettes
       def index
-        @storiettes = Storiette.all
+        @storiettes = Storiette.active
 
-        render json: @storiettes, include: :chapters
+        render json: @storiettes.map { |storiette| storiette.as_json.merge({ chapters: storiette.chapters.active }) }
       end
 
       # GET /api/v1/storiettes/1
       def show
-        render json: @storiette, include: :chapters
+        render json: @storiette.as_json.merge({ chapters: storiette.chapters.active })
       end
 
       # POST /api/v1/storiettes
@@ -23,7 +23,7 @@ module Api
         @storiette = Storiette.new(storiette_params)
 
         if @storiette.save
-          render json: @storiette, status: :created
+          render json: @storiette.as_json.merge({ chapters: storiette.chapters.active })
         else
           render json: @storiette.errors, status: :unprocessable_entity
         end
@@ -32,7 +32,7 @@ module Api
       # PATCH/PUT /api/v1/storiettes/1
       def update
         if @storiette.update(storiette_params)
-          render json: @storiette
+          render json: @storiette.as_json.merge({ chapters: storiette.chapters.active })
         else
           render json: @storiette.errors, status: :unprocessable_entity
         end
@@ -52,7 +52,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def storiette_params
-        params.require(:storiette).permit(:title, :description, :image)
+        params.require(:storiette).permit(:title, :description, :image, :active)
       end
     end
   end

@@ -342,6 +342,7 @@ components:
         - chapter_id
       optional:
         - title
+        - active
       properties:
         image:
           type: string
@@ -350,6 +351,8 @@ components:
           type: integer
         title:
           type: string
+        active:
+          type: boolean
     Storiette:
       type: object
       required:
@@ -357,6 +360,7 @@ components:
         - title
       optiona:
         - description
+        - active
     Chapter:
       type: object
       required:
@@ -364,6 +368,7 @@ components:
         - storiette_id
       optional:
         - description
+        - active
     GraphicResource:
       type: object
       required:
@@ -382,6 +387,7 @@ components:
         - images
         - name
       optional:
+        - active
         - description_ids
       properties:
         name:
@@ -391,6 +397,8 @@ components:
           format: base64
         description_ids:
           type: array
+        active:
+          type: boolean
     Convention:
       type: object
       required:
@@ -430,6 +438,7 @@ components:
             storiette:
               title: Storiette number 1#
               description: "Storiette number 1"
+              active: true
     chapterBody:
       description: A JSON object containing chapter information
       required: true
@@ -442,6 +451,7 @@ components:
               title: Chapter number 1#
               description: "Chapter number 1"
               storiette_id: 1
+              active: true
     canvaBody:
       description: A JSON object containing canva information
       required: true

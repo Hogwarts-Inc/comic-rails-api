@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Canva do
-  permit_params :title, :chapter_id, :image
+  permit_params :title, :chapter_id, :image, :active
 
   index do
     selectable_column
@@ -15,18 +15,21 @@ ActiveAdmin.register Canva do
         content_tag(:span, 'La viñeta no tiene imagen')
       end
     end
+    toggle_bool_column :active, success_message: 'La viñeta fue activada correctamente!'
 
     actions
   end
 
   filter :title
   filter :chapter
+  filter :active
 
   form do |f|
     f.inputs do
       f.input :title
       f.input :chapter_id, as: :select, collection: Chapter.all
       f.input :image, as: :file
+      f.input :active, as: :boolean
     end
 
     f.actions
@@ -44,6 +47,7 @@ ActiveAdmin.register Canva do
           content_tag(:span, 'La viñeta no tiene imagen')
         end
       end
+      row :active
     end
 
     active_admin_comments

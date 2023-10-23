@@ -7,7 +7,7 @@ module Api
 
       # GET /api/v1/characters
       def index
-        @characters = Character.all
+        @characters = Character.active
 
         render json: @characters.map { |character| character.merge_image_and_description }
       end
@@ -51,7 +51,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def character_params
-        params.permit(:name, :images, :description_ids)
+        params.permit(:name, :images, :active, :description_ids)
       end
     end
   end

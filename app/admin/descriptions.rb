@@ -9,7 +9,7 @@ ActiveAdmin.register Description do
     column :title
     column :text
     column :descriptionable
-    toggle_bool_column :active
+    toggle_bool_column :active, success_message: 'La descripcion fue activada correctamente!'
 
 
     actions
@@ -23,7 +23,7 @@ ActiveAdmin.register Description do
     f.inputs do
       f.input :title, required: true
       f.input :text, required: true
-      f.input :active, as: :select
+      f.input :active, as: :boolean
       f.input :descriptionable_type, as: :select, collection: ['Convention', 'Character'], prompt: 'Select Type', input_html: { class: 'descriptionable-type-select' }
       f.input :descriptionable_id, as: :select, input_html: { class: 'descriptionable-id-select' }
     end

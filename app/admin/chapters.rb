@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Chapter do
-  permit_params :title, :description, :storiette_id
+  permit_params :title, :description, :storiette_id, :active
 
   index do
     selectable_column
@@ -9,6 +9,7 @@ ActiveAdmin.register Chapter do
     column :title
     column :description
     column :storiette
+    toggle_bool_column :active, success_message: 'El capitulo fue activado correctamente!'
 
     actions
   end
@@ -16,12 +17,14 @@ ActiveAdmin.register Chapter do
   filter :title
   filter :description
   filter :storiette
+  filter :active
 
   form do |f|
     f.inputs do
       f.input :title
       f.input :description
       f.input :storiette_id, as: :select, collection: Storiette.all
+      f.input :active, as: :boolean
     end
 
     f.actions
@@ -33,6 +36,7 @@ ActiveAdmin.register Chapter do
       row :title
       row :storiette
       row :description
+      row :active
     end
 
     active_admin_comments
