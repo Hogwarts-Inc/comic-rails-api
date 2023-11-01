@@ -6,6 +6,8 @@ COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
 RUN bundle install
 
+ENV RAILS_ENV=production
+
 COPY . .
 
 EXPOSE 3000
