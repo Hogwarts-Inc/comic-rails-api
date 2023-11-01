@@ -27,6 +27,7 @@ services:
       - AZURE_ACCESS_KEY=${AZURE_ACCESS_KEY}
       - AZURE_CONTAINER=${AZURE_CONTAINER}
       - SERVER_URL=${SERVER_URL}
+      - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
   redis:
     image: redis
     command: redis-server --appendonly yes
