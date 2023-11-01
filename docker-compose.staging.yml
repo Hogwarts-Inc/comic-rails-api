@@ -22,14 +22,6 @@ services:
       - AZURE_ACCESS_KEY=${AZURE_ACCESS_KEY}
       - AZURE_CONTAINER=${AZURE_CONTAINER}
       - SERVER_URL=${SERVER_URL}
-  redis:
-    image: redis
-    command: redis-server --appendonly yes
-    volumes:
-      - redisdata:/data
-    ports:
-      - "6379:6379"
 
 volumes:
   postgres:
-  redisdata:
