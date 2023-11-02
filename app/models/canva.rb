@@ -8,6 +8,7 @@ class Canva < ApplicationRecord
   validates_presence_of :image
 
   scope :active, -> { where(active: true) }
+  default_scope { order("created_at ASC") }
 
   after_save :active_chapter
 
