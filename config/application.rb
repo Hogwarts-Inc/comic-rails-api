@@ -39,25 +39,19 @@ module ComicRailsApi
 
     config.auth0 = config_for(:auth0)
 
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins '*'
-        resource '*', :headers => :any, :methods => [:get, :post, :options]
-      end
-    end
+    config.action_dispatch.default_headers = {
+      'Access-Control-Allow-Origin': '*'
+    }
 
     config.middleware.use Rack::MethodOverride
     config.middleware.use ActionDispatch::Flash
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
 
-    config.middleware.use Rack::Cors do
+    config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
-        resource '*',
-          :headers => :any,
-          :methods => [:get, :put, :patch, :options],
-          :max_age => 15
+        resource '*', headers: :any, methods: :any
       end
     end
   end
