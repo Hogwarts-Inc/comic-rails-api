@@ -39,15 +39,17 @@ module ComicRailsApi
 
     config.auth0 = config_for(:auth0)
 
-    # config.action_dispatch.default_headers = {
-    #   'X-Frame-Options' => 'deny',
-    #   'X-XSS-Protection' => '0',
-    #   'Strict-Transport-Security' => 'max-age=31536000; includeSubDomains',
-    #   'X-Content-Type-Options' => 'nosniff',
-    #   'Cache-Control' => 'no-store',
-    #   'Pragma' => 'no-cache',
-    #   'Content-Security-Policy' => "default-src 'self', frame-ancestors 'none'"
-    # }
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :options]
+      end
+    end
+
+    config.middleware.use Rack::MethodOverride
+    config.middleware.use ActionDispatch::Flash
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
 
     config.middleware.use Rack::Cors do
       allow do
@@ -58,10 +60,5 @@ module ComicRailsApi
           :max_age => 15
       end
     end
-
-    config.middleware.use Rack::MethodOverride
-    config.middleware.use ActionDispatch::Flash
-    config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore
   end
 end
