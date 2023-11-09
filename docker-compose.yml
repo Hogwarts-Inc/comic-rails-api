@@ -28,6 +28,9 @@ services:
       - AZURE_CONTAINER=${AZURE_CONTAINER}
       - SERVER_URL=${SERVER_URL}
       - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+      - CLIENT_ORIGIN_URL=${CLIENT_ORIGIN_URL}
+      - AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
+      - AUTH0_DOMAIN=${AUTH0_DOMAIN}
   redis:
     image: redis
     command: redis-server --appendonly yes
