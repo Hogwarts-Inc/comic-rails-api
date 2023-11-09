@@ -19,7 +19,7 @@ class Auth0Client
                  algorithm: 'RS256',
                  iss: domain_url,
                  verify_iss: true,
-                 aud: ENV['AUTH0_DOMAIN'].to_s,
+                 aud: ENV['AUTH0_AUDIENCE'].to_s,
                  verify_aud: true,
                  jwks: { keys: jwks_hash[:keys] }
                })

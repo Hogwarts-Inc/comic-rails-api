@@ -15,7 +15,7 @@ module Api
 
       # GET /api/v1/storiettes/1
       def show
-        render json: @storiette.as_json.merge({ chapters: storiette.chapters.active })
+        render json: @storiette.as_json.merge({ chapters: @storiette.chapters.active })
       end
 
       # POST /api/v1/storiettes
@@ -23,7 +23,7 @@ module Api
         @storiette = Storiette.new(storiette_params)
 
         if @storiette.save
-          render json: @storiette.as_json.merge({ chapters: storiette.chapters.active })
+          render json: @storiette.as_json.merge({ chapters: @storiette.chapters.active })
         else
           render json: @storiette.errors, status: :unprocessable_entity
         end
@@ -32,7 +32,7 @@ module Api
       # PATCH/PUT /api/v1/storiettes/1
       def update
         if @storiette.update(storiette_params)
-          render json: @storiette.as_json.merge({ chapters: storiette.chapters.active })
+          render json: @storiette.as_json.merge({ chapters: @storiette.chapters.active })
         else
           render json: @storiette.errors, status: :unprocessable_entity
         end
