@@ -9,7 +9,7 @@ ActiveAdmin.register Description do
     column :title
     column :text
     column :descriptionable
-    toggle_bool_column :active, success_message: 'La descripcion fue activada correctamente!'
+    toggle_bool_column :active
 
 
     actions
