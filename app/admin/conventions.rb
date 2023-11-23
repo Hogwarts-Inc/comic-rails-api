@@ -12,7 +12,7 @@ ActiveAdmin.register Convention do
         span image_tag(convention.image, width: '100px', height: '100px', class: 'object-contain')
       end
     end
-    toggle_bool_column :active, success_message: 'El evento fue activado correctamente!'
+    toggle_bool_column :active
 
     actions
   end

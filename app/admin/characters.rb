@@ -14,7 +14,7 @@ ActiveAdmin.register Character do
         end
       end
     end
-    toggle_bool_column :active, success_message: 'El personaje fue activado correctamente!'
+    toggle_bool_column :active
 
     actions
   end

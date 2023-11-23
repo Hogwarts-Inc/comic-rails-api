@@ -15,7 +15,7 @@ ActiveAdmin.register Canva do
         content_tag(:span, 'La viñeta no tiene imagen')
       end
     end
-    toggle_bool_column :active, success_message: 'La viñeta fue activada correctamente!'
+    toggle_bool_column :active
 
     actions
   end

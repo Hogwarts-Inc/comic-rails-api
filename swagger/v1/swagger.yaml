@@ -11,9 +11,24 @@ paths:
         '200':
           description: successful
     post:
-      summary: create canva
+      summary: create canvas
       requestBody:
-        $ref: '#/components/requestBodies/canvaBody'
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                chapter_id:
+                  type: integer
+                images:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+              required:
+                - chapter_id
+                - images
       responses:
         '200':
           description: successful

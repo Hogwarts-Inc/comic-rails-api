@@ -9,7 +9,7 @@ ActiveAdmin.register Chapter do
     column :title
     column :description
     column :storiette
-    toggle_bool_column :active, success_message: 'El capitulo fue activado correctamente!'
+    toggle_bool_column :active
 
     actions
   end

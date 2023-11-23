@@ -8,9 +8,7 @@ ActiveAdmin.register Storiette do
     id_column
     column :title
     column :description
-    toggle_bool_column :active,
-                       if: proc { |storiette| storiette.active? || Storiette.active.empty? },
-                       success_message: 'La historieta fue activada correctamente!'
+    toggle_bool_column :active, if: proc { |storiette| storiette.active? || Storiette.active.empty? }
 
     actions
   end

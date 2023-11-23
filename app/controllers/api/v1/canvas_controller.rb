@@ -21,13 +21,25 @@ module Api
 
       # POST /api/v1/canvas
       def create
-        @canva = Canva.new(canva_params)
+        chapter_id = params[:chapter_id]
+        images = params[:images]
 
-        if @canva.save
-          render json: @canva.as_json.merge({ image_url: url_for(@canva.image) })
-        else
-          render json: @canva.errors, status: :unprocessable_entity
+        images = [images] unless images.is_a?(Array)
+        created_canvas = []
+
+        images.each do |image|
+          @canva = Canva.new(chapter_id: chapter_id, image: image)
+
+          if @canva.save
+            created_canvas << @canva
+          else
+            return render json: @canva.errors, status: :unprocessable_entity
+          end
         end
+
+        render json: created_canvas.map { |canva|
+          canva.as_json.merge({ image_url: url_for(canva.image) })
+        }
       end
 
       # PATCH/PUT /api/v1/canvas/1
