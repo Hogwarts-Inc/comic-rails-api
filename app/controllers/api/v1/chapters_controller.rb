@@ -7,14 +7,18 @@ module Api
 
       # GET /api/v1/chapters
       def index
-        @chapters = Chapter.all
+        @chapters = Chapter.active
 
-        render json: @chapters, include: :canvas
+        render json: @chapters.map { |chapter|
+          chapter.as_json.merge({ canvas: chapter.canvas.active.map { |canva|
+            canva_json(canva) } })
+        }
       end
 
       # GET /api/v1/chapters/1
       def show
-        render json: @chapter, include: :canvas
+        render json: @chapter.as_json.merge({ canvas: @chapter.canvas.active.map { |canva|
+          canva_json(canva) } })
       end
 
       # POST /api/v1/chapters
@@ -22,7 +26,8 @@ module Api
         @chapter = Chapter.new(chapter_params)
 
         if @chapter.save
-          render json: @chapter, status: :created
+          render json: @chapter.as_json.merge({ canvas: @chapter.canvas.active.map { |canva|
+            canva_json(canva) } })
         else
           render json: @chapter.errors, status: :unprocessable_entity
         end
@@ -31,7 +36,8 @@ module Api
       # PATCH/PUT /api/v1/chapters/1
       def update
         if @chapter.update(chapter_params)
-          render json: @chapter
+          render json: @chapter.as_json.merge({ canvas: @chapter.canvas.active.map { |canva|
+            canva_json(canva) } })
         else
           render json: @chapter.errors, status: :unprocessable_entity
         end
@@ -51,7 +57,11 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def chapter_params
-        params.require(:chapter).permit(:title, :description, :storiette_id)
+        params.require(:chapter).permit(:title, :description, :active, :storiette_id)
+      end
+
+      def canva_json(canva)
+        canva.as_json.merge({ image_url: url_for(canva.image) })
       end
     end
   end

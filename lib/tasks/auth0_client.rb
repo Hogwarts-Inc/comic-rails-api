@@ -11,7 +11,7 @@ class Auth0Client
 
   # Helper Functions
   def self.domain_url
-    "https://#{Rails.configuration.auth0.domain}/"
+    "https://#{ENV['AUTH0_DOMAIN']}/"
   end
 
   def self.decode_token(token, jwks_hash)
@@ -19,7 +19,7 @@ class Auth0Client
                  algorithm: 'RS256',
                  iss: domain_url,
                  verify_iss: true,
-                 aud: Rails.configuration.auth0.audience.to_s,
+                 aud: ENV['AUTH0_AUDIENCE'].to_s,
                  verify_aud: true,
                  jwks: { keys: jwks_hash[:keys] }
                })

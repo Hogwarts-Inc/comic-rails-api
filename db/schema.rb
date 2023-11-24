@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_09_184455) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_22_204211) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -73,6 +73,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_09_184455) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "chapter_id"
+    t.boolean "active", default: false
     t.index ["chapter_id"], name: "index_canvas_on_chapter_id"
   end
 
@@ -82,7 +83,33 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_09_184455) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "storiette_id"
+    t.boolean "active", default: false
     t.index ["storiette_id"], name: "index_chapters_on_storiette_id"
+  end
+
+  create_table "characters", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "active", default: true
+  end
+
+  create_table "conventions", force: :cascade do |t|
+    t.string "name"
+    t.boolean "active", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "descriptions", force: :cascade do |t|
+    t.string "title"
+    t.string "text"
+    t.boolean "active", default: false
+    t.string "descriptionable_type", null: false
+    t.bigint "descriptionable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["descriptionable_type", "descriptionable_id"], name: "index_descriptions_on_descriptionable"
   end
 
   create_table "graphic_resources", force: :cascade do |t|
@@ -96,6 +123,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_09_184455) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: false
   end
 
   create_table "users", force: :cascade do |t|

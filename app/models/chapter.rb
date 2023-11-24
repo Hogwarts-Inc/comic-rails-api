@@ -5,7 +5,17 @@ class Chapter < ApplicationRecord
 
   has_many :canvas, dependent: :destroy
 
+  scope :active, -> { where(active: true) }
+
+  after_save :deactivate_canvas
+
   def self.ransackable_attributes(_auth_object = nil)
-    %w[created_at description id storiette_id title updated_at]
+    %w[created_at description id storiette_id title updated_at active]
+  end
+
+  def deactivate_canvas
+    return unless saved_change_to_attribute?(:active) && !active?
+
+    canvas.active.update_all(active: false)
   end
 end
