@@ -1,5 +1,5 @@
 class GraphicResource < ApplicationRecord
-  has_one_attached :image, service: :amazon
+  has_one_attached :image
 
   enum resource_type: { background: 0, object: 1, dialog: 2 }
 

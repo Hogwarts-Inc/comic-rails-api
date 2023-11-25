@@ -1,7 +1,7 @@
 class Convention < ApplicationRecord
   has_many :descriptions, dependent: :destroy, as: :descriptionable
 
-  has_one_attached :image, service: :amazon
+  has_one_attached :image
 
   validates_presence_of :name, :image
 
