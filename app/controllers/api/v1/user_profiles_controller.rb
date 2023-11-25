@@ -22,7 +22,6 @@ module Api
 
       def update_profile
         @user = UserProfile.find_by(sub: @user_params['sub'])
-
         if @user.update(user_params)
           render json: @user.as_json
         else
