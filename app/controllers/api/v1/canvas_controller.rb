@@ -22,13 +22,14 @@ module Api
       # POST /api/v1/canvas
       def create
         chapter_id = params[:chapter_id]
+        user_profile_id = params[:user_profile_id]
         images = params[:images]
 
         images = [images] unless images.is_a?(Array)
         created_canvas = []
 
         images.each do |image|
-          @canva = Canva.new(chapter_id: chapter_id, image: image)
+          @canva = Canva.new(chapter_id: chapter_id, image: image, user_profile_id: user_profile_id)
 
           if @canva.save
             created_canvas << @canva
@@ -65,7 +66,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def canva_params
-        params.permit(:image, :title, :active, :chapter_id)
+        params.permit(:image, :title, :active, :chapter_id, :user_profile_id)
       end
     end
   end

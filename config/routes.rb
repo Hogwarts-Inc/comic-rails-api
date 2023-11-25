@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  devise_for :users
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   mount Rswag::Ui::Engine => '/api-docs'
@@ -15,6 +14,9 @@ Rails.application.routes.draw do
       resources :characters
       resources :descriptions
       resources :conventions
+      resources :user_profiles, only: [:create] do
+        patch :update_profile, on: :collection
+      end
       resources :graphic_resources do
         collection do
           get :resource_for_type
