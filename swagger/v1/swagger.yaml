@@ -112,6 +112,96 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v1/likes":
+    get:
+      summary: list likes
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create like
+      requestBody:
+        $ref: '#/components/requestBodies/likeBody'
+      responses:
+        '200':
+          description: successful
+  "/api/v1/likes/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show like
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update like
+      requestBody:
+        $ref: '#/components/requestBodies/likeBody'
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update like
+      requestBody:
+        $ref: '#/components/requestBodies/likeBody'
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete like
+      responses:
+        '200':
+          description: successful
+  "/api/v1/opinions":
+    get:
+      summary: list opinions
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create opinion
+      requestBody:
+        $ref: '#/components/requestBodies/opinionBody'
+      responses:
+        '200':
+          description: successful
+  "/api/v1/opinions/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show opinion
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update opinion
+      requestBody:
+        $ref: '#/components/requestBodies/opinionBody'
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update opinion
+      requestBody:
+        $ref: '#/components/requestBodies/opinionBody'
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete opinion
+      responses:
+        '200':
+          description: successful
   "/api/v1/chapters":
     get:
       summary: list chapters
@@ -500,6 +590,19 @@ components:
         - descriptionable_id
       optional:
         - active
+    Opinion:
+      type: object
+      required:
+        - text
+        - canva_id
+        - user_profile_id
+      optional:
+        - active
+    Like:
+      type: object
+      required:
+        - canva_id
+        - user_profile_id
     UserProfile:
       type: object
       required:
@@ -571,6 +674,20 @@ components:
         multipart/form-data:
           schema:
             $ref: '#/components/schemas/Character'
+    likeBody:
+      description: A JSON object containing like information
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/Like'
+    opinionBody:
+      description: A JSON object containing opinion information
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/Opinion'
     descriptionBody:
       description: A JSON object containing description information
       required: true
