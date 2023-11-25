@@ -29,3 +29,6 @@ services:
 
 volumes:
   postgres:
+  gem_cache:
+  db_data:
+  node_modules:
