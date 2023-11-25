@@ -398,6 +398,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin
   activeadmin_addons
+  aws-eventstream (= 1.2.0)
   aws-sdk-s3
   azure-storage-blob
   bootsnap
