@@ -1,6 +1,6 @@
 class Character < ApplicationRecord
   has_many :descriptions, dependent: :destroy, as: :descriptionable
-  has_many_attached :images
+  has_many_attached :images, service: :amazon
 
   validates_presence_of :name, :images
 
