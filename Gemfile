@@ -5,6 +5,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.0'
 
+gem "aws-sdk-s3", "~> 3"
+gem 'aws-eventstream', '1.2.0'
 gem 'pg', '~> 1.1'
 gem 'pg_search', '~> 2.3', '>= 2.3.2'
 gem 'pry'
@@ -26,8 +28,6 @@ gem 'multi_json'
 gem 'sidekiq', '~> 7.1'
 gem 'image_processing'
 gem 'mini_magick'
-gem "aws-sdk-s3"
-gem 'aws-eventstream', '1.2.0'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
