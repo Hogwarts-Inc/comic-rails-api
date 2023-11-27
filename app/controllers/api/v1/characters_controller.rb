@@ -4,6 +4,7 @@ module Api
   module V1
     class CharactersController < BaseController
       before_action :set_character, only: %i[show update destroy]
+      before_action :authorize, except: [:index, :show]
 
       # GET /api/v1/characters
       def index

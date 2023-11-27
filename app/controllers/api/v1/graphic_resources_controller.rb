@@ -2,6 +2,7 @@ module Api
   module V1
     class GraphicResourcesController < BaseController
       before_action :set_graphic_resource, only: %i[ show update destroy ]
+      before_action :authorize, except: [:index, :show]
 
       # GET /api/v1/graphic_resources
       def index
