@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.0'
 
-gem "aws-sdk-s3", "~> 3"
+gem "aws-sdk-s3"
 gem 'aws-eventstream', '1.2.0'
 gem 'pg', '~> 1.1'
 gem 'pg_search', '~> 2.3', '>= 2.3.2'
