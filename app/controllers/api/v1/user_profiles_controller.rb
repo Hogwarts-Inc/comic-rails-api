@@ -9,7 +9,7 @@ module Api
       def create
         # if already exists, it won't create the user but will return the user json
         @user = UserProfile.find_by(sub: @user_params['sub'])
-        return render json: { @user.as_json } if @user.present?
+        return render json: @user.as_json if @user.present?
 
         @user = UserProfile.new(@user_params)
 
@@ -22,7 +22,7 @@ module Api
 
       def update_profile
         @user = UserProfile.find_by(sub: @user_params['sub'])
-        binding.pry
+
         if @user.update(user_params)
           render json: @user.as_json
         else
@@ -42,7 +42,7 @@ module Api
         if user_info.present?
           @user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
         else
-          @user_param = {}
+          @user_params = {}
         end
       end
     end
