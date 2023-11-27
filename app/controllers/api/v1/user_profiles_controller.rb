@@ -8,7 +8,8 @@ module Api
 
       def create
         # if already exists, it won't create the user but will return the user json
-        return render json: { @user.as_json } if UserProfile.find_by(sub: @user_params['sub']).present?
+        @user = UserProfile.find_by(sub: @user_params['sub'])
+        return render json: { @user.as_json } if @user.present?
 
         @user = UserProfile.new(@user_params)
 
