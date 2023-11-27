@@ -6,7 +6,7 @@ module Api
 
       # GET /api/v1/likes
       def index
-        @likes = Like.active
+        @likes = Like.all
 
         render json: @likes
       end
