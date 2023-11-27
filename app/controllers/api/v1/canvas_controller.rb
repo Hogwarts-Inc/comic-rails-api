@@ -11,13 +11,13 @@ module Api
         @canvas = Canva.active
 
         render json: @canvas.map { |canva|
-          canva.as_json.merge({ image_url: url_for(canva.image) })
+          canva.as_json.merge!(canva_data(canva))
         }
       end
 
       # GET /api/v1/canvas/1
       def show
-        render json: @canva.as_json.merge({ image_url: url_for(@canva.image) })
+        render json: @canva.as_json.merge!(canva_data(@canva))
       end
 
       # POST /api/v1/canvas
@@ -40,14 +40,14 @@ module Api
         end
 
         render json: created_canvas.map { |canva|
-          canva.as_json.merge({ image_url: url_for(canva.image) })
+          canva.as_json.merge!(canva_data(canva))
         }
       end
 
       # PATCH/PUT /api/v1/canvas/1
       def update
         if @canva.update(canva_params)
-          render json: @canva.as_json.merge({ image_url: url_for(@canva.image) })
+          render json: @canva.as_json.merge!(canva_data(@canva))
         else
           render json: @canva.errors, status: :unprocessable_entity
         end
@@ -63,6 +63,29 @@ module Api
       # Use callbacks to share common setup or constraints between actions.
       def set_canva
         @canva = Canva.find(params[:id])
+      end
+
+      def canva_data(canva)
+        {
+          image_url: url_for(canva.image),
+          user_attributes: canva&.user_profile&.as_json&.merge(
+            image_ur: user_image(canva&.user_profile)
+          ),
+          likes: canva.likes_count,
+          comments: canva.opinions.as_json
+        }
+      end
+
+      def user_image(user)
+        return nil if user.blank?
+
+        if user.image.present?
+          url_for(user.image)
+        elsif user.picture.present?
+          user.picture
+        elsif
+          user.nft_url
+        end
       end
 
       # Only allow a list of trusted parameters through.
