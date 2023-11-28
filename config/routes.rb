@@ -17,7 +17,11 @@ Rails.application.routes.draw do
       resources :likes
       resources :opinions
       resources :user_profiles, only: [:create] do
-        patch :update_profile, on: :collection
+        collection do
+          patch :update_profile
+          get :canvas
+          get :info
+        end
       end
       resources :graphic_resources do
         collection do

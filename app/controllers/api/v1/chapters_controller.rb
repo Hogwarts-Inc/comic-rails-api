@@ -11,15 +11,13 @@ module Api
         @chapters = Chapter.active
 
         render json: @chapters.map { |chapter|
-          chapter.as_json.merge({ canvas: chapter.canvas.active.map { |canva|
-            canva_json(canva) } })
+          chapter.as_json.merge(chapter_attributes(chapter))
         }
       end
 
       # GET /api/v1/chapters/1
       def show
-        render json: @chapter.as_json.merge({ canvas: @chapter.canvas.active.map { |canva|
-          canva_json(canva) } })
+        render json: @chapter.as_json.merge(chapter_attributes(@chapter))
       end
 
       # POST /api/v1/chapters
@@ -27,8 +25,7 @@ module Api
         @chapter = Chapter.new(chapter_params)
 
         if @chapter.save
-          render json: @chapter.as_json.merge({ canvas: @chapter.canvas.active.map { |canva|
-            canva_json(canva) } })
+          render json: @chapter.as_json.merge(chapter_attributes(@chapter))
         else
           render json: @chapter.errors, status: :unprocessable_entity
         end
@@ -37,8 +34,7 @@ module Api
       # PATCH/PUT /api/v1/chapters/1
       def update
         if @chapter.update(chapter_params)
-          render json: @chapter.as_json.merge({ canvas: @chapter.canvas.active.map { |canva|
-            canva_json(canva) } })
+          render json: @chapter.as_json.merge(chapter_attributes(@chapter))
         else
           render json: @chapter.errors, status: :unprocessable_entity
         end
@@ -51,6 +47,13 @@ module Api
 
       private
 
+      def chapter_attributes(chapter)
+        {
+          chapter_like_count: chapter.total_likes_count,
+          canvas: chapter.canvas.active.map { |canva| canva_json(canva) }
+        }
+      end
+
       # Use callbacks to share common setup or constraints between actions.
       def set_chapter
         @chapter = Chapter.find(params[:id])
@@ -62,7 +65,12 @@ module Api
       end
 
       def canva_json(canva)
-        canva.as_json.merge({ image_url: url_for(canva.image) })
+        canva.as_json.merge(
+          {
+             image_url: url_for(canva.image),
+             likes: canva.likes_count
+          }
+        )
       end
     end
   end
