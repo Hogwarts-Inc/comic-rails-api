@@ -2,7 +2,7 @@
 openapi: 3.0.1
 info:
   title: API V1
-  version: v1
+  version: '1.0.0'
 paths:
   "/api/v1/canvas":
     get:
@@ -21,6 +21,8 @@ paths:
               properties:
                 chapter_id:
                   type: integer
+                user_profile_id:
+                  type: integer
                 images:
                   type: array
                   items:
@@ -29,6 +31,7 @@ paths:
               required:
                 - chapter_id
                 - images
+                - user_profile_id
       responses:
         '200':
           description: successful
@@ -348,13 +351,67 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v1/user_profiles":
+    post:
+      summary: create user profile
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: successful
+          examples:
+            Nacho:
+              value:
+                id: 1
+                name: Nacho Smith
+                given_name: Nacho
+                family_name: Smith
+                email: nacho_smith@gmail.com
+                picture: nil
+                nft_url: nil
+                sub: google-oauth2|1234949099349
+                created_at: "2024-01-01"
+                updated_at: "2024-01-01"
+  "/api/v1/user_profiles/update_profile":
+    patch:
+      summary: update user profile
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/userProfileBody'
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'   # Reference to an object
+              examples:
+                Nacho:
+                  value:
+                    id: 1
+                    name: Nacho Smith
+                    given_name: Nacho
+                    family_name: Smith
+                    email: nacho_smith@gmail.com
+                    picture: nil
+                    nft_url: nil
+                    sub: google-oauth2|1234949099349
+                    created_at: "2024-01-01"
+                    updated_at: "2024-01-01"
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Canva:
       type: object
       required:
         - image
         - chapter_id
+        - user_profile_id
       optional:
         - title
         - active
@@ -368,6 +425,8 @@ components:
           type: string
         active:
           type: boolean
+        user_profile_id:
+          type: integer
     Storiette:
       type: object
       required:
@@ -441,6 +500,30 @@ components:
         - descriptionable_id
       optional:
         - active
+    UserProfile:
+      type: object
+      required:
+        - given_name
+        - family_name
+        - email
+        - image
+      optional:
+        - nft_url
+        - picture
+      properties:
+        given_name:
+          type: string
+        family_name:
+          type: string
+        image:
+          type: string
+          format: base64
+        email:
+          type: string
+        picture:
+          type: string
+        nft_url:
+          type: string
   requestBodies:
     storietteBody:
       description: A JSON object containing storiette information
@@ -509,6 +592,13 @@ components:
         multipart/form-data:
           schema:
             $ref: '#/components/schemas/Convention'
+    userProfileBody:
+      description: A JSON object containing user profile information
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/UserProfile'
 servers:
 - url: http://{defaultHost}
   variables:

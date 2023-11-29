@@ -48,4 +48,27 @@ class Auth0Client
     error = Error.new('Bad credentials', :unauthorized)
     Response.new(nil, error)
   end
+
+
+  def self.get_user_info(token)
+    if token.present?
+      uri = URI.parse("#{domain_url}userinfo")
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true  # Enable SSL/TLS, as you're making a request to an HTTPS endpoint
+
+      request = Net::HTTP::Get.new(uri.path, {'Authorization' => "Bearer #{token}"})
+
+      response = http.request(request)
+
+      if response.code == '200'
+        # Parse and use the user information from the response
+        user_info = JSON.parse(response.body)
+      else
+        # Handle error response
+        'Failed to fetch user information'
+      end
+    else
+      'Authorization token not present in the request'
+    end
+  end
 end
