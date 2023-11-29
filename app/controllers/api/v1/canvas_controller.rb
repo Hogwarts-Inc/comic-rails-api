@@ -4,6 +4,7 @@ module Api
   module V1
     class CanvasController < BaseController
       before_action :set_canva, only: %i[show update destroy]
+      before_action :authorize, except: [:index, :show]
 
       # GET /api/v1/canvas
       def index
