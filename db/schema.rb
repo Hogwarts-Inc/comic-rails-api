@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_25_165241) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_25_173029) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -120,6 +120,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_25_165241) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "likes", force: :cascade do |t|
+    t.bigint "canva_id", null: false
+    t.bigint "user_profile_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["canva_id"], name: "index_likes_on_canva_id"
+    t.index ["user_profile_id"], name: "index_likes_on_user_profile_id"
+  end
+
+  create_table "opinions", force: :cascade do |t|
+    t.string "text"
+    t.boolean "active"
+    t.bigint "canva_id", null: false
+    t.bigint "user_profile_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["canva_id"], name: "index_opinions_on_canva_id"
+    t.index ["user_profile_id"], name: "index_opinions_on_user_profile_id"
+  end
+
   create_table "storiettes", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -157,4 +177,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_25_165241) do
   add_foreign_key "canvas", "chapters"
   add_foreign_key "canvas", "user_profiles"
   add_foreign_key "chapters", "storiettes"
+  add_foreign_key "likes", "canvas"
+  add_foreign_key "likes", "user_profiles"
+  add_foreign_key "opinions", "canvas"
+  add_foreign_key "opinions", "user_profiles"
 end

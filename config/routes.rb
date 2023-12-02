@@ -14,6 +14,8 @@ Rails.application.routes.draw do
       resources :characters
       resources :descriptions
       resources :conventions
+      resources :likes
+      resources :opinions
       resources :user_profiles, only: [:create] do
         patch :update_profile, on: :collection
       end
