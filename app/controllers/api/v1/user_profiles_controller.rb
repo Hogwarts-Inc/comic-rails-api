@@ -4,7 +4,7 @@ module Api
       include UserInfo
 
       skip_before_action :verify_authenticity_token
-      before_action :get_user_info, only: [:create, :update_profile]
+      before_action :get_user_info, only: [:create, :update_profile, :canvas, :info]
 
       def create
         # if already exists, it won't create the user but will return the user json
@@ -30,7 +30,26 @@ module Api
         end
       end
 
+      def canvas
+        @user = UserProfile.find_by(sub: @user_params['sub'])
+        render json: @user.canvas.map { |canva| canva_data(canva) }
+      end
+
+      def info
+        @user = UserProfile.find_by(sub: @user_params['sub'])
+        render json: @user.as_json
+      end
+
       private
+
+      def canva_data(canva)
+        {
+          canva_id: canva.id,
+          image_url: url_for(canva.image),
+          likes: canva.likes_count,
+          comments: canva.opinions.as_json
+        }
+      end
 
       def user_params
         params.permit(:email, :given_name, :family_name, :picture, :name, :image, :nft_url)
