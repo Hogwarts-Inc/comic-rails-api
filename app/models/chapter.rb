@@ -13,6 +13,10 @@ class Chapter < ApplicationRecord
     %w[created_at description id storiette_id title updated_at active]
   end
 
+  def total_likes_count
+    canvas.map(&:likes_count).sum
+  end
+
   def deactivate_canvas
     return unless saved_change_to_attribute?(:active) && !active?
 
