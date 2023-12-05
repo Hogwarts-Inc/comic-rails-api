@@ -32,7 +32,7 @@ module Api
 
       def canvas
         @user = UserProfile.find_by(sub: @user_params['sub'])
-        render json: @user.canvas.map { |canva| canva_data(canva) }
+        render json: @user.canvas.active.map { |canva| canva_data(canva) }
       end
 
       def info
