@@ -14,6 +14,8 @@ module UserInfo
   def user_info
     token = token_from_request
 
+    return false unless token.present?
+
     user_info = Auth0Client.get_user_info(token)
 
     if user_info == 'Failed to fetch user information' ||
@@ -29,15 +31,15 @@ module UserInfo
   def token_from_request
     authorization_header_elements = request.headers['Authorization']&.split
 
-    render json: REQUIRES_AUTHENTICATION, status: :unauthorized and return unless authorization_header_elements
+    return unless authorization_header_elements
 
     unless authorization_header_elements.length == 2
-      render json: MALFORMED_AUTHORIZATION_HEADER, status: :unauthorized and return
+      return
     end
 
     scheme, token = authorization_header_elements
 
-    render json: BAD_CREDENTIALS, status: :unauthorized and return unless scheme.downcase == 'bearer'
+    return unless scheme.downcase == 'bearer'
 
     token
   end

@@ -6,7 +6,7 @@ module Api
       include UserInfo
 
       before_action :set_canva, only: %i[show update destroy]
-      before_action :authorize, except: [:index]
+      before_action :authorize, except: [:index, :show]
       before_action :get_user_info, only: %i[show]
 
       # GET /api/v1/canvas
@@ -69,20 +69,15 @@ module Api
       end
 
       def canva_data(canva)
-        canva_attributes = {
+        {
           image_url: url_for(canva.image),
           user_attributes: canva&.user_profile&.as_json&.merge(
             image_ur: user_image(canva&.user_profile)
           ),
           likes: canva.likes_count,
-          comments: canva.opinions.as_json
+          comments: canva.opinions.as_json,
+          current_user_likes: canva.user_gave_like(@user_params['sub'])
         }
-
-        if @user_params.present?
-          canva_attributes[:current_user_likes] = canva.user_gave_like(@user_params['sub'])
-        end
-
-        canva_attributes
       end
 
       def user_image(user)

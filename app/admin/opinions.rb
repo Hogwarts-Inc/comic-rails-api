@@ -20,7 +20,7 @@ ActiveAdmin.register Opinion do
 
   form do |f|
     f.inputs do
-      f.input :canva, as: :select, collection: Canva.all
+      f.input :canva, as: :select, collection: Canva.all.map { |c| [c.id, c.id] }
       f.input :user_profile, as: :select, collection: UserProfile.all
       f.input :text
       f.input :active, as: :boolean
