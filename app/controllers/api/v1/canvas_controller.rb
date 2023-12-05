@@ -76,7 +76,7 @@ module Api
           ),
           likes: canva.likes_count,
           comments: canva.opinions.as_json,
-          current_user_likes: canva.user_gave_like(@user_params['sub'])
+          current_user_likes: canva.user_gave_like(@user_params)
         }
       end
 
