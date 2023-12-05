@@ -3,8 +3,11 @@
 module Api
   module V1
     class CanvasController < BaseController
+      include UserInfo
+
       before_action :set_canva, only: %i[show update destroy]
-      before_action :authorize, except: [:index, :show]
+      before_action :authorize, except: [:index]
+      before_action :get_user_info, only: %i[show]
 
       # GET /api/v1/canvas
       def index
@@ -66,7 +69,7 @@ module Api
       end
 
       def canva_data(canva)
-        {
+        canva_attributes = {
           image_url: url_for(canva.image),
           user_attributes: canva&.user_profile&.as_json&.merge(
             image_ur: user_image(canva&.user_profile)
@@ -74,6 +77,12 @@ module Api
           likes: canva.likes_count,
           comments: canva.opinions.as_json
         }
+
+        if @user_params.present?
+          canva_attributes[:current_user_likes] = canva.user_gave_like(@user_params['sub'])
+        end
+
+        canva_attributes
       end
 
       def user_image(user)
@@ -91,6 +100,16 @@ module Api
       # Only allow a list of trusted parameters through.
       def canva_params
         params.permit(:image, :title, :active, :chapter_id, :user_profile_id)
+      end
+
+      def get_user_info
+        user_info = user_info()
+
+        if user_info.present?
+          @user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
+        else
+          @user_params = {}
+        end
       end
     end
   end

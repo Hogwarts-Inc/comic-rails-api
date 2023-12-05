@@ -12,6 +12,8 @@ paths:
           description: successful
     post:
       summary: create canvas
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -45,11 +47,15 @@ paths:
         type: string
     get:
       summary: show canva
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: successful
     patch:
       summary: update canva
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/canvaBody'
       responses:
@@ -57,6 +63,8 @@ paths:
           description: successful
     put:
       summary: update canva
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/canvaBody'
       responses:
@@ -75,6 +83,8 @@ paths:
           description: successful
     post:
       summary: create storiette
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/storietteBody'
       responses:
@@ -95,6 +105,8 @@ paths:
           description: successful
     patch:
       summary: update storiette
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/storietteBody'
       responses:
@@ -102,6 +114,8 @@ paths:
           description: successful
     put:
       summary: update storiette
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/storietteBody'
       responses:
@@ -120,6 +134,8 @@ paths:
           description: successful
     post:
       summary: create like
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/likeBody'
       responses:
@@ -140,6 +156,8 @@ paths:
           description: successful
     patch:
       summary: update like
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/likeBody'
       responses:
@@ -147,6 +165,8 @@ paths:
           description: successful
     put:
       summary: update like
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/likeBody'
       responses:
@@ -165,6 +185,8 @@ paths:
           description: successful
     post:
       summary: create opinion
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/opinionBody'
       responses:
@@ -185,6 +207,8 @@ paths:
           description: successful
     patch:
       summary: update opinion
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/opinionBody'
       responses:
@@ -192,6 +216,8 @@ paths:
           description: successful
     put:
       summary: update opinion
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/opinionBody'
       responses:
@@ -210,6 +236,8 @@ paths:
           description: successful
     post:
       summary: create chapter
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/chapterBody'
       responses:
@@ -230,6 +258,8 @@ paths:
           description: successful
     patch:
       summary: update chapter
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/chapterBody'
       responses:
@@ -237,6 +267,8 @@ paths:
           description: successful
     put:
       summary: update chapter
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/chapterBody'
       responses:
@@ -255,6 +287,8 @@ paths:
           description: successful
     post:
       summary: create graphic_resource
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/graphicResourceBody'
       responses:
@@ -289,6 +323,8 @@ paths:
           description: successful
     patch:
       summary: update graphic_resource
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/graphicResourceBody'
       responses:
@@ -296,6 +332,8 @@ paths:
           description: successful
     put:
       summary: update graphic_resource
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/graphicResourceBody'
       responses:
@@ -314,6 +352,8 @@ paths:
           description: successful
     post:
       summary: create character
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/characterBody'
       responses:
@@ -334,6 +374,8 @@ paths:
           description: successful
     patch:
       summary: update character
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/characterBody'
       responses:
@@ -341,6 +383,8 @@ paths:
           description: successful
     put:
       summary: update character
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/characterBody'
       responses:
@@ -359,6 +403,8 @@ paths:
           description: successful
     post:
       summary: create description
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/descriptionBody'
       responses:
@@ -379,6 +425,8 @@ paths:
           description: successful
     patch:
       summary: update description
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/descriptionBody'
       responses:
@@ -386,6 +434,8 @@ paths:
           description: successful
     put:
       summary: update description
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/descriptionBody'
       responses:
@@ -404,6 +454,8 @@ paths:
           description: successful
     post:
       summary: create convention
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/conventionBody'
       responses:
@@ -424,6 +476,8 @@ paths:
           description: successful
     patch:
       summary: update convention
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/conventionBody'
       responses:
@@ -431,6 +485,8 @@ paths:
           description: successful
     put:
       summary: update convention
+      security:
+        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/conventionBody'
       responses:
