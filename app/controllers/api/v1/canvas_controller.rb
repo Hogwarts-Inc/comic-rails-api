@@ -7,7 +7,7 @@ module Api
 
       before_action :set_canva, only: %i[show update destroy]
       before_action :authorize, except: [:index, :show]
-      before_action :get_user_info, only: %i[show]
+      before_action :get_user_info, only: %i[show create]
 
       # GET /api/v1/canvas
       def index
@@ -26,14 +26,17 @@ module Api
       # POST /api/v1/canvas
       def create
         chapter_id = params[:chapter_id]
-        user_profile_id = params[:user_profile_id]
+        user = UserProfile.find_by(sub: @user_params['sub'])
+
+        return render json: { error: 'El usuario no existe' } unless user.present?
+
         images = params[:images]
 
         images = [images] unless images.is_a?(Array)
         created_canvas = []
 
         images.each do |image|
-          @canva = Canva.new(chapter_id: chapter_id, image: image, user_profile_id: user_profile_id)
+          @canva = Canva.new(chapter_id: chapter_id, image: image, user_profile_id: user.id)
 
           if @canva.save
             created_canvas << @canva

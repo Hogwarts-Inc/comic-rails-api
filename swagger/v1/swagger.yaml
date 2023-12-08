@@ -23,8 +23,6 @@ paths:
               properties:
                 chapter_id:
                   type: integer
-                user_profile_id:
-                  type: integer
                 images:
                   type: array
                   items:
@@ -33,7 +31,6 @@ paths:
               required:
                 - chapter_id
                 - images
-                - user_profile_id
       responses:
         '200':
           description: successful
@@ -573,7 +570,6 @@ components:
       required:
         - image
         - chapter_id
-        - user_profile_id
       optional:
         - title
         - active
@@ -587,8 +583,6 @@ components:
           type: string
         active:
           type: boolean
-        user_profile_id:
-          type: integer
     Storiette:
       type: object
       required:
