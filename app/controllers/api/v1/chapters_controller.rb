@@ -10,9 +10,8 @@ module Api
       def index
         @chapters = Chapter.active
 
-        render json: @chapters.map { |chapter|
-          chapter.as_json.merge(chapter_attributes(chapter))
-        }
+        render json: @chapters.select { |chapter| chapter.canvas.active.any? }
+                              .map { |chapter| chapter.as_json.merge(chapter_attributes(chapter)) }
       end
 
       # GET /api/v1/chapters/1
