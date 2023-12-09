@@ -3,6 +3,8 @@ openapi: 3.0.1
 info:
   title: API V1
   version: '1.0.0'
+security:
+  - bearerAuth: []
 paths:
   "/api/v1/canvas":
     get:
@@ -12,8 +14,6 @@ paths:
           description: successful
     post:
       summary: create canvas
-      security:
-        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -44,15 +44,11 @@ paths:
         type: string
     get:
       summary: show canva
-      security:
-        - bearerAuth: []
       responses:
         '200':
           description: successful
     patch:
       summary: update canva
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/canvaBody'
       responses:
@@ -60,8 +56,6 @@ paths:
           description: successful
     put:
       summary: update canva
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/canvaBody'
       responses:
@@ -80,8 +74,6 @@ paths:
           description: successful
     post:
       summary: create storiette
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/storietteBody'
       responses:
@@ -102,8 +94,6 @@ paths:
           description: successful
     patch:
       summary: update storiette
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/storietteBody'
       responses:
@@ -111,8 +101,6 @@ paths:
           description: successful
     put:
       summary: update storiette
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/storietteBody'
       responses:
@@ -131,8 +119,6 @@ paths:
           description: successful
     post:
       summary: create like
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/likeBody'
       responses:
@@ -151,24 +137,6 @@ paths:
       responses:
         '200':
           description: successful
-    patch:
-      summary: update like
-      security:
-        - bearerAuth: []
-      requestBody:
-        $ref: '#/components/requestBodies/likeBody'
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update like
-      security:
-        - bearerAuth: []
-      requestBody:
-        $ref: '#/components/requestBodies/likeBody'
-      responses:
-        '200':
-          description: successful
     delete:
       summary: delete like
       responses:
@@ -182,8 +150,6 @@ paths:
           description: successful
     post:
       summary: create opinion
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/opinionBody'
       responses:
@@ -202,24 +168,6 @@ paths:
       responses:
         '200':
           description: successful
-    patch:
-      summary: update opinion
-      security:
-        - bearerAuth: []
-      requestBody:
-        $ref: '#/components/requestBodies/opinionBody'
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update opinion
-      security:
-        - bearerAuth: []
-      requestBody:
-        $ref: '#/components/requestBodies/opinionBody'
-      responses:
-        '200':
-          description: successful
     delete:
       summary: delete opinion
       responses:
@@ -233,8 +181,6 @@ paths:
           description: successful
     post:
       summary: create chapter
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/chapterBody'
       responses:
@@ -255,8 +201,6 @@ paths:
           description: successful
     patch:
       summary: update chapter
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/chapterBody'
       responses:
@@ -264,8 +208,6 @@ paths:
           description: successful
     put:
       summary: update chapter
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/chapterBody'
       responses:
@@ -284,8 +226,6 @@ paths:
           description: successful
     post:
       summary: create graphic_resource
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/graphicResourceBody'
       responses:
@@ -320,8 +260,6 @@ paths:
           description: successful
     patch:
       summary: update graphic_resource
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/graphicResourceBody'
       responses:
@@ -329,8 +267,6 @@ paths:
           description: successful
     put:
       summary: update graphic_resource
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/graphicResourceBody'
       responses:
@@ -349,8 +285,6 @@ paths:
           description: successful
     post:
       summary: create character
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/characterBody'
       responses:
@@ -371,8 +305,6 @@ paths:
           description: successful
     patch:
       summary: update character
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/characterBody'
       responses:
@@ -380,8 +312,6 @@ paths:
           description: successful
     put:
       summary: update character
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/characterBody'
       responses:
@@ -400,8 +330,6 @@ paths:
           description: successful
     post:
       summary: create description
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/descriptionBody'
       responses:
@@ -422,8 +350,6 @@ paths:
           description: successful
     patch:
       summary: update description
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/descriptionBody'
       responses:
@@ -431,8 +357,6 @@ paths:
           description: successful
     put:
       summary: update description
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/descriptionBody'
       responses:
@@ -451,8 +375,6 @@ paths:
           description: successful
     post:
       summary: create convention
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/conventionBody'
       responses:
@@ -473,8 +395,6 @@ paths:
           description: successful
     patch:
       summary: update convention
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/conventionBody'
       responses:
@@ -482,8 +402,6 @@ paths:
           description: successful
     put:
       summary: update convention
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/conventionBody'
       responses:
@@ -497,8 +415,6 @@ paths:
   "/api/v1/user_profiles":
     post:
       summary: create user profile
-      security:
-        - bearerAuth: []
       responses:
         '200':
           description: successful
@@ -518,8 +434,6 @@ paths:
   "/api/v1/user_profiles/update_profile":
     patch:
       summary: update user profile
-      security:
-        - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/userProfileBody'
       responses:
@@ -545,16 +459,12 @@ paths:
   "/api/v1/user_profiles/canvas":
     get:
       summary: get user profile canvas
-      security:
-        - bearerAuth: []
       responses:
         '200':
           description: successful
   "/api/v1/user_profiles/info":
     get:
       summary: get user profile information
-      security:
-        - bearerAuth: []
       responses:
         '200':
           description: successful
@@ -661,14 +571,12 @@ components:
       required:
         - text
         - canva_id
-        - user_profile_id
       optional:
         - active
     Like:
       type: object
       required:
         - canva_id
-        - user_profile_id
     UserProfile:
       type: object
       required:
@@ -744,16 +652,22 @@ components:
       description: A JSON object containing like information
       required: true
       content:
-        multipart/form-data:
+        application/json:
           schema:
             $ref: '#/components/schemas/Like'
+          example:
+            canva_id: '1'
     opinionBody:
       description: A JSON object containing opinion information
       required: true
       content:
-        multipart/form-data:
+        application/json:
           schema:
             $ref: '#/components/schemas/Opinion'
+          example:
+            canva_id: '1'
+            text: 'some text'
+            active: true
     descriptionBody:
       description: A JSON object containing description information
       required: true

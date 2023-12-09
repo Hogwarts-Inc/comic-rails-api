@@ -1,8 +1,11 @@
 module Api
   module V1
-    class OpinionsController < ApplicationController
+    class OpinionsController < BaseController
+      include UserInfo
+
       before_action :set_opinion, only: %i[show update destroy]
-      #before_action :authorize
+      before_action :get_user_info, except: %i[update]
+      before_action :authorize, except: [:index, :show]
 
       # GET /api/v1/opinions
       def index
@@ -50,7 +53,25 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def opinion_params
-        params.require(:opinion).permit(:canva_id, :user_profile_id, :active)
+        opinion_attributes = params.permit(:canva_id, :active, :text)
+
+        user = UserProfile.find_by(sub: @user_params['sub'])
+
+        return render json: 'No hay usuario' unless user.present?
+
+        opinion_attributes[:user_profile_id] = user.id
+
+        opinion_attributes
+      end
+
+      def get_user_info
+        user_info = user_info()
+
+        if user_info.present?
+          @user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
+        else
+          @user_params = {}
+        end
       end
     end
   end

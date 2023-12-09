@@ -75,10 +75,10 @@ module Api
         {
           image_url: url_for(canva.image),
           user_attributes: canva&.user_profile&.as_json&.merge(
-            image_ur: user_image(canva&.user_profile)
+            image_url: user_image(canva&.user_profile)
           ),
           likes: canva.likes_count,
-          comments: canva.opinions.as_json,
+          comments: canva.opinions.map { |opinion| opinion.as_json.merge(option_attribute(opinion)) },
           current_user_likes: canva.user_gave_like(@user_params)
         }
       end
@@ -93,6 +93,14 @@ module Api
         elsif
           user.nft_url
         end
+      end
+
+      def option_attribute(opinion)
+        {
+          user_attributes: opinion&.user_profile&.as_json&.merge(
+            image_url: user_image(opinion&.user_profile)
+          )
+        }
       end
 
       # Only allow a list of trusted parameters through.
