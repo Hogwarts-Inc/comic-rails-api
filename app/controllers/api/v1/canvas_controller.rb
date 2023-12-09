@@ -7,7 +7,7 @@ module Api
 
       before_action :set_canva, only: %i[show update destroy]
       before_action :authorize, except: [:index, :show]
-      before_action :get_user_info, only: %i[show]
+      before_action :get_user_info, only: %i[show create]
 
       # GET /api/v1/canvas
       def index
@@ -26,14 +26,17 @@ module Api
       # POST /api/v1/canvas
       def create
         chapter_id = params[:chapter_id]
-        user_profile_id = params[:user_profile_id]
+        user = UserProfile.find_by(sub: @user_params['sub'])
+
+        return render json: { error: 'El usuario no existe' } unless user.present?
+
         images = params[:images]
 
         images = [images] unless images.is_a?(Array)
         created_canvas = []
 
         images.each do |image|
-          @canva = Canva.new(chapter_id: chapter_id, image: image, user_profile_id: user_profile_id)
+          @canva = Canva.new(chapter_id: chapter_id, image: image, user_profile_id: user.id)
 
           if @canva.save
             created_canvas << @canva
@@ -72,10 +75,10 @@ module Api
         {
           image_url: url_for(canva.image),
           user_attributes: canva&.user_profile&.as_json&.merge(
-            image_ur: user_image(canva&.user_profile)
+            image_url: user_image(canva&.user_profile)
           ),
           likes: canva.likes_count,
-          comments: canva.opinions.as_json,
+          comments: canva.opinions.map { |opinion| opinion.as_json.merge(option_attribute(opinion)) },
           current_user_likes: canva.user_gave_like(@user_params)
         }
       end
@@ -90,6 +93,14 @@ module Api
         elsif
           user.nft_url
         end
+      end
+
+      def option_attribute(opinion)
+        {
+          user_attributes: opinion&.user_profile&.as_json&.merge(
+            image_url: user_image(opinion&.user_profile)
+          )
+        }
       end
 
       # Only allow a list of trusted parameters through.

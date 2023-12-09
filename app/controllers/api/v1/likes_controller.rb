@@ -1,8 +1,11 @@
 module Api
   module V1
-    class LikesController < ApplicationController
+    class LikesController < BaseController
+      include UserInfo
+
       before_action :set_like, only: %i[show update destroy]
-      #before_action :authorize
+      before_action :get_user_info
+      before_action :authorize, except: [:index, :show]
 
       # GET /api/v1/likes
       def index
@@ -50,7 +53,25 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def like_params
-        params.require(:like).permit(:canva_id, :user_profile_id)
+        like_attributes = params.permit(:canva_id)
+
+        user = UserProfile.find_by(sub: @user_params['sub'])
+
+        return render json: 'No hay usuario' unless user.present?
+
+        like_attributes[:user_profile_id] = user.id
+
+        like_attributes
+      end
+
+      def get_user_info
+        user_info = user_info()
+
+        if user_info.present?
+          @user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
+        else
+          @user_params = {}
+        end
       end
     end
   end
