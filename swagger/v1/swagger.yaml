@@ -34,6 +34,19 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v1/canvas/{id}/remove_like":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: delete like
+      responses:
+        '200':
+          description: successful
   "/api/v1/canvas/{id}":
     parameters:
     - name: id
@@ -137,11 +150,6 @@ paths:
       responses:
         '200':
           description: successful
-    delete:
-      summary: delete like
-      responses:
-        '200':
-          description: successful
   "/api/v1/opinions":
     get:
       summary: list opinions
@@ -213,11 +221,6 @@ paths:
       responses:
         '200':
           description: successful
-    delete:
-      summary: delete chapter
-      responses:
-        '200':
-          description: successful
   "/api/v1/chapters/{id}/check_queue":
     parameters:
     - name: id
@@ -234,8 +237,6 @@ paths:
   "/api/v1/graphic_resources":
     get:
       summary: list graphic_resources
-      responses:
-        '200':
           description: successful
     post:
       summary: create graphic_resource

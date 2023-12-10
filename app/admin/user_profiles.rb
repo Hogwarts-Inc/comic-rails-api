@@ -31,6 +31,8 @@ ActiveAdmin.register UserProfile do
       f.input :picture
       f.input :sub, only: [:create]
       f.input :image, as: :file
+
+      render 'admin/shared/display_errors', resource: f.object
     end
     f.actions
   end

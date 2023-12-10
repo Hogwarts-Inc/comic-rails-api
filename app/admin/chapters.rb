@@ -25,6 +25,8 @@ ActiveAdmin.register Chapter do
       f.input :description
       f.input :storiette_id, as: :select, collection: Storiette.all
       f.input :active, as: :boolean
+
+      render 'admin/shared/display_errors', resource: f.object
     end
 
     f.actions

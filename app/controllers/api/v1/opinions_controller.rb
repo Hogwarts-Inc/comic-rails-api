@@ -3,8 +3,8 @@ module Api
     class OpinionsController < BaseController
       include UserInfo
 
-      before_action :set_opinion, only: %i[show update destroy]
-      before_action :get_user_info, except: %i[update]
+      before_action :set_opinion, only: %i[show]
+      before_action :get_user_info
       before_action :authorize, except: [:index, :show]
 
       # GET /api/v1/opinions
@@ -30,20 +30,6 @@ module Api
         end
       end
 
-      # PATCH/PUT /api/v1/opinions/1
-      def update
-        if @opinion.update(opinion_params)
-          render json: @opinion
-        else
-          render json: @opinion.errors, status: :unprocessable_entity
-        end
-      end
-
-      # DELETE /api/v1/opinions/1
-      def destroy
-        @opinion.destroy
-      end
-
       private
 
       # Use callbacks to share common setup or constraints between actions.
@@ -55,11 +41,9 @@ module Api
       def opinion_params
         opinion_attributes = params.permit(:canva_id, :active, :text)
 
-        user = UserProfile.find_by(sub: @user_params['sub'])
+        return render json: 'No hay usuario' unless @user.present?
 
-        return render json: 'No hay usuario' unless user.present?
-
-        opinion_attributes[:user_profile_id] = user.id
+        opinion_attributes[:user_profile_id] = @user.id
 
         opinion_attributes
       end
@@ -68,9 +52,10 @@ module Api
         user_info = user_info()
 
         if user_info.present?
-          @user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
+          user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
+          @user = UserProfile.find_by(sub: user_params['sub'])
         else
-          @user_params = {}
+          @user = nil
         end
       end
     end
