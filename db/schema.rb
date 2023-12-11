@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_25_173029) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_11_234224) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -106,9 +106,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_25_173029) do
   create_table "descriptions", force: :cascade do |t|
     t.string "title"
     t.string "text"
-    t.boolean "active", default: false
     t.string "descriptionable_type", null: false
     t.bigint "descriptionable_id", null: false
+    t.boolean "active", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["descriptionable_type", "descriptionable_id"], name: "index_descriptions_on_descriptionable"
@@ -131,7 +131,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_25_173029) do
 
   create_table "opinions", force: :cascade do |t|
     t.string "text"
-    t.boolean "active"
+    t.boolean "active", default: true
     t.bigint "canva_id", null: false
     t.bigint "user_profile_id", null: false
     t.datetime "created_at", null: false
