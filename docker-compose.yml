@@ -35,13 +35,30 @@ services:
       - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD}
       - MINIO_ENDPOINT=${MINIO_ENDPOINT}
       - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME}
+      - REDIS_URL=${REDIS_URL}
+      - RAILS_ENV=${RAILS_ENV}
   redis:
     image: redis
-    command: redis-server --appendonly yes
+    command: redis-server
     volumes:
       - redisdata:/data
     ports:
       - "6379:6379"
+    environment:
+      - REDIS_URL=${REDIS_URL}
+      - RAILS_ENV=${RAILS_ENV}
+  sidekiq:
+    build:
+      context: .
+      target: web
+    depends_on:
+      - web
+      - db
+      - redis
+    command: bundle exec sidekiq
+    environment:
+      - REDIS_URL=${REDIS_URL}
+      - RAILS_ENV=${RAILS_ENV}
   minio:
     image: minio/minio
     ports:
@@ -57,5 +74,8 @@ services:
 volumes:
   postgres:
   redisdata:
+  gem_cache:
+  db_data:
+  node_modules:
   minio_data:
 

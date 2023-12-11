@@ -3,8 +3,11 @@
 module Api
   module V1
     class ChaptersController < BaseController
-      before_action :set_chapter, only: %i[show update destroy]
-      before_action :authorize, except: [:index, :show]
+      include UserInfo
+
+      before_action :set_chapter, only: %i[show update destroy check_queue]
+      before_action :authorize, except: [:index, :show, :check_queue]
+      before_action :get_user_info, only: %i[check_queue]
 
       # GET /api/v1/chapters
       def index
@@ -44,6 +47,24 @@ module Api
         @chapter.destroy
       end
 
+      def check_queue
+        return render json: { error: 'No hay usuario' } unless @user.present?
+        return render json: { error: 'El capitulo no existe' } unless @chapter.present?
+
+        begin
+          if CanvasQueueService.user_in_queue?(@chapter.id)
+            render json: { error: "Ya hay alguien creando en el capitulo" }
+          else
+            AddCanvaToQueueJob.perform_async(@chapter.id, @user.sub)
+            RemoveCanvaFromQueueJob.perform_in(15.minutes, @chapter.id, @user.sub)
+
+            render json: { message: 'Puede crear viñeta y se agrego a la cola' }
+          end
+        rescue StandardError => e
+          render json: { error: "Error: #{e.message}" }, status: :internal_server_error
+        end
+      end
+
       private
 
       def chapter_attributes(chapter)
@@ -70,6 +91,17 @@ module Api
              likes: canva.likes_count
           }
         )
+      end
+
+      def get_user_info
+        user_info = user_info()
+
+        if user_info.present?
+          user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
+          @user = UserProfile.find_by(sub: user_params['sub'])
+        else
+          @user = nil
+        end
       end
     end
   end

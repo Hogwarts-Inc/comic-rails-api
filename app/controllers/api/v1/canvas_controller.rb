@@ -32,6 +32,10 @@ module Api
 
         images = params[:images]
 
+        if CanvasQueueService.user_in_queue?(chapter_id)
+          return render json: { error: "Ya hay alguien creando canva" }
+        end
+
         images = [images] unless images.is_a?(Array)
         created_canvas = []
 
@@ -44,6 +48,8 @@ module Api
             return render json: @canva.errors, status: :unprocessable_entity
           end
         end
+
+        RemoveCanvaFromQueueJob.perform_async(chapter_id, @user_params['sub'])
 
         render json: created_canvas.map { |canva|
           canva.as_json.merge!(canva_data(canva))

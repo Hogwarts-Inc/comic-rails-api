@@ -218,6 +218,19 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v1/chapters/{id}/check_queue":
+    parameters:
+    - name: id
+      in: path
+      description: chapter id
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: check if user can create canvas on chapter
+      responses:
+        '200':
+          description: successful
   "/api/v1/graphic_resources":
     get:
       summary: list graphic_resources
