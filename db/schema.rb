@@ -106,9 +106,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_25_173029) do
   create_table "descriptions", force: :cascade do |t|
     t.string "title"
     t.string "text"
+    t.boolean "active", default: false
     t.string "descriptionable_type", null: false
     t.bigint "descriptionable_id", null: false
-    t.boolean "active", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["descriptionable_type", "descriptionable_id"], name: "index_descriptions_on_descriptionable"

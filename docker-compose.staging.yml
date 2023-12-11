@@ -29,7 +29,10 @@ services:
       - RAILS_ENV=${RAILS_ENV}
 
   sidekiq:
-    build: .
+    image: docker-back-staging:latest
+    build:
+      context: .
+      target: web
     command: bundle exec sidekiq
     depends_on:
       - db

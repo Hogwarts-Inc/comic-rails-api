@@ -51,14 +51,15 @@ services:
       - RAILS_ENV=${RAILS_ENV}
 
   sidekiq:
-    build: .
+    build:
+      context: .
+      target: web
+      args:
+        BUNDLER_OPTS: ''
     command: bundle exec sidekiq
     depends_on:
       - db
       - redis
-    volumes:
-      - .:/web
-      - .:/web/tmp
     env_file: .env
     environment:
       RAILS_ENV: development
