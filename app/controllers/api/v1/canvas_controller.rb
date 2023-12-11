@@ -31,11 +31,6 @@ module Api
         return render json: { error: 'El usuario no existe' } unless user.present?
 
         images = params[:images]
-
-        if CanvasQueueService.user_in_queue?(chapter_id)
-          return render json: { error: "Ya hay alguien creando canva" }
-        end
-
         images = [images] unless images.is_a?(Array)
         created_canvas = []
 

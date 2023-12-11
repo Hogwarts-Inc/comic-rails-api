@@ -39,7 +39,7 @@ services:
     image: redis
     command: redis-server
     volumes:
-      - redis_data:/data
+      - ./tmp/redis:/data
     ports:
       - "6379:6379"
     environment:
@@ -84,9 +84,4 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     command: server --console-address ":9001" /data
     volumes:
-      - minio_data:/data
-
-volumes:
-  postgres:
-  redis_data:
-  minio_data:
+      - ./tmp/minio:/data
