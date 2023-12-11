@@ -6,6 +6,7 @@ services:
       - ./tmp/db:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+
   web:
     image: docker-back-staging:latest
     command: bash -c "rm -f tmp/pids/server.pid && bundle install && bundle exec rails db:create && bundle exec rails db:migrate && bundle exec rails s -p 3000 -b '0.0.0.0'"
@@ -14,60 +15,27 @@ services:
     depends_on:
       - db
       - redis
-    environment:
-      - POSTGRES_DB=${DATABASE_NAME}
-      - DATABASE_USERNAME=${DATABASE_USERNAME}
-      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-      - DATABASE_HOST=${DOCKER_DATABASE_HOST}
-      - AZURE_ACCOUNT_NAME=${AZURE_ACCOUNT_NAME}
-      - AZURE_ACCESS_KEY=${AZURE_ACCESS_KEY}
-      - AZURE_CONTAINER=${AZURE_CONTAINER}
-      - SERVER_URL=${SERVER_URL}
-      - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
-      - CLIENT_ORIGIN_URL=${CLIENT_ORIGIN_URL}
-      - AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
-      - AUTH0_DOMAIN=${AUTH0_DOMAIN}
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
-      - MINIO_ENDPOINT=${MINIO_ENDPOINT}
-      - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME}
-      - REDIS_URL=${REDIS_URL}
+    env_file: .env
+
   redis:
     image: redis
-    command: redis-server --appendonly yes
+    command: redis-server
     volumes:
       - redisdata:/data
     ports:
       - "6379:6379"
     environment:
       - REDIS_URL=${REDIS_URL}
+      - RAILS_ENV=${RAILS_ENV}
+
   sidekiq:
-    build:
-      context: .
-      target: web
+    build: .
+    command: bundle exec sidekiq
     depends_on:
-      - web
       - db
       - redis
-    command: bundle exec sidekiq
-    environment:
-      - POSTGRES_DB=${DATABASE_NAME}
-      - DATABASE_USERNAME=${DATABASE_USERNAME}
-      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-      - DATABASE_HOST=${DOCKER_DATABASE_HOST}
-      - AZURE_ACCOUNT_NAME=${AZURE_ACCOUNT_NAME}
-      - AZURE_ACCESS_KEY=${AZURE_ACCESS_KEY}
-      - AZURE_CONTAINER=${AZURE_CONTAINER}
-      - SERVER_URL=${SERVER_URL}
-      - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
-      - CLIENT_ORIGIN_URL=${CLIENT_ORIGIN_URL}
-      - AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
-      - AUTH0_DOMAIN=${AUTH0_DOMAIN}
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
-      - MINIO_ENDPOINT=${MINIO_ENDPOINT}
-      - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME}
-      - REDIS_URL=${REDIS_URL}
+    env_file: .env
+
   minio:
     image: minio/minio
     ports:
