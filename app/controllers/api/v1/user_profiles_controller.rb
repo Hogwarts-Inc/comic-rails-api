@@ -24,7 +24,9 @@ module Api
         @user = UserProfile.find_by(sub: @user_params['sub'])
 
         if @user.update(user_params)
-          render json: @user.as_json
+          render json: @user.as_json.merge({
+            image_url: user_image(@user)
+          })
         else
           render json: @user.errors
         end
@@ -37,7 +39,9 @@ module Api
 
       def info
         @user = UserProfile.find_by(sub: @user_params['sub'])
-        render json: @user.as_json
+        render json: @user.as_json.merge({
+          image_url: user_image(@user)
+        })
       end
 
       private
@@ -53,6 +57,16 @@ module Api
 
       def user_params
         params.permit(:email, :given_name, :family_name, :picture, :name, :image, :nft_url)
+      end
+
+      def user_image(user)
+        return nil if user.blank?
+
+        if user.image.present?
+          url_for(user.image)
+        else
+          user.picture
+        end
       end
 
       def get_user_info

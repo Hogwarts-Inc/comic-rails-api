@@ -94,10 +94,8 @@ module Api
 
         if user.image.present?
           url_for(user.image)
-        elsif user.picture.present?
+        else
           user.picture
-        elsif
-          user.nft_url
         end
       end
 
