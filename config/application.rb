@@ -38,7 +38,7 @@ module ComicRailsApi
     config.exceptions_app = routes
 
     config.auth0 = config_for(:auth0)
-    config.active_job.queue_adapter = :sidekiq
+    # config.active_job.queue_adapter = :sidekiq
 
     config.middleware.use Rack::Cors do
       allow do
