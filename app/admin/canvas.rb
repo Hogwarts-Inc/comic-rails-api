@@ -59,3 +59,4 @@ ActiveAdmin.register Canva do
     active_admin_comments
   end
 end
+
