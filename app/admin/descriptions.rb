@@ -26,6 +26,8 @@ ActiveAdmin.register Description do
       f.input :active, as: :boolean
       f.input :descriptionable_type, as: :select, collection: ['Convention', 'Character'], prompt: 'Select Type', input_html: { class: 'descriptionable-type-select' }
       f.input :descriptionable_id, as: :select, input_html: { class: 'descriptionable-id-select' }
+
+      render 'admin/shared/display_errors', resource: f.object
     end
 
     f.actions

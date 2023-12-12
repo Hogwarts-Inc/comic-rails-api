@@ -30,8 +30,10 @@ ActiveAdmin.register Character do
       f.object.images.each do |image|
         span image_tag(image, width: '100px', height: '100px', class: 'object-contain')
       end
+      f.input :active, as: :boolean
+
+      render 'admin/shared/display_errors', resource: f.object
     end
-    f.input :active, as: :boolean
 
     f.actions
   end

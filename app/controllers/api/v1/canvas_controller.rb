@@ -5,9 +5,9 @@ module Api
     class CanvasController < BaseController
       include UserInfo
 
-      before_action :set_canva, only: %i[show update destroy]
-      before_action :authorize, except: [:index, :show]
-      before_action :get_user_info, only: %i[show create]
+      before_action :set_canva, only: %i[show update destroy remove_like]
+      before_action :authorize, except: [:index, :show, :remove_like]
+      before_action :get_user_info, only: %i[show create remove_like]
 
       # GET /api/v1/canvas
       def index
@@ -26,16 +26,15 @@ module Api
       # POST /api/v1/canvas
       def create
         chapter_id = params[:chapter_id]
-        user = UserProfile.find_by(sub: @user_params['sub'])
 
-        return render json: { error: 'El usuario no existe' } unless user.present?
+        return render json: { error: 'El usuario no existe' } unless @user.present?
 
         images = params[:images]
         images = [images] unless images.is_a?(Array)
         created_canvas = []
 
         images.each do |image|
-          @canva = Canva.new(chapter_id: chapter_id, image: image, user_profile_id: user.id)
+          @canva = Canva.new(chapter_id: chapter_id, image: image, user_profile_id: @user.id)
 
           if @canva.save
             created_canvas << @canva
@@ -65,6 +64,12 @@ module Api
         @canva.destroy
       end
 
+      def remove_like
+        @like = Like.find_by(canva_id: @canva.id, user_profile_id: @user.id)
+
+        @like.destroy
+      end
+
       private
 
       # Use callbacks to share common setup or constraints between actions.
@@ -79,8 +84,8 @@ module Api
             image_url: user_image(canva&.user_profile)
           ),
           likes: canva.likes_count,
-          comments: canva.opinions.map { |opinion| opinion.as_json.merge(option_attribute(opinion)) },
-          current_user_likes: canva.user_gave_like(@user_params)
+          comments: canva.opinions.active.map { |opinion| opinion.as_json.merge(option_attribute(opinion)) },
+          current_user_likes: canva.user_gave_like(@user)
         }
       end
 
@@ -89,10 +94,8 @@ module Api
 
         if user.image.present?
           url_for(user.image)
-        elsif user.picture.present?
+        else
           user.picture
-        elsif
-          user.nft_url
         end
       end
 
@@ -113,9 +116,10 @@ module Api
         user_info = user_info()
 
         if user_info.present?
-          @user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
+          user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
+          @user = UserProfile.find_by(sub: user_params['sub'])
         else
-          @user_params = {}
+          @user = nil
         end
       end
     end

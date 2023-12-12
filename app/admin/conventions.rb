@@ -26,6 +26,8 @@ ActiveAdmin.register Convention do
       f.input :name, required: true
       f.input :image, as: :file
       f.input :active, as: :boolean
+
+      render 'admin/shared/display_errors', resource: f.object
     end
 
     f.actions

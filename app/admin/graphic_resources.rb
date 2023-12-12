@@ -24,6 +24,8 @@ ActiveAdmin.register GraphicResource do
     f.inputs do
       f.input :resource_type
       f.input :image, as: :file
+
+      render 'admin/shared/display_errors', resource: f.object
     end
 
     f.actions

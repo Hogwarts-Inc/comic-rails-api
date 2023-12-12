@@ -19,6 +19,8 @@ ActiveAdmin.register Like do
     f.inputs do
       f.input :canva, as: :select, collection: Canva.all.map { |c| [c.id, c.id] }
       f.input :user_profile, as: :select, collection: UserProfile.all
+
+      render 'admin/shared/display_errors', resource: f.object
     end
 
     f.actions

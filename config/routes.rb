@@ -15,13 +15,17 @@ Rails.application.routes.draw do
           get :check_queue
         end
       end
-      resources :canvas
+      resources :canvas do
+        member do
+          delete :remove_like
+        end
+      end
       resources :storiettes
       resources :characters
       resources :descriptions
       resources :conventions
-      resources :likes
-      resources :opinions
+      resources :likes, except: [:destroy, :update]
+      resources :opinions, except: [:destroy, :update]
       resources :user_profiles, only: [:create] do
         collection do
           patch :update_profile

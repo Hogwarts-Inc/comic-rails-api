@@ -24,6 +24,8 @@ ActiveAdmin.register Opinion do
       f.input :user_profile, as: :select, collection: UserProfile.all
       f.input :text
       f.input :active, as: :boolean
+
+      render 'admin/shared/display_errors', resource: f.object
     end
 
     f.actions

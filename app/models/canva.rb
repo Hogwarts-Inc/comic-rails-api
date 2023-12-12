@@ -25,10 +25,10 @@ class Canva < ApplicationRecord
     likes.count
   end
 
-  def user_gave_like(user_params)
-    return false if user_params.blank?
+  def user_gave_like(user)
+    return false if user.blank?
 
-    likes.select { |like| like.user_profile&.sub == user_params['sub'] }.present?
+    likes.find { |like| like.user_profile&.sub == user.sub }.present?
   end
 
   def active_chapter

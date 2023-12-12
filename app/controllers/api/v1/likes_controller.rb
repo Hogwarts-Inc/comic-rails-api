@@ -3,7 +3,7 @@ module Api
     class LikesController < BaseController
       include UserInfo
 
-      before_action :set_like, only: %i[show update destroy]
+      before_action :set_like, only: %i[show update]
       before_action :get_user_info
       before_action :authorize, except: [:index, :show]
 
@@ -39,11 +39,6 @@ module Api
         end
       end
 
-      # DELETE /api/v1/likes/1
-      def destroy
-        @like.destroy
-      end
-
       private
 
       # Use callbacks to share common setup or constraints between actions.
@@ -55,11 +50,9 @@ module Api
       def like_params
         like_attributes = params.permit(:canva_id)
 
-        user = UserProfile.find_by(sub: @user_params['sub'])
+        return render json: 'No hay usuario' unless @user.present?
 
-        return render json: 'No hay usuario' unless user.present?
-
-        like_attributes[:user_profile_id] = user.id
+        like_attributes[:user_profile_id] = @user.id
 
         like_attributes
       end
@@ -68,9 +61,10 @@ module Api
         user_info = user_info()
 
         if user_info.present?
-          @user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
+          user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
+          @user = UserProfile.find_by(sub: user_params['sub'])
         else
-          @user_params = {}
+          @user = nil
         end
       end
     end

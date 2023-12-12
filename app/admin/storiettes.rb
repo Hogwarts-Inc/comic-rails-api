@@ -22,6 +22,8 @@ ActiveAdmin.register Storiette do
       f.input :title
       f.input :description
       f.input :active, as: :boolean
+
+      render 'admin/shared/display_errors', resource: f.object
     end
 
     f.actions
