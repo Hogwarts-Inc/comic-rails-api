@@ -26,10 +26,9 @@ module Api
 
       # POST /api/v1/canvas
       def create
-        chapter_id = params[:chapter_id]
-
         return render json: { error: 'El usuario no existe' } unless @user.present?
 
+        chapter_id = params[:chapter_id]
         images = params[:images]
         images = [images] unless images.is_a?(Array)
         created_canvas = []
@@ -44,7 +43,7 @@ module Api
           end
         end
 
-        RemoveCanvaFromQueueJob.perform_async(chapter_id, @user_params['sub'])
+        RemoveCanvaFromQueueJob.perform_async(chapter_id, @user.sub)
 
         render json: created_canvas.map { |canva|
           canva.as_json.merge!(canva_data(canva))
