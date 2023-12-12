@@ -1,11 +1,7 @@
 require 'sidekiq'
 require 'redis'
 
-redis_url = if ENV['RAILS_ENV'] == 'production'
-  ENV['REDIS_URL']
-else
-  'redis://redis:6379/0'
-end
+redis_url = ENV['REDIS_URL']
 
 Sidekiq.configure_server do |config|
   config.redis = { url: redis_url }

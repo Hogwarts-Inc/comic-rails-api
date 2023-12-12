@@ -1,5 +1,5 @@
 default: &default
-  url: redis://redis:6379
+  url: <%= ENV["REDIS_URL"] %>
   db: 0
 
 development:
@@ -10,4 +10,3 @@ test:
 
 production:
   <<: *default
-  url: <%= ENV["REDIS_URL"] %>
