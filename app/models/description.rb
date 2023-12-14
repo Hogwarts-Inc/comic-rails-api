@@ -2,6 +2,7 @@ class Description < ApplicationRecord
   belongs_to :descriptionable, polymorphic: true
 
   validates_presence_of :text
+  validates :text, presence: true, length: { maximum: 250 }
 
   scope :active, -> { where(active: true) }
 

@@ -3,6 +3,7 @@ class Opinion < ApplicationRecord
   belongs_to :canva, class_name: 'Canva', foreign_key: :canva_id
 
   validates_presence_of :text
+  validates :text, presence: true, length: { maximum: 250 }
 
   scope :active, -> { where(active: true) }
 

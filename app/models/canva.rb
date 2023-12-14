@@ -9,6 +9,7 @@ class Canva < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :opinions, dependent: :destroy
 
+  validates :title, presence: true, length: { maximum: 50 }
   validates_presence_of :image
 
   scope :active, -> { where(active: true) }

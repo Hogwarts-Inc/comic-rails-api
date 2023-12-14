@@ -4,6 +4,7 @@ class Convention < ApplicationRecord
   has_one_attached :image
 
   validates_presence_of :name, :image
+  validates :name, presence: true, length: { maximum: 80 }
 
   scope :active, -> { where(active: true) }
 

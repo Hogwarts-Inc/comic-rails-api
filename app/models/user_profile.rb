@@ -9,7 +9,7 @@ class UserProfile < ApplicationRecord
   after_save :add_name
 
   def add_name
-    self.update(name: "#{given_name} #{family_name}") if name.blank?
+    self.update(name: "#{given_name} #{family_name}")
   end
 
   def self.ransackable_attributes(auth_object = nil)
