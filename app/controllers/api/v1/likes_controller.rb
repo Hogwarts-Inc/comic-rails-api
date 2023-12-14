@@ -62,7 +62,7 @@ module Api
 
         if user_info.present?
           user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
-          @user = UserProfile.find_by(sub: user_params['sub'])
+          @user = UserProfileService.find_or_create(user_params)
         else
           @user = nil
         end

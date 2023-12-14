@@ -21,7 +21,7 @@ module Api
       end
 
       def update_profile
-        @user = UserProfile.find_by(sub: @user_params['sub'])
+        @user = UserProfileService.find_or_create(@user_params)
 
         if @user.update(user_params)
           render json: @user.as_json.merge({
@@ -44,7 +44,10 @@ module Api
       end
 
       def info
-        @user = UserProfile.find_by(sub: @user_params['sub'])
+        @user = UserProfileService.find_or_create(@user_params)
+
+        return render json: { error: 'User not found' }, status: :unprocessable_entity unless @user.present?
+
         render json: @user.as_json.merge({
           image_url: user_image(@user)
         })

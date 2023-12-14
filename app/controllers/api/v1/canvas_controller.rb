@@ -26,12 +26,14 @@ module Api
 
       # POST /api/v1/canvas
       def create
-        return render json: { error: 'El usuario no existe' } unless @user.present?
+        return render json: { error: 'El usuario no existe' }, status: :unprocessable_entity unless @user.present?
 
         chapter_id = params[:chapter_id]
         images = params[:images]
         images = [images] unless images.is_a?(Array)
         created_canvas = []
+
+        # return render json: { error: 'El tamaño o dimension de la imagen es incorrecta' } unless validate_images(images)
 
         images.each do |image|
           @canva = Canva.new(chapter_id: chapter_id, image: image, user_profile_id: @user.id)
@@ -89,27 +91,6 @@ module Api
         }
       end
 
-      def validate_image_dimensions_and_size(base64_image)
-        image_data = Base64.decode64(base64_image)
-        image = MiniMagick::Image.read(image_data)
-    
-        # Validar dimensiones de la imagen
-        max_width = 1024
-        max_height = 1024
-        if image.width > max_width || image.height > max_height
-          return false
-        end
-    
-        # Validar tamaño de la imagen
-        max_size = 2.megabytes
-        if image_data.size > max_size
-          return false
-        end
-    
-        # La imagen cumple con los requisitos
-        true
-      end
-
       def user_image(user)
         return nil if user.blank?
 
@@ -128,6 +109,18 @@ module Api
         }
       end
 
+      def validate_images(images)
+        validate = true
+
+        images.each do |image|
+          image_validate = ValidateImageSizeDimensionService.validate(image)
+
+          validate = false unless image_validate
+        end
+
+        validate
+      end
+
       # Only allow a list of trusted parameters through.
       def canva_params
         params.permit(:image, :title, :active, :chapter_id, :user_profile_id)
@@ -138,7 +131,7 @@ module Api
 
         if user_info.present?
           user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
-          @user = UserProfile.find_by(sub: user_params['sub'])
+          @user = UserProfileService.find_or_create(user_params)
         else
           @user = nil
         end

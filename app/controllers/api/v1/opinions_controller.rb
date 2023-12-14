@@ -41,7 +41,7 @@ module Api
       def opinion_params
         opinion_attributes = params.permit(:canva_id, :active, :text)
 
-        return render json: 'No hay usuario' unless @user.present?
+        return render json: { error: 'No hay usuario' }, status: :unprocessable_entity unless @user.present?
 
         opinion_attributes[:user_profile_id] = @user.id
 
@@ -53,7 +53,7 @@ module Api
 
         if user_info.present?
           user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
-          @user = UserProfile.find_by(sub: user_params['sub'])
+          @user = UserProfileService.find_or_create(user_params)
         else
           @user = nil
         end

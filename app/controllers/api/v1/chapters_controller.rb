@@ -49,12 +49,12 @@ module Api
       end
 
       def check_queue
-        return render json: { error: 'No hay usuario' } unless @user.present?
-        return render json: { error: 'El capitulo no existe' } unless @chapter.present?
+        return render json: { error: 'No hay usuario' }, status: :unprocessable_entity unless @user.present?
+        return render json: { error: 'El capitulo no existe' }, status: :unprocessable_entity unless @chapter.present?
 
         begin
           if CanvasQueueService.user_in_queue?(@chapter.id)
-            render json: { error: "Ya hay alguien creando en el capitulo" }
+            render json: { error: "Ya hay alguien creando en el capitulo" }, status: :unprocessable_entity
           else
             AddCanvaToQueueJob.perform_async(@chapter.id, @user.sub)
             RemoveCanvaFromQueueJob.perform_in(15.minutes, @chapter.id, @user.sub)
@@ -62,7 +62,7 @@ module Api
             render json: { message: 'Puede crear viñeta y se agrego a la cola' }
           end
         rescue StandardError => e
-          render json: { error: "Error: #{e.message}" }, status: :internal_server_error
+          render json: { error: "Error: #{e.message}" }, status: :unprocessable_entity
         end
       end
 
@@ -99,7 +99,7 @@ module Api
 
         if user_info.present?
           user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
-          @user = UserProfile.find_by(sub: user_params['sub'])
+          @user = UserProfileService.find_or_create(user_params)
         else
           @user = nil
         end
