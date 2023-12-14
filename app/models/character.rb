@@ -3,6 +3,7 @@ class Character < ApplicationRecord
   has_many_attached :images
 
   validates_presence_of :name, :images
+  validates :name, presence: true, length: { maximum: 50 }
 
   scope :active, -> { where(active: true) }
 

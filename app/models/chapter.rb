@@ -5,6 +5,8 @@ class Chapter < ApplicationRecord
 
   has_many :canvas, dependent: :destroy
 
+  validates :title, presence: true, length: { maximum: 50 }
+  validates :description, presence: true, length: { maximum: 250 }
   scope :active, -> { where(active: true) }
 
   after_save :deactivate_canvas
