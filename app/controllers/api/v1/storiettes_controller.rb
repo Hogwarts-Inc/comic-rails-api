@@ -10,7 +10,7 @@ module Api
       def index
         @storiettes = Storiette.active
 
-        render json: @storiettes.map { |storiette| storiette.as_json.merge({ chapters: storiette.chapters.active }) }
+        render json: @storiettes.active.map { |storiette| storiette.as_json.merge({ chapters: storiette.chapters.active }) }
       end
 
       # GET /api/v1/storiettes/1
