@@ -53,8 +53,12 @@ module Api
         return render json: { error: 'El capitulo no existe' }, status: :unprocessable_entity unless @chapter.present?
 
         begin
-          if CanvasQueueService.user_in_queue?(@chapter.id)
-            render json: { error: "Ya hay alguien creando en el capitulo" }, status: :unprocessable_entity
+          user_queue = CanvasQueueService.user_in_queue?(@chapter.id, @user.sub)
+
+          if user_queue == :have_user
+            render json: { error: 'Ya hay alguien creando en el capitulo' }, status: :unprocessable_entity
+          elsif user_queue == :same_user
+            render json: { message: 'Puede entrar ya que es su turno' }
           else
             AddCanvaToQueueJob.perform_async(@chapter.id, @user.sub)
             RemoveCanvaFromQueueJob.perform_in(15.minutes, @chapter.id, @user.sub)

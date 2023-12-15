@@ -6,12 +6,20 @@ class CanvasQueueService
     @redis ||= Redis.new(Rails.application.config_for(:redis))
   end
 
-  def self.user_in_queue?(chapter_id)
+  def self.user_in_queue?(chapter_id, user_sub)
     # Use Redis set to store the state of users in the queue
     redis_key = "canvas_queue_#{chapter_id}"
 
     redis.watch(redis_key) do
-      return redis.scard(redis_key).positive?
+      if redis.scard(redis_key).positive?
+        if redis.smembers(redis_key).first == user_sub
+          :same_user
+        else
+          :have_user
+        end
+      else
+        :no_user
+      end
     end
   end
 
