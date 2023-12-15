@@ -33,8 +33,14 @@ module Api
       end
 
       def canvas
-        @user = UserProfile.find_by(sub: @user_params['sub'])
-        render json: @user.canvas.active.map { |canva| canva_data(canva) }
+        @user = UserProfileService.find_or_create(@user_params)
+
+        return render json: { error: 'User not found' }, status: :unprocessable_entity unless @user.present?
+
+        render json: @user.canvas
+                          .active
+                          .select { |canva| canva.chapter.active? && canva.chapter.storiette.active? }
+                          .map { |canva| canva_data(canva) }
       end
 
       def info

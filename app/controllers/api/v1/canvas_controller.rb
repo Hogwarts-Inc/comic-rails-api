@@ -12,6 +12,7 @@ module Api
       # GET /api/v1/canvas
       def index
         @canvas = Canva.active
+                       .select { |canva| canva.chapter.active? && canva.chapter.storiette.active? }
 
         render json: @canvas.map { |canva|
           canva.as_json.merge!(canva_data(canva))
