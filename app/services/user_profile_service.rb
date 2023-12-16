@@ -8,4 +8,12 @@ class UserProfileService
 
     user
   end
+
+  def self.find_user_by_session(token)
+    user_session = TokenSession.find_by(token: token)
+
+    return user_session.user_profile if token.present? && user_session.present?
+
+    nil
+  end
 end

@@ -69,6 +69,8 @@ module Api
       def remove_like
         @like = Like.find_by(canva_id: @canva.id, user_profile_id: @user.id)
 
+        return render json: { error: 'No existe el like' }, status: :unprocessable_entity unless @like.present?
+
         @like.destroy
       end
 
@@ -127,14 +129,27 @@ module Api
       end
 
       def get_user_info
-        user_info = user_info()
+        @token = token_from_request()
+        @user = UserProfileService.find_user_by_session(@token) if @token.present?
 
-        if user_info.present?
-          user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
-          @user = UserProfileService.find_or_create(user_params)
-        else
-          @user = nil
+        unless @user.present?
+          user_info = user_info()
+
+          if user_info.present?
+            user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
+            @user = UserProfileService.find_or_create(user_params)
+
+            create_user_session
+          else
+            @user = nil
+          end
         end
+
+        @user
+      end
+
+      def create_user_session
+        TokenSession.create(user_profile_id: @user.id, token: @token)
       end
     end
   end

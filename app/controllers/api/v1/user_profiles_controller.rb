@@ -4,16 +4,24 @@ module Api
       include UserInfo
 
       skip_before_action :verify_authenticity_token
-      before_action :get_user_info, only: [:create, :update_profile, :canvas, :info]
+      before_action :create_user_info, only: [:create]
+      before_action :get_token, only: [:create]
+      before_action :get_user_info, only: [:update_profile, :canvas, :info]
 
       def create
         # if already exists, it won't create the user but will return the user json
         @user = UserProfile.find_by(sub: @user_params['sub'])
-        return render json: @user.as_json if @user.present?
+        if @user.present?
+          create_user_session
+
+          return render json: @user.as_json
+        end
 
         @user = UserProfile.new(@user_params)
 
         if @user.save
+          create_user_session
+
           render json: @user.as_json
         else
           render json: @user.errors
@@ -21,8 +29,6 @@ module Api
       end
 
       def update_profile
-        @user = UserProfileService.find_or_create(@user_params)
-
         if @user.update(user_params)
           render json: @user.as_json.merge({
             image_url: user_image(@user)
@@ -33,8 +39,6 @@ module Api
       end
 
       def canvas
-        @user = UserProfileService.find_or_create(@user_params)
-
         return render json: { error: 'User not found' }, status: :unprocessable_entity unless @user.present?
 
         render json: @user.canvas
@@ -44,8 +48,6 @@ module Api
       end
 
       def info
-        @user = UserProfileService.find_or_create(@user_params)
-
         return render json: { error: 'User not found' }, status: :unprocessable_entity unless @user.present?
 
         render json: @user.as_json.merge({
@@ -78,14 +80,49 @@ module Api
         end
       end
 
-      def get_user_info
-        user_info = user_info()
+      def create_user_info
+        @token = token_from_request()
+        @user = UserProfileService.find_user_by_session(@token) if @token.present?
 
-        if user_info.present?
-          @user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
+        unless @user.present?
+          user_info = user_info()
+
+          if user_info.present?
+            @user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
+          else
+            @user_params = {}
+          end
         else
-          @user_params = {}
+          @user_params = @user.as_json.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
         end
+      end
+
+      def get_user_info
+        @token = token_from_request()
+        @user = UserProfileService.find_user_by_session(@token) if @token.present?
+
+        unless @user.present?
+          user_info = user_info()
+
+          if user_info.present?
+            user_params = user_info.slice('email', 'given_name', 'family_name', 'sub', 'picture', 'name')
+            @user = UserProfileService.find_or_create(user_params)
+
+            create_user_session
+          else
+            @user = nil
+          end
+        end
+
+        @user
+      end
+
+      def create_user_session
+        TokenSession.create(user_profile_id: @user.id, token: @token)
+      end
+
+      def get_token
+        @token = token_from_request
       end
     end
   end
