@@ -89,6 +89,8 @@ services:
       - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME}
       - REDIS_URL=${REDIS_URL}
       - RAILS_ENV=${RAILS_ENV}
+      - NFT_STORAGE_API_KEY=${NFT_STORAGE_API_KEY}
+      - NFT_STORAGE_ENDPOINT=${NFT_STORAGE_ENDPOINT}
 
   minio:
     image: minio/minio
@@ -114,6 +116,8 @@ services:
       - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME}
       - REDIS_URL=${REDIS_URL}
       - RAILS_ENV=${RAILS_ENV}
+      - NFT_STORAGE_API_KEY=${NFT_STORAGE_API_KEY}
+      - NFT_STORAGE_ENDPOINT=${NFT_STORAGE_ENDPOINT}
     command: server --console-address ":9001" /data
     volumes:
       - ./tmp/minio:/data

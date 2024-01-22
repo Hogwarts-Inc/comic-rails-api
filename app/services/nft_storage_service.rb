@@ -3,14 +3,13 @@ require 'uri'
 require 'json'
 
 class NftStorageService
-  API_ENDPOINT = 'https://api.nft.storage/upload'
-
   def initialize
     @api_key = ENV['NFT_STORAGE_API_KEY']
+    @api_endpoint = ENV['NFT_STORAGE_ENDPOINT']
   end
 
   def upload_to_ipfs(file_path)
-    uri = URI.parse(API_ENDPOINT)
+    uri = URI.join(@api_endpoint, 'upload')
     request = Net::HTTP::Post.new(uri)
     request['Authorization'] = "Bearer #{@api_key}"
   
@@ -34,5 +33,4 @@ class NftStorageService
   def mime_type(file_path)
     MIME::Types.type_for(file_path).first.content_type
   end
-  
 end
