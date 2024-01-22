@@ -8,7 +8,7 @@ class Canva < ApplicationRecord
 
   has_many :likes, dependent: :destroy
   has_many :opinions, dependent: :destroy
-  has_one :nft_asset
+  has_one :nft_asset, class_name: 'NftAsset', dependent: :destroy
 
   after_update :upload_to_ipfs, if: :activated_first_time?
 
