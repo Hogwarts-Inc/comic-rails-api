@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_16_141550) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_22_133631) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -129,6 +129,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_16_141550) do
     t.index ["user_profile_id"], name: "index_likes_on_user_profile_id"
   end
 
+  create_table "nft_assets", force: :cascade do |t|
+    t.bigint "canva_id", null: false
+    t.string "ipfs_image_cid"
+    t.string "ipfs_metadata_cid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["canva_id"], name: "index_nft_assets_on_canva_id"
+  end
+
   create_table "opinions", force: :cascade do |t|
     t.string "text"
     t.boolean "active", default: true
@@ -187,6 +196,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_16_141550) do
   add_foreign_key "chapters", "storiettes"
   add_foreign_key "likes", "canvas"
   add_foreign_key "likes", "user_profiles"
+  add_foreign_key "nft_assets", "canvas"
   add_foreign_key "opinions", "canvas"
   add_foreign_key "opinions", "user_profiles"
   add_foreign_key "token_sessions", "user_profiles"
