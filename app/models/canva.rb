@@ -59,12 +59,7 @@ class Canva < ApplicationRecord
     temp_file.close
     temp_file.unlink
 
-    nft_metadata = {
-      name: title || "Canva ##{id}",
-      description: "NFT description", # Replace
-      image: "ipfs://#{ipfs_image_cid}"
-    }
-
+    nft_metadata = generate_nft_metadata(ipfs_image_cid)
     ipfs_metadata_response = ipfs_service.upload_to_ipfs(nft_metadata, :json)
     ipfs_metadata_cid = ipfs_metadata_response['value']['cid']
 
@@ -73,5 +68,22 @@ class Canva < ApplicationRecord
     rescue => e
       puts "Error creating NftAsset: #{e.message}"
     end
-  end  
+  end
+
+  def generate_nft_metadata(image_cid)
+    storiette = chapter.storiette
+  
+    {
+      name: "Comic ##{id}",
+      description: storiette.title,
+      image: "ipfs://#{image_cid}",
+      attributes: [
+        { trait_type: "Creator", value: user_profile.name },
+        { trait_type: "Chapter", value: chapter.title },
+        { trait_type: "Creation Date", value: created_at.strftime("%d/%m/%Y") },
+      ],
+      # external_url: Add link when DNS is configured
+    }
+  end
+  
 end
