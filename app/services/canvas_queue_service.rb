@@ -23,6 +23,30 @@ class CanvasQueueService
     end
   end
 
+  def self.user_position_in_queue(chapter_id, user_sub)
+    redis_key = "canvas_queue_#{chapter_id}"
+
+    redis.watch(redis_key) do
+      position = redis.smembers(redis_key).index(user_sub)
+
+      if position
+        # Adding 1 to make the position human-readable (1-based index)
+        position + 1
+      else
+        # If the user is not in the queue
+        nil
+      end
+    end
+  end
+
+  def self.queue_size(chapter_id)
+    redis_key = "canvas_queue_#{chapter_id}"
+
+    redis.watch(redis_key) do
+      redis.smembers(redis_key).count
+    end
+  end
+
   def self.add_user_to_queue(chapter_id, user_sub)
     redis.multi do
       redis_key = "canvas_queue_#{chapter_id}"

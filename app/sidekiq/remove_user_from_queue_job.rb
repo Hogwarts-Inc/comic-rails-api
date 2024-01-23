@@ -1,4 +1,4 @@
-class RemoveCanvaFromQueueJob
+class RemoveUserFromQueueJob
   include Sidekiq::Job
 
   def perform(chapter_id, user_sub)

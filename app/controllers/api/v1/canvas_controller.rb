@@ -45,7 +45,7 @@ module Api
           end
         end
 
-        RemoveCanvaFromQueueJob.perform_async(chapter_id, @user.sub)
+        RemoveUserFromQueueJob.perform_async(chapter_id, @user.sub)
 
         render json: created_canvas.map { |canva|
           canva.as_json.merge!(canva_data(canva))

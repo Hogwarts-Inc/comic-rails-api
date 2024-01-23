@@ -234,6 +234,32 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v1/chapters/{id}/user_position_in_queue":
+    parameters:
+    - name: id
+      in: path
+      description: chapter id
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: check for the user position on the chapter queue
+      responses:
+        '200':
+          description: successful
+  "/api/v1/chapters/{id}/remove_user_from_queue":
+    parameters:
+    - name: id
+      in: path
+      description: chapter id
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: remove user from queue instantly
+      responses:
+        '200':
+          description: successful
   "/api/v1/graphic_resources":
     get:
       summary: list graphic_resources
