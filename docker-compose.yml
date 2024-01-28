@@ -38,6 +38,8 @@ services:
       - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME}
       - REDIS_URL=${REDIS_URL}
       - RAILS_ENV=${RAILS_ENV}
+      - NFT_STORAGE_API_KEY=${NFT_STORAGE_API_KEY}
+      - NFT_STORAGE_ENDPOINT=${NFT_STORAGE_ENDPOINT}
 
   redis:
     image: redis
@@ -77,6 +79,8 @@ services:
       - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME}
       - REDIS_URL=${REDIS_URL}
       - RAILS_ENV=${RAILS_ENV}
+      - NFT_STORAGE_API_KEY=${NFT_STORAGE_API_KEY}
+      - NFT_STORAGE_ENDPOINT=${NFT_STORAGE_ENDPOINT}
 
   minio:
     image: minio/minio
