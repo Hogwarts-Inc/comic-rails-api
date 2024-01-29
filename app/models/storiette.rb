@@ -2,6 +2,7 @@
 
 class Storiette < ApplicationRecord
   has_many :chapters, dependent: :destroy
+  has_many :canvas, through: :chapters
 
   validates_presence_of :title
   validates :title, presence: true, length: { maximum: 50 }

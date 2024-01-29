@@ -11,6 +11,7 @@ gem 'pg', '~> 1.1'
 gem 'pg_search', '~> 2.3', '>= 2.3.2'
 gem 'pry'
 gem 'puma', '~> 5.0'
+gem 'prawn'
 gem 'rack-cors'
 gem 'rails', '~> 7.0.4', '>= 7.0.4.2'
 gem 'rspec-rails'
@@ -29,6 +30,7 @@ gem 'sidekiq', '~> 6'
 gem 'image_processing'
 gem 'mini_magick'
 gem 'redis'
+gem 'rubyzip', require: 'zip'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
