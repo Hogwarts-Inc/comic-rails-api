@@ -41,5 +41,14 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :admin do
+    resources :storiettes do
+      member do
+        get 'export_images_to_zip'
+        get 'export_images_to_pdf'
+      end
+    end
+  end
+
   root to: 'admin/dashboard#index'
 end
