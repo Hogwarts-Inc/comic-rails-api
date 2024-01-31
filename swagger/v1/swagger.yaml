@@ -443,7 +443,7 @@ paths:
                 family_name: Smith
                 email: nacho_smith@gmail.com
                 picture: nil
-                nft_url: nil
+                wallet_address: nil
                 sub: google-oauth2|1234949099349
                 created_at: "2024-01-01"
                 updated_at: "2024-01-01"
@@ -468,7 +468,7 @@ paths:
                     family_name: Smith
                     email: nacho_smith@gmail.com
                     picture: nil
-                    nft_url: nil
+                    wallet_address: nil
                     sub: google-oauth2|1234949099349
                     created_at: "2024-01-01"
                     updated_at: "2024-01-01"
@@ -601,7 +601,7 @@ components:
         - email
         - image
       optional:
-        - nft_url
+        - wallet_address
         - picture
       properties:
         given_name:
@@ -615,7 +615,7 @@ components:
           type: string
         picture:
           type: string
-        nft_url:
+        wallet_address:
           type: string
   requestBodies:
     storietteBody:

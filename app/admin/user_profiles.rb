@@ -1,5 +1,5 @@
 ActiveAdmin.register UserProfile do
-  permit_params :email, :given_name, :name, :family_name, :nft_url, :image, :picture, :sub
+  permit_params :email, :given_name, :name, :family_name, :wallet_address, :image, :picture, :sub
 
   index do
     selectable_column
@@ -27,7 +27,7 @@ ActiveAdmin.register UserProfile do
       f.input :given_name
       f.input :family_name
       f.input :email
-      f.input :nft_url
+      f.input :wallet_address
       f.input :picture
       f.input :sub, only: [:create]
       f.input :image, as: :file
@@ -43,7 +43,7 @@ ActiveAdmin.register UserProfile do
       row :given_name
       row :family_name
       row :email
-      row :nft_url
+      row :wallet_address
       row :picture
       row :sub
       row :image do |user|

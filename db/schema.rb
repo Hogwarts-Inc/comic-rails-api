@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_22_133631) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_31_004524) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -169,7 +169,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_22_133631) do
     t.string "name"
     t.string "given_name"
     t.string "family_name"
-    t.string "nft_url"
+    t.string "wallet_address"
     t.string "sub"
     t.string "picture"
     t.string "email"

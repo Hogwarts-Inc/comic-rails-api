@@ -67,7 +67,7 @@ module Api
       end
 
       def user_params
-        params.permit(:email, :given_name, :family_name, :picture, :name, :image, :nft_url)
+        params.permit(:email, :given_name, :family_name, :picture, :name, :image, :wallet_address)
       end
 
       def user_image(user)

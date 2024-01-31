@@ -13,6 +13,6 @@ class UserProfile < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    ['created_at', 'email', 'picture', 'given_name', 'id', 'family_name', 'sub', 'nft_url', 'updated_at']
+    ['created_at', 'email', 'picture', 'given_name', 'id', 'family_name', 'sub', 'wallet_address', 'updated_at']
   end
 end
