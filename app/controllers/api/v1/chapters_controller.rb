@@ -57,18 +57,15 @@ module Api
 
           if user_queue == :have_user
             # Here we are adding the new user to the queue and putting the correct time of removing the user from the queue
-            # As each user has only 15 minutes, we should put the time out of the next user to be the amount of users on the queue
-            # multiply by 15 minutes.
+            # The remove will be added when a user is removed.
             AddUserToQueueJob.perform_async(@chapter.id, @user.sub)
-            queue_size = CanvasQueueService.queue_size(@chapter.id)
-            minutes_to_remove_from_queue = (15 * queue_size).minutes
-            RemoveUserFromQueueJob.perform_in(minutes_to_remove_from_queue, @chapter.id, @user.sub)
 
             render json: { error: 'Ya hay alguien creando en el capitulo' }, status: :unprocessable_entity
           elsif user_queue == :same_user
             render json: { message: 'Puede entrar ya que es su turno' }
           else
             AddUserToQueueJob.perform_async(@chapter.id, @user.sub)
+            RemoveUserFromQueueJob.perform_in(15.minutes, @chapter.id, @user.sub)
 
             render json: { message: 'Puede crear viñeta y se agrego a la cola' }
           end
@@ -95,6 +92,9 @@ module Api
 
         begin
           RemoveUserFromQueueJob.perform_async(@chapter.id, @user.sub)
+          CanvasQueueService.remove_schedule_by_job_and_arguments(
+            'RemoveUserFromQueueJob', [@chapter.id, @user.sub]
+          )
           render json: { message: 'El usuario se elimino de la cola correctamente' }
         rescue StandardError => e
           render json: { error: "Error: #{e.message}" }, status: :unprocessable_entity

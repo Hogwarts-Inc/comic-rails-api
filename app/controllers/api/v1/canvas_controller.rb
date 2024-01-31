@@ -46,6 +46,9 @@ module Api
         end
 
         RemoveUserFromQueueJob.perform_async(chapter_id, @user.sub)
+        CanvasQueueService.remove_schedule_by_job_and_arguments(
+          'RemoveUserFromQueueJob', [chapter_id.to_i, @user.sub]
+        )
 
         render json: created_canvas.map { |canva|
           canva.as_json.merge!(canva_data(canva))
