@@ -45,9 +45,11 @@ ActiveAdmin.register Storiette do
     Zip::OutputStream.open(temp_file) { |zos| }
 
     Zip::File.open(temp_file.path, Zip::File::CREATE) do |zipfile|
-      storiette.canvas.active.each do |canva|
-        image_data = canva.image.download
-        zipfile.get_output_stream("chapter_#{canva.chapter.id}_canva_#{canva.id}.jpg") { |f| f.puts image_data }
+      storiette.chapters.active.each do |chapter|
+        chapter.canvas.active.each do |canva|
+          image_data = canva.image.download
+          zipfile.get_output_stream("chapter_#{chapter.id}_canva_#{canva.id}.jpg") { |f| f.puts image_data }
+        end
       end
     end
 
