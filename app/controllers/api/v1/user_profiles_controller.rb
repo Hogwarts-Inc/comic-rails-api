@@ -13,6 +13,7 @@ module Api
         @user = UserProfile.find_by(sub: @user_params['sub'])
         if @user.present?
           create_user_session
+          create_wallet_for_user(@user) unless @user.wallet_address.present?
 
           return render json: @user.as_json
         end
@@ -21,6 +22,7 @@ module Api
 
         if @user.save
           create_user_session
+          create_wallet_for_user(@user)
 
           render json: @user.as_json
         else
@@ -67,7 +69,7 @@ module Api
       end
 
       def user_params
-        params.permit(:email, :given_name, :family_name, :picture, :name, :image, :nft_url)
+        params.permit(:email, :given_name, :family_name, :picture, :name, :image, :wallet_address)
       end
 
       def user_image(user)
@@ -116,7 +118,17 @@ module Api
 
         @user
       end
-
+      
+      def create_wallet_for_user(user)
+        crossmint_service = CrossmintService.new
+        begin
+          wallet_response = crossmint_service.create_wallet(user.email)
+          user.update(wallet_address: wallet_response['publicKey'])
+        rescue => e
+          Rails.logger.error "Crossmint Wallet Creation Failed: #{e.message}"
+        end
+      end
+      
       def create_user_session
         TokenSession.create(user_profile_id: @user.id, token: @token)
       end
