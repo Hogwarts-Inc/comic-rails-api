@@ -9,6 +9,8 @@ class UserProfile < ApplicationRecord
   before_save :add_name
 
   def add_name
+    return if self.name.present?
+
     self.name = "#{given_name} #{family_name}"
   end
 
