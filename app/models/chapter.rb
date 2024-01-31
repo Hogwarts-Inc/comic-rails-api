@@ -9,6 +9,8 @@ class Chapter < ApplicationRecord
   validates :description, presence: true, length: { maximum: 250 }
   scope :active, -> { where(active: true) }
 
+  default_scope { order("created_at ASC") }
+
   after_save :deactivate_canvas
 
   def self.ransackable_attributes(_auth_object = nil)

@@ -3,7 +3,7 @@ class UserProfile < ApplicationRecord
 
   has_many :canvas, dependent: :nullify
 
-  validates :given_name, :family_name, :sub, presence: true
+  validates :sub, presence: true
   validates_uniqueness_of :sub, message: 'must be unique'
 
   before_save :add_name

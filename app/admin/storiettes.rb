@@ -45,9 +45,9 @@ ActiveAdmin.register Storiette do
     Zip::OutputStream.open(temp_file) { |zos| }
 
     Zip::File.open(temp_file.path, Zip::File::CREATE) do |zipfile|
-      storiette.canvas.each do |canva|
+      storiette.canvas.active.each do |canva|
         image_data = canva.image.download
-        zipfile.get_output_stream("canva_#{canva.id}.jpg") { |f| f.puts image_data }
+        zipfile.get_output_stream("chapter_#{canva.chapter.id}_canva_#{canva.id}.jpg") { |f| f.puts image_data }
       end
     end
 
@@ -61,17 +61,20 @@ ActiveAdmin.register Storiette do
     temp_file = Tempfile.new("images.pdf")
 
     Prawn::Document.generate(temp_file.path) do |pdf|
-      storiette.canvas.each do |canvas|
-        image_data = canvas.image.download
-        image = MiniMagick::Image.read(image_data)
-        temp_jpeg_file = Tempfile.new('image.jpg')
+      storiette.chapters.active.each do |chapter|
+        chapter.canvas.active.each_with_index do |canva, index|
+          image_data = canva.image.download
+          image = MiniMagick::Image.read(image_data)
+          temp_jpeg_file = Tempfile.new('image.jpg')
 
-        image.format('jpg')
-        image.write(temp_jpeg_file.path)
+          image.format('jpg')
+          image.write(temp_jpeg_file.path)
 
-        pdf.image temp_jpeg_file.path, fit: [pdf.bounds.width, pdf.bounds.height]
+          pdf.image temp_jpeg_file.path, fit: [pdf.bounds.width, pdf.bounds.height]
 
-        pdf.start_new_page unless canvas == storiette.canvas.last
+          # Don't start a new page if it's the last canvas
+          pdf.start_new_page unless index == chapter.canvas.active.size - 1
+        end
       end
     end
 
