@@ -1,4 +1,5 @@
 require 'redis'
+require 'sidekiq/api'
 
 class CanvasQueueService
 
@@ -20,6 +21,52 @@ class CanvasQueueService
       else
         :no_user
       end
+    end
+  end
+
+  def self.user_position_in_queue(chapter_id, user_sub)
+    redis_key = "canvas_queue_#{chapter_id}"
+
+    redis.watch(redis_key) do
+      position = redis.smembers(redis_key).index(user_sub)
+
+      if position
+        # Adding 1 to make the position human-readable (1-based index)
+        position + 1
+      else
+        # If the user is not in the queue
+        nil
+      end
+    end
+  end
+
+  # Example:
+  # job_name = 'RemoveUserFromQueueJob'
+  # arguments_to_match = [chapter_id, user_sub]
+  def self.remove_schedule_by_job_and_arguments(job_name, arguments_to_match)
+    schedules = Sidekiq::ScheduledSet.new
+
+    schedules.each do |job|
+      if job.klass == job_name && job.args == arguments_to_match
+        job.delete
+        break
+      end
+    end
+  end
+
+  def self.first_user_in_queue(chapter_id)
+    redis_key = "canvas_queue_#{chapter_id}"
+
+    redis.watch(redis_key) do
+      redis.smembers(redis_key).first
+    end
+  end
+
+  def self.queue_size(chapter_id)
+    redis_key = "canvas_queue_#{chapter_id}"
+
+    redis.watch(redis_key) do
+      redis.smembers(redis_key).count
     end
   end
 

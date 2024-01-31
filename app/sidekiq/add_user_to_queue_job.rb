@@ -1,4 +1,4 @@
-class AddCanvaToQueueJob
+class AddUserToQueueJob
   include Sidekiq::Job
 
   def perform(chapter_id, user_sub)

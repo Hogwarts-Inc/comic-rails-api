@@ -5,9 +5,9 @@ module Api
     class ChaptersController < BaseController
       include UserInfo
 
-      before_action :set_chapter, only: %i[show update destroy check_queue]
-      before_action :authorize, except: [:index, :show, :check_queue]
-      before_action :get_user_info, only: %i[check_queue]
+      before_action :set_chapter, only: %i[show update destroy check_queue user_position_in_queue remove_user_from_queue]
+      before_action :authorize, except: [:index, :show, :check_queue, :user_position_in_queue, :remove_user_from_queue]
+      before_action :get_user_info, only: %i[check_queue user_position_in_queue remove_user_from_queue]
 
       # GET /api/v1/chapters
       def index
@@ -56,15 +56,46 @@ module Api
           user_queue = CanvasQueueService.user_in_queue?(@chapter.id, @user.sub)
 
           if user_queue == :have_user
+            # Here we are adding the new user to the queue and putting the correct time of removing the user from the queue
+            # The remove will be added when a user is removed.
+            AddUserToQueueJob.perform_async(@chapter.id, @user.sub)
+
             render json: { error: 'Ya hay alguien creando en el capitulo' }, status: :unprocessable_entity
           elsif user_queue == :same_user
             render json: { message: 'Puede entrar ya que es su turno' }
           else
-            AddCanvaToQueueJob.perform_async(@chapter.id, @user.sub)
-            RemoveCanvaFromQueueJob.perform_in(15.minutes, @chapter.id, @user.sub)
+            AddUserToQueueJob.perform_async(@chapter.id, @user.sub)
+            RemoveUserFromQueueJob.perform_in(15.minutes, @chapter.id, @user.sub)
 
             render json: { message: 'Puede crear viñeta y se agrego a la cola' }
           end
+        rescue StandardError => e
+          render json: { error: "Error: #{e.message}" }, status: :unprocessable_entity
+        end
+      end
+
+      def user_position_in_queue
+        return render json: { error: 'No hay usuario' }, status: :unprocessable_entity unless @user.present?
+        return render json: { error: 'El capitulo no existe' }, status: :unprocessable_entity unless @chapter.present?
+
+        begin
+          user_position = CanvasQueueService.user_position_in_queue(@chapter.id, @user.sub)
+          render json: { position: user_position }
+        rescue StandardError => e
+          render json: { error: "Error: #{e.message}" }, status: :unprocessable_entity
+        end
+      end
+
+      def remove_user_from_queue
+        return render json: { error: 'No hay usuario' }, status: :unprocessable_entity unless @user.present?
+        return render json: { error: 'El capitulo no existe' }, status: :unprocessable_entity unless @chapter.present?
+
+        begin
+          RemoveUserFromQueueJob.perform_async(@chapter.id, @user.sub)
+          CanvasQueueService.remove_schedule_by_job_and_arguments(
+            'RemoveUserFromQueueJob', [@chapter.id, @user.sub]
+          )
+          render json: { message: 'El usuario se elimino de la cola correctamente' }
         rescue StandardError => e
           render json: { error: "Error: #{e.message}" }, status: :unprocessable_entity
         end

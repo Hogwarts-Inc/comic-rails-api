@@ -13,6 +13,8 @@ Rails.application.routes.draw do
       resources :chapters do
         member do
           get :check_queue
+          get :user_position_in_queue
+          get :remove_user_from_queue
         end
       end
       resources :canvas do
