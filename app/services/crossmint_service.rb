@@ -9,7 +9,7 @@ class CrossmintService
   end
 
   def create_wallet(user_email)
-    uri = URI.join(@api_endpoint, '/v1-alpha1/wallets')
+    uri = URI.join(@api_endpoint, 'v1-alpha1/wallets')
     request = Net::HTTP::Post.new(uri)
     request['X-API-KEY'] = @api_key
     request.content_type = "application/json"
