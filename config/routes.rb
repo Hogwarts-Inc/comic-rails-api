@@ -15,6 +15,7 @@ Rails.application.routes.draw do
           get :check_queue
           get :user_position_in_queue
           get :remove_user_from_queue
+          get :last_three_canvas
         end
       end
       resources :canvas do

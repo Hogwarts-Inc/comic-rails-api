@@ -5,9 +5,9 @@ module Api
     class ChaptersController < BaseController
       include UserInfo
 
-      before_action :set_chapter, only: %i[show update destroy check_queue user_position_in_queue remove_user_from_queue]
-      before_action :authorize, except: [:index, :show, :check_queue, :user_position_in_queue, :remove_user_from_queue]
-      before_action :get_user_info, only: %i[check_queue user_position_in_queue remove_user_from_queue]
+      before_action :set_chapter, only: %i[show update destroy check_queue user_position_in_queue remove_user_from_queue last_three_canvas]
+      before_action :authorize, except: [:index, :show, :check_queue, :user_position_in_queue, :remove_user_from_queue, :last_three_canvas]
+      before_action :get_user_info, only: %i[check_queue user_position_in_queue remove_user_from_queue last_three_canvas]
 
       # GET /api/v1/chapters
       def index
@@ -96,6 +96,18 @@ module Api
             'RemoveUserFromQueueJob', [@chapter.id, @user.sub]
           )
           render json: { message: 'El usuario se elimino de la cola correctamente' }
+        rescue StandardError => e
+          render json: { error: "Error: #{e.message}" }, status: :unprocessable_entity
+        end
+      end
+
+      def last_three_canvas
+        return render json: { error: 'No hay usuario' }, status: :unprocessable_entity unless @user.present?
+        return render json: { error: 'El capitulo no existe' }, status: :unprocessable_entity unless @chapter.present?
+
+        begin
+          canvas = @chapter.canvas.order("created_at DESC").limit(3).map { |canva| canva_json(canva) }
+          render json: { canvas: canvas }
         rescue StandardError => e
           render json: { error: "Error: #{e.message}" }, status: :unprocessable_entity
         end
