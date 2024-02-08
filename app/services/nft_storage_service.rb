@@ -17,7 +17,6 @@ class NftStorageService
     when :file
       file = File.open(content)
       request.body = file.read
-      request.content_type = mime_type(content)
     when :json
       request.body = content.to_json
       request.content_type = 'application/json'
@@ -37,8 +36,4 @@ class NftStorageService
   end
   
   private
-  
-  def mime_type(file_path)
-    MIME::Types.type_for(file_path).first.content_type
-  end
 end

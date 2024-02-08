@@ -45,29 +45,30 @@ class Canva < ApplicationRecord
 
   def upload_to_ipfs
     ipfs_service = NftStorageService.new
+    image_data = image.download
+  
+    Tempfile.create([image.blob.filename.base, image.blob.filename.extension_with_delimiter], binmode: true) do |temp_file|
+      temp_file.write(image_data)
+      temp_file.rewind
 
-    image_blob = image.blob
-    temp_file = Tempfile.new([image_blob.filename.base, image_blob.filename.extension_with_delimiter], binmode: true)
-
-    image_blob.download { |chunk| temp_file.write(chunk) }
-    temp_file.rewind
-
-    ipfs_image_response = ipfs_service.upload_to_ipfs(temp_file.path, :file)
-    ipfs_image_cid = ipfs_image_response['value']['cid']
-
-    temp_file.close
-    temp_file.unlink
-
-    nft_metadata = generate_nft_metadata(ipfs_image_cid)
-    ipfs_metadata_response = ipfs_service.upload_to_ipfs(nft_metadata, :json)
-    ipfs_metadata_cid = ipfs_metadata_response['value']['cid']
-
-    begin
-      nft_asset = NftAsset.create!(canva_id: id, ipfs_image_cid: ipfs_image_cid, ipfs_metadata_cid: ipfs_metadata_cid)
-    rescue => e
-      puts "Error creating NftAsset: #{e.message}"
+      ipfs_image_response = ipfs_service.upload_to_ipfs(temp_file.path, :file)
+      ipfs_image_cid = ipfs_image_response['value']['cid']
+  
+      nft_metadata = generate_nft_metadata(ipfs_image_cid)
+      ipfs_metadata_response = ipfs_service.upload_to_ipfs(nft_metadata.to_json, :json)
+      ipfs_metadata_cid = ipfs_metadata_response['value']['cid']
+  
+      create_nft_asset(ipfs_image_cid, ipfs_metadata_cid)
     end
+  rescue => e
+    puts "Error in upload_to_ipfs: #{e.message}"
   end
+  
+  private
+  
+  def create_nft_asset(ipfs_image_cid, ipfs_metadata_cid)
+    NftAsset.create!(canva_id: id, ipfs_image_cid: ipfs_image_cid, ipfs_metadata_cid: ipfs_metadata_cid)
+  end  
 
   def generate_nft_metadata(image_cid)
     storiette = chapter.storiette
