@@ -14,8 +14,7 @@ class Canva < ApplicationRecord
 
   validates_presence_of :image
 
-  scope :active, -> { where(active: true) }
-  default_scope { order("created_at ASC") }
+  scope :active, -> { order("created_at ASC").where(active: true) }
 
   after_save :active_chapter
 
@@ -43,7 +42,7 @@ class Canva < ApplicationRecord
   def activated_first_time?
     saved_change_to_active? && active? && nft_asset.nil?
   end
-  
+
   def upload_to_ipfs
     ipfs_service = NftStorageService.new
     image_data = image.download
@@ -73,7 +72,7 @@ class Canva < ApplicationRecord
 
   def generate_nft_metadata(image_cid)
     storiette = chapter.storiette
-  
+
     {
       name: "Comic ##{id}",
       description: storiette.title,
@@ -86,5 +85,5 @@ class Canva < ApplicationRecord
       # external_url: Add link when DNS is configured
     }
   end
-  
+
 end
