@@ -65,7 +65,7 @@ module Api
             render json: { position: user_position, message: "El usuario se agrego en la cola correctamente" }
           elsif user_queue == :same_user
             user_position = CanvasQueueService.user_position_in_queue(@chapter.id, @user.sub)
-            render json: { position: user_position, message: 'El usuario ya estaba en la cola' }, status: :unprocessable_entity
+            render json: { position: user_position, message: 'El usuario ya estaba en la cola' }
           else
             AddUserToQueueJob.perform_async(@chapter.id, @user.sub)
             RemoveUserFromQueueJob.perform_in(15.minutes, @chapter.id, @user.sub)
