@@ -13,7 +13,7 @@ class CanvasQueueService
 
     redis.watch(redis_key) do
       if redis.scard(redis_key).positive?
-        if redis.smembers(redis_key).first == user_sub
+        if redis.smembers(redis_key).include?(user_sub)
           :same_user
         else
           :have_user

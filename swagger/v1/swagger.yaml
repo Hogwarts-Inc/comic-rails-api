@@ -273,6 +273,19 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v1/chapters/{id}/add_user_to_queue":
+    parameters:
+    - name: id
+      in: path
+      description: chapter id
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: get last 3 canvas created on a chapter
+      responses:
+        '200':
+          description: successful
   "/api/v1/graphic_resources":
     get:
       summary: list graphic_resources
