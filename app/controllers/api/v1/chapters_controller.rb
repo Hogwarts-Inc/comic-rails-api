@@ -63,9 +63,12 @@ module Api
             user_position = CanvasQueueService.user_position_in_queue(@chapter.id, @user.sub)
 
             render json: { position: user_position, message: "El usuario se agrego en la cola correctamente" }
-          elsif user_queue == :same_user
+          elsif user_queue == :first_user_in_queue
             user_position = CanvasQueueService.user_position_in_queue(@chapter.id, @user.sub)
-            render json: { position: user_position, message: 'El usuario ya estaba en la cola' }
+            render json: { position: user_position, message: 'El usuario ya esta en la cola' }
+          elsif user_queue == :user_in_queue
+            user_position = CanvasQueueService.user_position_in_queue(@chapter.id, @user.sub)
+            render json: { position: user_position, message: 'El usuario ya esta en la cola pero no es el primero' }
           else
             AddUserToQueueJob.perform_async(@chapter.id, @user.sub)
             RemoveUserFromQueueJob.perform_in(15.minutes, @chapter.id, @user.sub)
@@ -88,8 +91,10 @@ module Api
 
           if user_queue == :have_user
             render json: { error: 'Ya hay usuarios en la cola' }, status: :unprocessable_entity
-          elsif user_queue == :same_user
+          elsif user_queue == :first_user_in_queue
             render json: { message: 'Puede entrar ya que es su turno' }
+          elsif user_queue == :user_in_queue
+            render json: { error: 'No puede entrar ya que hay alguien en la cola antes' }, status: :unprocessable_entity
           else
             render json: { message: 'Puede entrar ya que no hay nadie en la cola' }
           end
