@@ -60,7 +60,7 @@ class Canva < ApplicationRecord
       ipfs_metadata_cid = ipfs_metadata_response['value']['cid']
       
       if create_nft_asset(ipfs_image_cid, ipfs_metadata_cid)
-        NftMintingService.mint_nft(user_profile.wallet_address, "ipfs://#{ipfs_metadata_cid}")
+        NftMintingService.mint_nft(id, user_profile.wallet_address, "ipfs://#{ipfs_metadata_cid}")
       end
     end
   rescue => e
