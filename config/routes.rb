@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       resources :conventions
       resources :likes, except: [:destroy, :update]
       resources :opinions, except: [:destroy, :update]
+      resources :terms_and_conditions
       resources :user_profiles, only: [:create] do
         collection do
           patch :update_profile
