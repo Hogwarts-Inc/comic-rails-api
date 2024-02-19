@@ -26,7 +26,7 @@ module Api
 
       # POST /api/v1/canvas
       def create
-        return render json: { error: 'El usuario no existe' }, status: :unprocessable_entity unless @user.present?
+        return render json: { error: 'El usuario no existe' } unless @user.present?
 
         chapter_id = params[:chapter_id]
         images = params[:images]
@@ -45,10 +45,7 @@ module Api
           end
         end
 
-        RemoveUserFromQueueJob.perform_async(chapter_id, @user.sub)
-        CanvasQueueService.remove_schedule_by_job_and_arguments(
-          'RemoveUserFromQueueJob', [chapter_id.to_i, @user.sub]
-        )
+        RemoveCanvaFromQueueJob.perform_async(chapter_id, @user.sub)
 
         render json: created_canvas.map { |canva|
           canva.as_json.merge!(canva_data(canva))
@@ -94,6 +91,27 @@ module Api
           comments: canva.opinions.active.map { |opinion| opinion.as_json.merge(option_attribute(opinion)) },
           current_user_likes: canva.user_gave_like(@user)
         }
+      end
+
+      def validate_image_dimensions_and_size(base64_image)
+        image_data = Base64.decode64(base64_image)
+        image = MiniMagick::Image.read(image_data)
+    
+        # Validar dimensiones de la imagen
+        max_width = 1024
+        max_height = 1024
+        if image.width > max_width || image.height > max_height
+          return false
+        end
+    
+        # Validar tamaño de la imagen
+        max_size = 2.megabytes
+        if image_data.size > max_size
+          return false
+        end
+    
+        # La imagen cumple con los requisitos
+        true
       end
 
       def user_image(user)

@@ -12,6 +12,7 @@ class Canva < ApplicationRecord
 
   after_update :upload_to_ipfs, if: :activated_first_time?
 
+  validates :title, presence: true, length: { maximum: 50 }
   validates_presence_of :image
 
   scope :active, -> { order("created_at ASC").where(active: true) }
