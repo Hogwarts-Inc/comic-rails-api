@@ -46,4 +46,26 @@ ActiveAdmin.register GraphicResource do
 
     active_admin_comments
   end
+
+  controller do
+    def create
+      unless params[:graphic_resource][:image].content_type.in?(['image/jpeg', 'image/png', 'image/jpg'])
+        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        redirect_to new_admin_graphic_resource_path
+        return
+      end
+
+      super
+    end
+
+    def update
+      unless params[:graphic_resource][:image].content_type.in?(['image/jpeg', 'image/png', 'image/jpg'])
+        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        redirect_to edit_admin_graphic_resource_path(resource)
+        return
+      end
+
+      super
+    end
+  end
 end

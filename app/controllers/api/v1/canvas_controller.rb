@@ -33,7 +33,8 @@ module Api
         images = [images] unless images.is_a?(Array)
         created_canvas = []
 
-        # return render json: { error: 'El tamaño o dimension de la imagen es incorrecta' } unless validate_images(images)
+        validated_images_message = validate_images(images)
+        return render json: { error: validated_images_message }, status: :unprocessable_entity unless validated_images_message.nil?
 
         images.each do |image|
           @canva = Canva.new(chapter_id: chapter_id, image: image, user_profile_id: @user.id)
@@ -115,15 +116,12 @@ module Api
       end
 
       def validate_images(images)
-        validate = true
-
         images.each do |image|
           image_validate = ValidateImageSizeDimensionService.validate(image)
-
-          validate = false unless image_validate
+          return image_validate unless image_validate.nil?
         end
 
-        validate
+        nil
       end
 
       # Only allow a list of trusted parameters through.

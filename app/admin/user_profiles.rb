@@ -57,4 +57,26 @@ ActiveAdmin.register UserProfile do
 
     active_admin_comments
   end
+
+  controller do
+    def create
+      unless params[:user_profile][:image].content_type.in?(['image/jpeg', 'image/png', 'image/jpg'])
+        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        redirect_to new_admin_user_profile_path
+        return
+      end
+
+      super
+    end
+
+    def update
+      unless params[:user_profile][:image].content_type.in?(['image/jpeg', 'image/png', 'image/jpg'])
+        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        redirect_to edit_admin_user_profile_path(resource)
+        return
+      end
+
+      super
+    end
+  end
 end

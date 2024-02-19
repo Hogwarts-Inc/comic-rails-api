@@ -55,4 +55,32 @@ ActiveAdmin.register Character do
 
     active_admin_comments
   end
+
+  controller do
+    def create
+      is_error = params[:character][:images].reject { |image| image == "" }
+                                            .map { |image| image.content_type.in?(['image/jpeg', 'image/png', 'image/jpg']) }
+                                            .all? { |image| image == true }
+      unless is_error
+        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        redirect_to new_admin_character_path(resource)
+        return
+      end
+
+      super
+    end
+
+    def update
+      is_error = params[:character][:images].reject { |image| image == "" }
+                                         .map { |image| image.content_type.in?(['image/jpeg', 'image/png', 'image/jpg']) }
+                                         .all? { |image| image == true }
+      unless is_error
+        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        redirect_to edit_admin_character_path(resource)
+        return
+      end
+
+      super
+    end
+  end
 end

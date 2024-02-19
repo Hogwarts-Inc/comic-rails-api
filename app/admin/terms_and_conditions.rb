@@ -16,10 +16,7 @@ ActiveAdmin.register TermsAndCondition do
     actions
   end
 
-  filter :title
-  filter :chapter
   filter :active
-  filter :user_profile
 
   form do |f|
     f.inputs do

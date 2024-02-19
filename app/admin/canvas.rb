@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'fastimage'
 
 ActiveAdmin.register Canva do
   permit_params :title, :chapter_id, :image, :active, :user_profile_id
@@ -57,6 +58,31 @@ ActiveAdmin.register Canva do
     end
 
     active_admin_comments
+  end
+
+  controller do
+    def create
+      invalid_message = ValidateImageSizeDimensionService.validate(params[:canva][:image])
+      unless invalid_message.nil?
+        flash[:error] = invalid_message
+        redirect_to new_admin_canva_path
+        return
+
+      end
+
+      super
+    end
+
+    def update
+      invalid_message = ValidateImageSizeDimensionService.validate(params[:canva][:image])
+      unless invalid_message.nil?
+        flash[:error] = invalid_message
+        redirect_to edit_admin_canva_path(resource)
+        return
+      end
+
+      super
+    end
   end
 end
 

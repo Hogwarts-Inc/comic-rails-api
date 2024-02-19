@@ -48,4 +48,26 @@ ActiveAdmin.register Convention do
 
     active_admin_comments
   end
+
+  controller do
+    def create
+      unless params[:convention][:image].content_type.in?(['image/jpeg', 'image/png', 'image/jpg'])
+        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        redirect_to new_admin_convention_path
+        return
+      end
+
+      super
+    end
+
+    def update
+      unless params[:convention][:image].content_type.in?(['image/jpeg', 'image/png', 'image/jpg'])
+        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        redirect_to edit_admin_convention_path(resource)
+        return
+      end
+
+      super
+    end
+  end
 end
