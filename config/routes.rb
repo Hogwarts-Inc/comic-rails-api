@@ -31,7 +31,7 @@ Rails.application.routes.draw do
       resources :likes, except: [:destroy, :update]
       resources :opinions, except: [:destroy, :update]
       resources :terms_and_conditions
-      resources :logos
+      resources :logos, only: [:index, :show]
       resources :user_profiles, only: [:create] do
         collection do
           patch :update_profile

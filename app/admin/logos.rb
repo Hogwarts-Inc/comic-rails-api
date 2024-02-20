@@ -20,7 +20,7 @@ ActiveAdmin.register Logo do
 
   form do |f|
     f.inputs do
-      f.input :image, as: :file
+      f.input :image, as: :file, input_html: { accept: 'image/jpeg,image/png,image/jpg' }
       f.input :active, as: :boolean
 
       render 'admin/shared/display_errors', resource: f.object
@@ -46,9 +46,19 @@ ActiveAdmin.register Logo do
   end
 
   controller do
+    def new
+      if session[:logo_params].present?
+        @logo = Logo.new(session[:logo_params])
+        session.delete(:logo_params)
+      else
+        @logo = Logo.new
+      end
+    end
+
     def create
-      unless params[:logo][:image].content_type.in?(['image/jpeg', 'image/png', 'image/jpg'])
+      unless image_error?
         flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        session[:logo_params] = params[:logo].except(:image)
         redirect_to new_admin_logo_path
         return
       end
@@ -57,13 +67,21 @@ ActiveAdmin.register Logo do
     end
 
     def update
-      unless params[:logo][:image].content_type.in?(['image/jpeg', 'image/png', 'image/jpg'])
+      unless image_error?
         flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
         redirect_to edit_admin_logo_path(resource)
         return
       end
 
       super
+    end
+
+    def image_error?
+      params[:logo][:image].nil? ||
+      (
+        params[:logo][:image].present? &&
+        params[:logo][:image].content_type.in?(['image/jpeg', 'image/png', 'image/jpg'])
+      )
     end
   end
 end

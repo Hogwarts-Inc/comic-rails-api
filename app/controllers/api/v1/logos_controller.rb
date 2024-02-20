@@ -3,7 +3,7 @@
 module Api
   module V1
     class LogosController < BaseController
-      before_action :set_logo, only: %i[show update destroy]
+      before_action :set_logo, only: %i[show]
 
       # GET /api/v1/logos
       def index
@@ -15,31 +15,6 @@ module Api
       # GET /api/v1/logos/1
       def show
         render json: @logo.as_json.merge({ image_url: url_for(@logo.image) })
-      end
-
-      # POST /api/v1/logos
-      def create
-        @logo = Logo.new(logo_params)
-
-        if @logo.save
-          render json: @logo.as_json.merge({ image_url: url_for(@logo.image) })
-        else
-          render json: @logo.errors, status: :unprocessable_entity
-        end
-      end
-
-      # PATCH/PUT /api/v1/logos/1
-      def update
-        if @logo.update(logo_params)
-          render json: @logo.as_json.merge({ image_url: url_for(@logo.image) })
-        else
-          render json: @logo.errors, status: :unprocessable_entity
-        end
-      end
-
-      # DELETE /api/v1/logos/1
-      def destroy
-        @logo.destroy
       end
 
       private

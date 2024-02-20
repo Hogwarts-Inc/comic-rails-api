@@ -587,13 +587,6 @@ paths:
       responses:
         '200':
           description: successful
-    post:
-      summary: create storiette
-      requestBody:
-        $ref: '#/components/requestBodies/logoBody'
-      responses:
-        '200':
-          description: successful
   "/api/v1/logos/{id}":
     parameters:
     - name: id
@@ -604,25 +597,6 @@ paths:
         type: string
     get:
       summary: show logo
-      responses:
-        '200':
-          description: successful
-    patch:
-      summary: update logo
-      requestBody:
-        $ref: '#/components/requestBodies/logoBody'
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update logo
-      requestBody:
-        $ref: '#/components/requestBodies/logoBody'
-      responses:
-        '200':
-          description: successful
-    delete:
-      summary: delete logo
       responses:
         '200':
           description: successful
