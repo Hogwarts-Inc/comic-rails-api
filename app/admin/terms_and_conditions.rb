@@ -64,7 +64,7 @@ ActiveAdmin.register TermsAndCondition do
 
     def create
       unless file_error?
-        flash[:error] = 'Please upload only PDF files.'
+        flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG.'
         session[:terms_and_condition_params] = params[:terms_and_condition].except(:image)
         redirect_to new_admin_terms_and_condition_path
         return
@@ -75,7 +75,7 @@ ActiveAdmin.register TermsAndCondition do
 
     def update
       unless file_error?
-        flash[:error] = 'Please upload only PDF files.'
+        flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG.'
         redirect_to edit_admin_terms_and_condition_path(resource)
         return
       end

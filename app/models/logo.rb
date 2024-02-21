@@ -3,6 +3,8 @@
 class Logo < ApplicationRecord
   has_one_attached :image
 
+  validates_presence_of :image
+
   scope :active, -> { where(active: true) }
 
   before_save :deactivate_previous_logo

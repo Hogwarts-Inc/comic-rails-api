@@ -70,7 +70,7 @@ ActiveAdmin.register UserProfile do
 
     def create
       unless image_error?
-        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG.'
         session[:user_profile_params] = params[:user_profile].except(:image)
         redirect_to new_admin_user_profile_path
         return
@@ -81,7 +81,7 @@ ActiveAdmin.register UserProfile do
 
     def update
       unless image_error?
-        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG.'
         redirect_to edit_admin_user_profile_path(resource)
         return
       end

@@ -61,7 +61,7 @@ ActiveAdmin.register Convention do
 
     def create
       unless image_error?
-        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG.'
         session[:convention_params] = params[:convention].except(:image)
         redirect_to new_admin_convention_path
         return
@@ -72,7 +72,7 @@ ActiveAdmin.register Convention do
 
     def update
       unless image_error?
-        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG.'
         redirect_to edit_admin_convention_path(resource)
         return
       end

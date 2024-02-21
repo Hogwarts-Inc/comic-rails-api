@@ -3,6 +3,8 @@
 class TermsAndCondition < ApplicationRecord
   has_one_attached :file
 
+  validates_presence_of :file
+
   scope :active, -> { where(active: true) }
 
   before_save :deactivate_previous_terms_and_conditions

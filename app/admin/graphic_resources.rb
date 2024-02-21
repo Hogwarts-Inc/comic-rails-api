@@ -23,7 +23,7 @@ ActiveAdmin.register GraphicResource do
   form do |f|
     f.inputs do
       f.input :resource_type
-      f.input :image, as: :file, input_html: { accept: 'image/svg+xml' }
+      f.input :image, as: :file
 
       render 'admin/shared/display_errors', resource: f.object
     end
@@ -59,7 +59,7 @@ ActiveAdmin.register GraphicResource do
 
     def create
       unless image_error?
-        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG para background, SVG para el resto de tipos'
         session[:graphic_resource_params] = params[:graphic_resource].except(:image)
         redirect_to new_admin_graphic_resource_path
         return
@@ -70,7 +70,7 @@ ActiveAdmin.register GraphicResource do
 
     def update
       unless image_error?
-        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG para background, SVG para el resto de tipos'
         redirect_to edit_admin_graphic_resource_path(resource)
         return
       end
@@ -81,8 +81,14 @@ ActiveAdmin.register GraphicResource do
     def image_error?
       params[:graphic_resource][:image].nil? ||
       (
+        params[:graphic_resource][:resource_type] != 'background' &&
         params[:graphic_resource][:image].present? &&
         params[:graphic_resource][:image].content_type == 'image/svg+xml'
+      ) ||
+      (
+        params[:graphic_resource][:resource_type] == 'background' &&
+        params[:graphic_resource][:image].present? &&
+        params[:graphic_resource][:image].content_type.in?(['image/jpeg', 'image/png', 'image/jpg'])
       )
     end
   end

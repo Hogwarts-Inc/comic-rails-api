@@ -57,7 +57,7 @@ ActiveAdmin.register Logo do
 
     def create
       unless image_error?
-        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG.'
         session[:logo_params] = params[:logo].except(:image)
         redirect_to new_admin_logo_path
         return
@@ -68,7 +68,7 @@ ActiveAdmin.register Logo do
 
     def update
       unless image_error?
-        flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+        flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG.'
         redirect_to edit_admin_logo_path(resource)
         return
       end

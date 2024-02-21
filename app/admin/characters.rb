@@ -72,7 +72,7 @@ ActiveAdmin.register Character do
                                               .map { |image| image.content_type.in?(['image/jpeg', 'image/png', 'image/jpg']) }
                                               .all? { |image| image == true }
         unless is_error
-          flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+          flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG.'
           session[:character_params] = params[:character].except(:image)
           redirect_to new_admin_character_path
           return
@@ -88,7 +88,7 @@ ActiveAdmin.register Character do
                                           .map { |image| image.content_type.in?(['image/jpeg', 'image/png', 'image/jpg']) }
                                           .all? { |image| image == true }
         unless is_error
-          flash[:error] = 'Please upload only JPEG, PNG, or JPG images.'
+          flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG.'
           redirect_to edit_admin_character_path(resource)
           return
         end
