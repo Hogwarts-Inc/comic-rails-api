@@ -63,7 +63,7 @@ ActiveAdmin.register TermsAndCondition do
     end
 
     def create
-      unless params[:terms_and_condition][:file]&.content_type == 'application/pdf'
+      unless file_error?
         flash[:error] = 'Please upload only PDF files.'
         session[:terms_and_condition_params] = params[:terms_and_condition].except(:image)
         redirect_to new_admin_terms_and_condition_path
@@ -74,13 +74,21 @@ ActiveAdmin.register TermsAndCondition do
     end
 
     def update
-      unless params[:terms_and_condition][:file]&.content_type == 'application/pdf'
+      unless file_error?
         flash[:error] = 'Please upload only PDF files.'
         redirect_to edit_admin_terms_and_condition_path(resource)
         return
       end
 
       super
+    end
+
+    def file_error?
+      params[:terms_and_condition][:file].nil? ||
+      (
+        params[:terms_and_condition][:file].present? &&
+        params[:terms_and_condition][:file].content_type.in?('application/pdf')
+      )
     end
   end
 end

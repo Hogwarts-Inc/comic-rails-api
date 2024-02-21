@@ -23,7 +23,7 @@ ActiveAdmin.register GraphicResource do
   form do |f|
     f.inputs do
       f.input :resource_type
-      f.input :image, as: :file, input_html: { accept: 'image/jpeg,image/png,image/jpg' }
+      f.input :image, as: :file, input_html: { accept: 'image/svg+xml' }
 
       render 'admin/shared/display_errors', resource: f.object
     end
@@ -82,7 +82,7 @@ ActiveAdmin.register GraphicResource do
       params[:graphic_resource][:image].nil? ||
       (
         params[:graphic_resource][:image].present? &&
-        params[:graphic_resource][:image].content_type.in?(['image/jpeg', 'image/png', 'image/jpg'])
+        params[:graphic_resource][:image].content_type == 'image/svg+xml'
       )
     end
   end

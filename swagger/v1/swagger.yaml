@@ -542,13 +542,6 @@ paths:
       responses:
         '200':
           description: successful
-    post:
-      summary: create storiette
-      requestBody:
-        $ref: '#/components/requestBodies/termsAndConditionBody'
-      responses:
-        '200':
-          description: successful
   "/api/v1/terms_and_conditions/{id}":
     parameters:
     - name: id
@@ -559,25 +552,6 @@ paths:
         type: string
     get:
       summary: show terms_and_condition
-      responses:
-        '200':
-          description: successful
-    patch:
-      summary: update terms_and_condition
-      requestBody:
-        $ref: '#/components/requestBodies/termsAndConditionBody'
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update terms_and_condition
-      requestBody:
-        $ref: '#/components/requestBodies/termsAndConditionBody'
-      responses:
-        '200':
-          description: successful
-    delete:
-      summary: delete terms_and_condition
       responses:
         '200':
           description: successful

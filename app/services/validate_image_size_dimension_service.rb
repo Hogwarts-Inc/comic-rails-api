@@ -15,4 +15,23 @@ class ValidateImageSizeDimensionService
 
     nil
   end
+
+  def self.validate_with_errors(image)
+    errors = []
+
+    unless image.present? && image.content_type.in?(['image/jpeg', 'image/png', 'image/jpg'])
+      errors << "Solo permitimos estos archivos imagenes: JPEG, PNG or JPG."
+      return errors
+    end
+
+    dimensions = FastImage.size(image.tempfile)
+    between_width = dimensions[0] <= 1500 && dimensions[0] > 500
+    between_height = dimensions[1] <= 1500 && dimensions[1] > 500
+    errors <<  "Subir imagen que este entre 500x500 a 1500x1500." unless dimensions && between_width && between_height
+
+    square = dimensions[0] == dimensions[1]
+    errors << "Subir imagen que sea cuadrada." unless square
+
+    errors
+  end
 end
