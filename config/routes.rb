@@ -16,6 +16,7 @@ Rails.application.routes.draw do
           get :user_position_in_queue
           get :remove_user_from_queue
           get :last_three_canvas
+          get :add_user_to_queue
         end
       end
       resources :canvas do
@@ -29,6 +30,8 @@ Rails.application.routes.draw do
       resources :conventions
       resources :likes, except: [:destroy, :update]
       resources :opinions, except: [:destroy, :update]
+      resources :terms_and_conditions, only: [:index, :show]
+      resources :logos, only: [:index, :show]
       resources :user_profiles, only: [:create] do
         collection do
           patch :update_profile
