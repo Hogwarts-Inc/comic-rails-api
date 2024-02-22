@@ -1,24 +1,37 @@
+require 'fastimage'
+
 class ValidateImageSizeDimensionService
 
-  def self.validate(base64_image)
-    image_data = Base64.decode64(base64_image)
-    image = MiniMagick::Image.read(image_data)
+  def self.validate(image)
+    return "Solo permitimos estos archivos imagenes: JPEG, PNG or JPG." unless image.present? && image.content_type.in?(['image/jpeg', 'image/png', 'image/jpg'])
 
-    # Validar dimensiones de la imagen
-    max_width = 1024
-    max_height = 1024
+    dimensions = FastImage.size(image.tempfile)
+    between_width = dimensions[0] <= 1500 && dimensions[0] > 500
+    between_height = dimensions[1] <= 1500 && dimensions[1] > 500
+    return "Subir imagen que este entre 500x500 a 1500x1500." unless dimensions && between_width && between_height
 
-    if (image.width && image.width > max_width) || (image.height && image.height) > max_height
-      return false
+    square = dimensions[0] == dimensions[1]
+    return "Subir imagen que sea cuadrada." unless square
+
+    nil
+  end
+
+  def self.validate_with_errors(image)
+    errors = []
+
+    unless image.present? && image.content_type.in?(['image/jpeg', 'image/png', 'image/jpg'])
+      errors << "Solo permitimos estos archivos imagenes: JPEG, PNG or JPG."
+      return errors
     end
 
-    # Validar tamaño de la imagen
-    max_size = 2.megabytes
-    if image_data.size && image_data.size > max_size
-      return false
-    end
+    dimensions = FastImage.size(image.tempfile)
+    between_width = dimensions[0] <= 1500 && dimensions[0] > 500
+    between_height = dimensions[1] <= 1500 && dimensions[1] > 500
+    errors <<  "Subir imagen que este entre 500x500 a 1500x1500." unless dimensions && between_width && between_height
 
-    # La imagen cumple con los requisitos
-    true
+    square = dimensions[0] == dimensions[1]
+    errors << "Subir imagen que sea cuadrada." unless square
+
+    errors
   end
 end

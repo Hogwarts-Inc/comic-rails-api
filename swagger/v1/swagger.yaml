@@ -273,6 +273,19 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v1/chapters/{id}/add_user_to_queue":
+    parameters:
+    - name: id
+      in: path
+      description: chapter id
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: get last 3 canvas created on a chapter
+      responses:
+        '200':
+          description: successful
   "/api/v1/graphic_resources":
     get:
       summary: list graphic_resources
@@ -523,6 +536,44 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v1/terms_and_conditions":
+    get:
+      summary: list terms_and_conditions
+      responses:
+        '200':
+          description: successful
+  "/api/v1/terms_and_conditions/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show terms_and_condition
+      responses:
+        '200':
+          description: successful
+  "/api/v1/logos":
+    get:
+      summary: list logos
+      responses:
+        '200':
+          description: successful
+  "/api/v1/logos/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show logo
+      responses:
+        '200':
+          description: successful
 components:
   securitySchemes:
     bearerAuth:
@@ -656,6 +707,30 @@ components:
           type: string
         wallet_address:
           type: string
+    TermsAndCondition:
+      type: object
+      required:
+        - file
+      optional:
+        - active
+      properties:
+        file:
+          type: string
+          format: base64
+        active:
+          type: boolean
+    Logo:
+      type: object
+      required:
+        - image
+      optional:
+        - active
+      properties:
+        image:
+          type: string
+          format: base64
+        active:
+          type: boolean
   requestBodies:
     storietteBody:
       description: A JSON object containing storiette information
@@ -723,6 +798,20 @@ components:
             canva_id: '1'
             text: 'some text'
             active: true
+    termsAndConditionBody:
+      description: A JSON object containing terms and condition information
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/TermsAndCondition'
+    logoBody:
+      description: A JSON object containing logo information
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/Logo'
     descriptionBody:
       description: A JSON object containing description information
       required: true
