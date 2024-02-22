@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_19_195457) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_17_201253) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -141,7 +141,29 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_19_195457) do
     t.string "ipfs_metadata_cid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "token_id"
     t.index ["canva_id"], name: "index_nft_assets_on_canva_id"
+    t.index ["token_id"], name: "index_nft_assets_on_token_id", unique: true
+  end
+
+  create_table "nft_ownerships", force: :cascade do |t|
+    t.bigint "nft_asset_id", null: false
+    t.string "owner_address"
+    t.datetime "acquired_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["nft_asset_id"], name: "index_nft_ownerships_on_nft_asset_id"
+  end
+
+  create_table "nft_transactions", force: :cascade do |t|
+    t.bigint "nft_asset_id"
+    t.string "transaction_hash"
+    t.string "transaction_type", default: "minting"
+    t.string "from_address"
+    t.string "to_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["nft_asset_id"], name: "index_nft_transactions_on_nft_asset_id"
   end
 
   create_table "opinions", force: :cascade do |t|
@@ -209,6 +231,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_19_195457) do
   add_foreign_key "likes", "canvas"
   add_foreign_key "likes", "user_profiles"
   add_foreign_key "nft_assets", "canvas"
+  add_foreign_key "nft_ownerships", "nft_assets"
+  add_foreign_key "nft_transactions", "nft_assets"
   add_foreign_key "opinions", "canvas"
   add_foreign_key "opinions", "user_profiles"
   add_foreign_key "token_sessions", "user_profiles"

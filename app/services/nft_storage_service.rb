@@ -18,7 +18,7 @@ class NftStorageService
       file = File.open(content)
       request.body = file.read
     when :json
-      request.body = content.to_json
+      request.body = content
       request.content_type = 'application/json'
     else
       raise "Invalid content type specified"

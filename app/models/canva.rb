@@ -10,7 +10,7 @@ class Canva < ApplicationRecord
   has_many :opinions, dependent: :destroy
   has_one :nft_asset, class_name: 'NftAsset', dependent: :destroy
 
-  after_update :upload_to_ipfs, if: :activated_first_time?
+  after_update :generate_nft, if: :activated_first_time?
 
   validates_presence_of :image
 
@@ -43,26 +43,32 @@ class Canva < ApplicationRecord
     saved_change_to_active? && active? && nft_asset.nil?
   end
 
-  def upload_to_ipfs
+  def generate_nft
+    return unless ENV['NFT_TOGGLE'] == 'true'
+
     ipfs_service = NftStorageService.new
     image_data = image.download
-  
+
     Tempfile.create([image.blob.filename.base, image.blob.filename.extension_with_delimiter], binmode: true) do |temp_file|
       temp_file.write(image_data)
       temp_file.rewind
 
       ipfs_image_response = ipfs_service.upload_to_ipfs(temp_file.path, :file)
       ipfs_image_cid = ipfs_image_response['value']['cid']
-  
+
       nft_metadata = generate_nft_metadata(ipfs_image_cid)
+
       ipfs_metadata_response = ipfs_service.upload_to_ipfs(nft_metadata.to_json, :json)
       ipfs_metadata_cid = ipfs_metadata_response['value']['cid']
-  
-      create_nft_asset(ipfs_image_cid, ipfs_metadata_cid)
+      
+      if create_nft_asset(ipfs_image_cid, ipfs_metadata_cid)
+        NftMintingService.mint_nft(id, user_profile.wallet_address, "ipfs://#{ipfs_metadata_cid}")
+      end
     end
   rescue => e
-    puts "Error in upload_to_ipfs: #{e.message}"
+    Rails.logger.error "Error in generate_nft: #{e.message}"
   end
+
   
   private
   
