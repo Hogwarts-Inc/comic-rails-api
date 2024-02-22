@@ -46,4 +46,50 @@ ActiveAdmin.register GraphicResource do
 
     active_admin_comments
   end
+
+  controller do
+    def new
+      if session[:graphic_resource_params].present?
+        @graphic_resource = GraphicResource.new(session[:graphic_resource_params])
+        session.delete(:graphic_resource_params)
+      else
+        @graphic_resource = GraphicResource.new
+      end
+    end
+
+    def create
+      unless image_error?
+        flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG para background, SVG para el resto de tipos'
+        session[:graphic_resource_params] = params[:graphic_resource].except(:image)
+        redirect_to new_admin_graphic_resource_path
+        return
+      end
+
+      super
+    end
+
+    def update
+      unless image_error?
+        flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG para background, SVG para el resto de tipos'
+        redirect_to edit_admin_graphic_resource_path(resource)
+        return
+      end
+
+      super
+    end
+
+    def image_error?
+      params[:graphic_resource][:image].nil? ||
+      (
+        params[:graphic_resource][:resource_type] != 'background' &&
+        params[:graphic_resource][:image].present? &&
+        params[:graphic_resource][:image].content_type == 'image/svg+xml'
+      ) ||
+      (
+        params[:graphic_resource][:resource_type] == 'background' &&
+        params[:graphic_resource][:image].present? &&
+        params[:graphic_resource][:image].content_type.in?(['image/jpeg', 'image/png', 'image/jpg'])
+      )
+    end
+  end
 end

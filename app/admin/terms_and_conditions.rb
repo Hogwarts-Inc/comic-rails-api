@@ -16,10 +16,7 @@ ActiveAdmin.register TermsAndCondition do
     actions
   end
 
-  filter :title
-  filter :chapter
   filter :active
-  filter :user_profile
 
   form do |f|
     f.inputs do
@@ -56,9 +53,19 @@ ActiveAdmin.register TermsAndCondition do
   end
 
   controller do
+    def new
+      if session[:terms_and_condition_params].present?
+        @terms_and_condition = TermsAndCondition.new(session[:terms_and_condition_params])
+        session.delete(:terms_and_condition_params)
+      else
+        @terms_and_condition = TermsAndCondition.new
+      end
+    end
+
     def create
-      unless params[:terms_and_condition][:file].content_type == 'application/pdf'
-        flash[:error] = 'Please upload only PDF files.'
+      unless file_error?
+        flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG.'
+        session[:terms_and_condition_params] = params[:terms_and_condition].except(:image)
         redirect_to new_admin_terms_and_condition_path
         return
       end
@@ -67,13 +74,21 @@ ActiveAdmin.register TermsAndCondition do
     end
 
     def update
-      unless params[:terms_and_condition][:file].content_type == 'application/pdf'
-        flash[:error] = 'Please upload only PDF files.'
+      unless file_error?
+        flash[:error] = 'Porfavor subir imagenes JPEG, PNG y JPG.'
         redirect_to edit_admin_terms_and_condition_path(resource)
         return
       end
 
       super
+    end
+
+    def file_error?
+      params[:terms_and_condition][:file].nil? ||
+      (
+        params[:terms_and_condition][:file].present? &&
+        params[:terms_and_condition][:file].content_type.in?('application/pdf')
+      )
     end
   end
 end
