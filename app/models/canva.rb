@@ -44,6 +44,8 @@ class Canva < ApplicationRecord
   end
 
   def generate_nft
+    return unless ENV['NFT_TOGGLE'] == 'true'
+
     ipfs_service = NftStorageService.new
     image_data = image.download
 
