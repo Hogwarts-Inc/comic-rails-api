@@ -56,20 +56,6 @@ module Api
         }
       end
 
-      # PATCH/PUT /api/v1/canvas/1
-      def update
-        if @canva.update(canva_params)
-          render json: @canva.as_json.merge!(canva_data(@canva))
-        else
-          render json: @canva.errors, status: :unprocessable_entity
-        end
-      end
-
-      # DELETE /api/v1/canvas/1
-      def destroy
-        @canva.destroy
-      end
-
       def remove_like
         @like = Like.find_by(canva_id: @canva.id, user_profile_id: @user.id)
 

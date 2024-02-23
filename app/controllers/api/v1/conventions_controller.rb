@@ -18,31 +18,6 @@ module Api
         render json: merge_image_and_description(@convention)
       end
 
-      # POST /api/v1/conventions
-      def create
-        @convention = Convention.new(convention_params)
-
-        if @convention.save
-          render json: merge_image_and_description(@convention), status: :created
-        else
-          render json: @convention.errors, status: :unprocessable_entity
-        end
-      end
-
-      # PATCH/PUT /api/v1/conventions/1
-      def update
-        if @convention.update(convention_params)
-          render json: merge_image_and_description(@convention)
-        else
-          render json: @convention.errors, status: :unprocessable_entity
-        end
-      end
-
-      # DELETE /api/v1/conventions/1
-      def destroy
-        @convention.destroy
-      end
-
       private
 
       # Use callbacks to share common setup or constraints between actions.

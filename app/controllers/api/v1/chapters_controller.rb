@@ -34,20 +34,6 @@ module Api
         end
       end
 
-      # PATCH/PUT /api/v1/chapters/1
-      def update
-        if @chapter.update(chapter_params)
-          render json: @chapter.as_json.merge(chapter_attributes(@chapter))
-        else
-          render json: @chapter.errors, status: :unprocessable_entity
-        end
-      end
-
-      # DELETE /api/v1/chapters/1
-      def destroy
-        @chapter.destroy
-      end
-
       def add_user_to_queue
         return render json: { error: 'No hay usuario' }, status: :unprocessable_entity unless @user.present?
         return render json: { error: 'El capitulo no existe' }, status: :unprocessable_entity unless @chapter.present?

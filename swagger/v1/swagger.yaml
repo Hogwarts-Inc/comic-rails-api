@@ -60,35 +60,9 @@ paths:
       responses:
         '200':
           description: successful
-    patch:
-      summary: update canva
-      requestBody:
-        $ref: '#/components/requestBodies/canvaBody'
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update canva
-      requestBody:
-        $ref: '#/components/requestBodies/canvaBody'
-      responses:
-        '200':
-          description: successful
-    delete:
-      summary: delete canva
-      responses:
-        '200':
-          description: successful
   "/api/v1/storiettes":
     get:
       summary: list storiettes
-      responses:
-        '200':
-          description: successful
-    post:
-      summary: create storiette
-      requestBody:
-        $ref: '#/components/requestBodies/storietteBody'
       responses:
         '200':
           description: successful
@@ -102,25 +76,6 @@ paths:
         type: string
     get:
       summary: show storiette
-      responses:
-        '200':
-          description: successful
-    patch:
-      summary: update storiette
-      requestBody:
-        $ref: '#/components/requestBodies/storietteBody'
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update storiette
-      requestBody:
-        $ref: '#/components/requestBodies/storietteBody'
-      responses:
-        '200':
-          description: successful
-    delete:
-      summary: delete storiette
       responses:
         '200':
           description: successful
@@ -176,11 +131,6 @@ paths:
       responses:
         '200':
           description: successful
-    delete:
-      summary: delete opinion
-      responses:
-        '200':
-          description: successful
   "/api/v1/chapters":
     get:
       summary: list chapters
@@ -204,20 +154,6 @@ paths:
         type: string
     get:
       summary: show chapter
-      responses:
-        '200':
-          description: successful
-    patch:
-      summary: update chapter
-      requestBody:
-        $ref: '#/components/requestBodies/chapterBody'
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update chapter
-      requestBody:
-        $ref: '#/components/requestBodies/chapterBody'
       responses:
         '200':
           description: successful
@@ -292,13 +228,6 @@ paths:
       responses:
         '200':
           description: successful
-    post:
-      summary: create graphic_resource
-      requestBody:
-        $ref: '#/components/requestBodies/graphicResourceBody'
-      responses:
-        '200':
-          description: successful
   "/api/v1/graphic_resources/resource_for_type?resource_type={resource_type}":
     parameters:
     - name: resource_type
@@ -326,35 +255,9 @@ paths:
       responses:
         '200':
           description: successful
-    patch:
-      summary: update graphic_resource
-      requestBody:
-        $ref: '#/components/requestBodies/graphicResourceBody'
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update graphic_resource
-      requestBody:
-        $ref: '#/components/requestBodies/graphicResourceBody'
-      responses:
-        '200':
-          description: successful
-    delete:
-      summary: delete graphic_resource
-      responses:
-        '200':
-          description: successful
   "/api/v1/characters":
     get:
       summary: list characters
-      responses:
-        '200':
-          description: successful
-    post:
-      summary: create character
-      requestBody:
-        $ref: '#/components/requestBodies/characterBody'
       responses:
         '200':
           description: successful
@@ -396,13 +299,6 @@ paths:
       responses:
         '200':
           description: successful
-    post:
-      summary: create description
-      requestBody:
-        $ref: '#/components/requestBodies/descriptionBody'
-      responses:
-        '200':
-          description: successful
   "/api/v1/descriptions/{id}":
     parameters:
     - name: id
@@ -416,35 +312,9 @@ paths:
       responses:
         '200':
           description: successful
-    patch:
-      summary: update description
-      requestBody:
-        $ref: '#/components/requestBodies/descriptionBody'
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update description
-      requestBody:
-        $ref: '#/components/requestBodies/descriptionBody'
-      responses:
-        '200':
-          description: successful
-    delete:
-      summary: delete description
-      responses:
-        '200':
-          description: successful
   "/api/v1/conventions":
     get:
       summary: list conventions
-      responses:
-        '200':
-          description: successful
-    post:
-      summary: create convention
-      requestBody:
-        $ref: '#/components/requestBodies/conventionBody'
       responses:
         '200':
           description: successful
@@ -458,25 +328,6 @@ paths:
         type: string
     get:
       summary: show convention
-      responses:
-        '200':
-          description: successful
-    patch:
-      summary: update convention
-      requestBody:
-        $ref: '#/components/requestBodies/conventionBody'
-      responses:
-        '200':
-          description: successful
-    put:
-      summary: update convention
-      requestBody:
-        $ref: '#/components/requestBodies/conventionBody'
-      responses:
-        '200':
-          description: successful
-    delete:
-      summary: delete convention
       responses:
         '200':
           description: successful
