@@ -1,6 +1,7 @@
 module Api
   module V1
     class NftTransfersController < ApplicationController
+      before_action :authorize, except: [:index, :show]
       before_action :set_nft_asset, only: [:create]
 
       # POST /nft_transfers
