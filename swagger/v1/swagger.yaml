@@ -425,6 +425,14 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v1/nft_transfers":
+    post:
+      summary: create nft transfers
+      requestBody:
+        $ref: '#/components/requestBodies/nftTransferBody'
+      responses:
+        '200':
+          description: successful
 components:
   securitySchemes:
     bearerAuth:
@@ -582,6 +590,19 @@ components:
           format: base64
         active:
           type: boolean
+    NftTransfer:
+      type: object
+      required:
+        - from_address
+        - to_address
+        - transaction_hash
+      properties:
+        from_address:
+          type: string
+        to_address:
+          type: string
+        transaction_hash:
+          type: string
   requestBodies:
     storietteBody:
       description: A JSON object containing storiette information
@@ -691,6 +712,18 @@ components:
         multipart/form-data:
           schema:
             $ref: '#/components/schemas/UserProfile'
+    nftTransferBody:
+      description: A JSON object containing nft transfer information
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NftTransfer'
+          example:
+            nft_transfer:
+              from_address: "from address"
+              to_address: "to address"
+              transaction_hash: "transaction hash"
 servers:
 - url: http://{defaultHost}
   variables:
