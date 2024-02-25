@@ -90,6 +90,10 @@ module Api
           user_attributes: canva&.user_profile&.as_json&.merge(
             image_url: user_image(canva&.user_profile)
           ),
+          nft_data: {
+            token_id: canva&.nft_asset&.token_id,
+            wallet_address: canva&.user_profile&.wallet_address
+          },
           likes: canva.likes_count,
           comments: canva.opinions.active.map { |opinion| opinion.as_json.merge(option_attribute(opinion)) },
           current_user_likes: canva.user_gave_like(@user)
