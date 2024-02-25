@@ -10,26 +10,29 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :chapters do
+      resources :chapters, only: [:index, :show, :create] do
         member do
           get :check_queue
           get :user_position_in_queue
           get :remove_user_from_queue
           get :last_three_canvas
+          get :add_user_to_queue
         end
       end
-      resources :canvas do
+      resources :canvas, only: [:index, :show, :create] do
         member do
           delete :remove_like
         end
       end
-      resources :storiettes
-      resources :characters
-      resources :descriptions
-      resources :conventions
+      resources :storiettes, only: [:index, :show]
+      resources :characters, only: [:index, :show]
+      resources :descriptions, only: [:index, :show]
+      resources :conventions, only: [:index, :show]
       resources :likes, except: [:destroy, :update]
       resources :opinions, except: [:destroy, :update]
       resources :nft_transfers, only: [:create]
+      resources :terms_and_conditions, only: [:index, :show]
+      resources :logos, only: [:index, :show]
       resources :user_profiles, only: [:create] do
         collection do
           patch :update_profile
@@ -37,7 +40,7 @@ Rails.application.routes.draw do
           get :info
         end
       end
-      resources :graphic_resources do
+      resources :graphic_resources, only: [:index, :show] do
         collection do
           get :resource_for_type
         end

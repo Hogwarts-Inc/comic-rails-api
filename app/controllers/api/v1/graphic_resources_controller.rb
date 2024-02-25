@@ -18,31 +18,6 @@ module Api
         render json: @graphic_resource.as_json.merge({ image_url: url_for(@graphic_resource.image) })
       end
 
-      # POST /api/v1/graphic_resources
-      def create
-        @graphic_resource = GraphicResource.new(graphic_resource_params)
-
-        if @graphic_resource.save
-          render json: @graphic_resource.as_json.merge({ image_url: url_for(@graphic_resource.image) })
-        else
-          render json: @graphic_resource.errors, status: :unprocessable_entity
-        end
-      end
-
-      # PATCH/PUT /api/v1/graphic_resources/1
-      def update
-        if @graphic_resource.update(graphic_resource_params)
-          render json: @graphic_resource.as_json.merge({ image_url: url_for(@graphic_resource.image) })
-        else
-          render json: @graphic_resource.errors, status: :unprocessable_entity
-        end
-      end
-
-      # DELETE /api/v1/graphic_resources/1
-      def destroy
-        @graphic_resource.destroy
-      end
-
       # Get /api/v1/graphic_resources/resource_for_type
       def resource_for_type
         resource_type = params[:resource_type]

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'fastimage'
 
 ActiveAdmin.register Canva do
   permit_params :title, :chapter_id, :image, :active, :user_profile_id
@@ -31,7 +32,7 @@ ActiveAdmin.register Canva do
       f.input :title
       f.input :chapter_id, as: :select, collection: Chapter.all
       f.input :user_profile, as: :select, collection: UserProfile.all
-      f.input :image, as: :file
+      f.input :image, as: :file, input_html: { accept: 'image/jpeg,image/png,image/jpg' }
       f.input :active, as: :boolean
 
       render 'admin/shared/display_errors', resource: f.object
@@ -57,6 +58,44 @@ ActiveAdmin.register Canva do
     end
 
     active_admin_comments
+  end
+
+  controller do
+    def new
+      if session[:canva_params].present?
+        @canva = Canva.new(session[:canva_params])
+        session.delete(:canva_params)
+      else
+        @canva = Canva.new
+      end
+    end
+
+    def create
+      if params[:canva][:image].present?
+        invalid_message = ValidateImageSizeDimensionService.validate(params[:canva][:image])
+        unless invalid_message.nil?
+          session[:canva_params] = params[:canva].except(:image)
+          flash[:error] = invalid_message
+          redirect_to new_admin_canva_path
+          return
+        end
+      end
+
+      super
+    end
+
+    def update
+      if params[:canva][:image].present?
+        invalid_message = ValidateImageSizeDimensionService.validate(params[:canva][:image])
+        unless invalid_message.nil?
+          flash[:error] = invalid_message
+          redirect_to edit_admin_canva_path(resource)
+          return
+        end
+      end
+
+      super
+    end
   end
 end
 

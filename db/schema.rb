@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_17_201253) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_19_195457) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -129,6 +129,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_17_201253) do
     t.index ["user_profile_id"], name: "index_likes_on_user_profile_id"
   end
 
+  create_table "logos", force: :cascade do |t|
+    t.boolean "active", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "nft_assets", force: :cascade do |t|
     t.bigint "canva_id", null: false
     t.string "ipfs_image_cid"
@@ -177,6 +183,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_17_201253) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "active", default: false
+  end
+
+  create_table "terms_and_conditions", force: :cascade do |t|
+    t.boolean "active", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "token_sessions", force: :cascade do |t|

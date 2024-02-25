@@ -18,31 +18,6 @@ module Api
         render json: merge_image_and_description(@character)
       end
 
-      # POST /api/v1/characters
-      def create
-        @character = Character.new(character_params)
-
-        if @character.save
-          render json: merge_image_and_description(@character), status: :created
-        else
-          render json: @character.errors, status: :unprocessable_entity
-        end
-      end
-
-      # PATCH/PUT /api/v1/characters/1
-      def update
-        if @character.update(character_params)
-          render json: merge_image_and_description(@character)
-        else
-          render json: @character.errors, status: :unprocessable_entity
-        end
-      end
-
-      # DELETE /api/v1/characters/1
-      def destroy
-        @character.destroy
-      end
-
       private
 
       # Use callbacks to share common setup or constraints between actions.
