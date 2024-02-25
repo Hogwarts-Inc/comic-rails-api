@@ -14,7 +14,7 @@ class TermsAndCondition < ApplicationRecord
   end
 
   def deactivate_previous_terms_and_conditions
-    return unless self.active?
+    return unless self.active? && self.active_changed?
 
     TermsAndCondition.active.update_all(active: false)
   end

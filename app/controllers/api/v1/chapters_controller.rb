@@ -45,7 +45,7 @@ module Api
             # Here we are adding the new user to the queue and putting the correct time of removing the user from the queue
             # The remove will be added when a user is removed.
             AddUserToQueueJob.perform_async(@chapter.id, @user.sub)
-            sleep(0.1)
+            sleep(0.3)
             user_position = CanvasQueueService.user_position_in_queue(@chapter.id, @user.sub)
 
             render json: { position: user_position, message: "El usuario se agrego en la cola correctamente" }
@@ -57,8 +57,9 @@ module Api
             render json: { position: user_position, message: 'El usuario ya esta en la cola pero no es el primero' }
           else
             AddUserToQueueJob.perform_async(@chapter.id, @user.sub)
-            RemoveUserFromQueueJob.perform_in(15.minutes, @chapter.id, @user.sub)
-            sleep(0.1)
+            minutes_to_remove = QueueTime.active.first.remove_from_queue_time || 15
+            RemoveUserFromQueueJob.perform_in(minutes_to_remove.minutes, @chapter.id, @user.sub)
+            sleep(0.3)
             user_position = CanvasQueueService.user_position_in_queue(@chapter.id, @user.sub)
 
             render json: { position: user_position, message: "El usuario se agrego en la cola correctamente" }

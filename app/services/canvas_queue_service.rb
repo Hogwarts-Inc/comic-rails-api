@@ -13,7 +13,7 @@ class CanvasQueueService
 
     redis.watch(redis_key) do
       if redis.scard(redis_key).positive?
-        if redis.smembers(redis_key) == user_sub
+        if redis.smembers(redis_key).first == user_sub
           :first_user_in_queue
         elsif redis.smembers(redis_key).include?(user_sub)
           :user_in_queue
@@ -54,6 +54,26 @@ class CanvasQueueService
         break
       end
     end
+  end
+
+    # Example:
+  # job_name = 'RemoveUserFromQueueJob'
+  # arguments_to_match = [chapter_id, user_sub]
+  def self.remove_all_schedule_by_job(job_name)
+    schedules = Sidekiq::ScheduledSet.new
+
+    schedules.each do |job|
+      if job.klass == job_name
+        job.delete
+        break
+      end
+    end
+  end
+
+  def self.remove_all_queues
+    queue_keys = redis.keys("canvas_queue_*")
+
+    redis.del(*queue_keys) unless queue_keys.empty?
   end
 
   def self.first_user_in_queue(chapter_id)
