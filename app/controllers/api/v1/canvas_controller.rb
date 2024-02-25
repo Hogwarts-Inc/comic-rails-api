@@ -86,7 +86,7 @@ module Api
           data[:nft_data] = {
             token_id: canva&.nft_asset&.token_id,
             wallet_address: canva&.user_profile&.wallet_address,
-            transferred: NftTransaction.exists?(nft_asset_id: canva&.nft_asset&.id, status: 'transferring')
+            transferred: NftTransaction.exists?(nft_asset_id: canva&.nft_asset&.id, transaction_type: 'transferring')
           }
         end
 
