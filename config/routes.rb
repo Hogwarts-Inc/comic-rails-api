@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       resources :conventions, only: [:index, :show]
       resources :likes, except: [:destroy, :update]
       resources :opinions, except: [:destroy, :update]
+      resources :nft_transfers, only: [:create]
       resources :terms_and_conditions, only: [:index, :show]
       resources :logos, only: [:index, :show]
       resources :user_profiles, only: [:create] do

@@ -72,7 +72,7 @@ module Api
       end
 
       def canva_data(canva)
-        {
+        data = {
           image_url: url_for(canva.image),
           user_attributes: canva&.user_profile&.as_json&.merge(
             image_url: user_image(canva&.user_profile)
@@ -81,6 +81,16 @@ module Api
           comments: canva.opinions.active.map { |opinion| opinion.as_json.merge(option_attribute(opinion)) },
           current_user_likes: canva.user_gave_like(@user)
         }
+
+        if nft_flag_on?
+          data[:nft_data] = {
+            token_id: canva&.nft_asset&.token_id,
+            wallet_address: canva&.user_profile&.wallet_address,
+            transferred: NftTransaction.exists?(nft_asset_id: canva&.nft_asset&.id, status: 'transferring')
+          }
+        end
+
+        data
       end
 
       def user_image(user)
@@ -159,6 +169,10 @@ module Api
 
       def create_user_session
         TokenSession.create(user_profile_id: @user.id, token: @token)
+      end
+
+      def nft_flag_on?
+        ENV['NFT_TOGGLE'] == 'true'
       end
     end
   end
