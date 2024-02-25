@@ -1,6 +1,4 @@
 class NftMintingService
-  MINTING_SERVICE_ENDPOINT = 'http://localhost:4000/mint'
-
   def self.mint_nft(canva_id, wallet_address, metadata_uri)
     new(canva_id, wallet_address, metadata_uri).mint
   end
@@ -13,7 +11,7 @@ class NftMintingService
   end
 
   def mint
-    uri = URI(MINTING_SERVICE_ENDPOINT)
+    uri = URI(ENV['MINTING_SERVICE_ENDPOINT'])
     request = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
     request.body = { 
       address: @wallet_address, 

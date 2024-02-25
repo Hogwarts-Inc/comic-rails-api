@@ -30,15 +30,6 @@ module Api
         end
       end
 
-      # PATCH/PUT /api/v1/likes/1
-      def update
-        if @like.update(like_params)
-          render json: @like
-        else
-          render json: @like.errors, status: :unprocessable_entity
-        end
-      end
-
       private
 
       # Use callbacks to share common setup or constraints between actions.
