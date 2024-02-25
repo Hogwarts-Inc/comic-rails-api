@@ -92,7 +92,8 @@ module Api
           ),
           nft_data: {
             token_id: canva&.nft_asset&.token_id,
-            wallet_address: canva&.user_profile&.wallet_address
+            wallet_address: canva&.user_profile&.wallet_address,
+            transferred: NftTransaction.exists?(nft_asset_id: canva&.nft_asset&.id, status: 'transferring')
           },
           likes: canva.likes_count,
           comments: canva.opinions.active.map { |opinion| opinion.as_json.merge(option_attribute(opinion)) },
