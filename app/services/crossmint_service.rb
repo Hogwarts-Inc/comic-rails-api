@@ -13,7 +13,7 @@ class CrossmintService
     request = Net::HTTP::Post.new(uri)
     request['X-API-KEY'] = @api_key
     request.content_type = "application/json"
-    request.body = { chain: "polygon", email: user_email }.to_json
+    request.body = { chain: "polygon", userId: user_email }.to_json
 
     response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
       http.request(request)
