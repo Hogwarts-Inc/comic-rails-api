@@ -8,6 +8,7 @@ class RemoveUserFromQueueJob
 
     return unless next_user_sub.present?
 
-    RemoveUserFromQueueJob.perform_in(15.minutes, chapter_id, next_user_sub)
+    minutes_to_remove = QueueTime.active.first.remove_from_queue_time || 15
+    RemoveUserFromQueueJob.perform_in(minutes_to_remove.minutes, chapter_id, next_user_sub)
   end
 end

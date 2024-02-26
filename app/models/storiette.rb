@@ -17,7 +17,7 @@ class Storiette < ApplicationRecord
   end
 
   def deactivate_previous_storiette
-    return unless self.active?
+    return unless self.active? && self.active_changed?
 
     Storiette.active.update_all(active: false)
   end

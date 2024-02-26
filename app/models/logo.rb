@@ -14,7 +14,7 @@ class Logo < ApplicationRecord
   end
 
   def deactivate_previous_logo
-    return unless self.active?
+    return unless self.active? && self.active_changed?
 
     Logo.active.update_all(active: false)
   end

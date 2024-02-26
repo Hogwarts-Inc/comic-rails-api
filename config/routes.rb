@@ -31,6 +31,11 @@ Rails.application.routes.draw do
       resources :likes, except: [:destroy, :update]
       resources :opinions, except: [:destroy, :update]
       resources :nft_transfers, only: [:create]
+      resources :queue_times, only: [:index, :show] do
+        collection do
+          get :remove_user_time
+        end
+      end
       resources :terms_and_conditions, only: [:index, :show]
       resources :logos, only: [:index, :show]
       resources :user_profiles, only: [:create] do

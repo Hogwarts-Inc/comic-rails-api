@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_19_195457) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_25_210846) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -175,6 +175,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_19_195457) do
     t.datetime "updated_at", null: false
     t.index ["canva_id"], name: "index_opinions_on_canva_id"
     t.index ["user_profile_id"], name: "index_opinions_on_user_profile_id"
+  end
+
+  create_table "queue_times", force: :cascade do |t|
+    t.integer "remove_from_queue_time"
+    t.boolean "active", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "storiettes", force: :cascade do |t|
