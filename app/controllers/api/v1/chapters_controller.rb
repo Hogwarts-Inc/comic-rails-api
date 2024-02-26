@@ -57,7 +57,7 @@ module Api
             render json: { position: user_position, message: 'El usuario ya esta en la cola pero no es el primero' }
           else
             AddUserToQueueJob.perform_async(@chapter.id, @user.sub)
-            minutes_to_remove = QueueTime.active.first.remove_from_queue_time || 15
+            minutes_to_remove = QueueTime.active.first&.remove_from_queue_time || 15
             RemoveUserFromQueueJob.perform_in(minutes_to_remove.minutes, @chapter.id, @user.sub)
             sleep(0.3)
             user_position = CanvasQueueService.user_position_in_queue(@chapter.id, @user.sub)
