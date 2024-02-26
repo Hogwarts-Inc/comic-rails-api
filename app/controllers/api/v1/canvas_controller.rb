@@ -21,6 +21,11 @@ module Api
 
       # GET /api/v1/canvas/1
       def show
+        if !@canva.active?
+          error_message = 'La viñeta no puede ser accedida porque no existe o no tiene autorización'
+          return render json: { error: error_message }, status: :forbidden
+        end
+
         render json: @canva.as_json.merge!(canva_data(@canva))
       end
 

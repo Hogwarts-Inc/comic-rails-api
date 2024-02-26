@@ -50,6 +50,8 @@ module ComicRailsApi
       end
     end
 
+    config.active_storage.content_types_to_serve_as_binary -= ['image/svg+xml']
+
     config.middleware.use Rack::MethodOverride
     config.middleware.use ActionDispatch::Flash
     config.middleware.use ActionDispatch::Cookies
