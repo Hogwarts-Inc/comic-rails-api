@@ -1,7 +1,9 @@
 ActiveAdmin.register QueueTime do
+  menu label: "Tiempo en cola"
+
   permit_params :remove_from_queue_time, :active
 
-  index do
+  index title: "Listado de Tiempo en colas" do
     selectable_column
     id_column
     column :remove_from_queue_time
@@ -12,7 +14,7 @@ ActiveAdmin.register QueueTime do
 
   filter :active
 
-  form do |f|
+  form title: "Creación/Edición de Tiempo en cola" do |f|
     f.inputs do
       f.input :remove_from_queue_time, input_html: { type: :number, step: 1, min: 1 }
       f.input :active, as: :boolean
@@ -26,7 +28,7 @@ ActiveAdmin.register QueueTime do
     end
   end
 
-  show do
+  show title: "Detalle de Tiempo en cola" do
     attributes_table do
       row :id
       row :remove_from_queue_time

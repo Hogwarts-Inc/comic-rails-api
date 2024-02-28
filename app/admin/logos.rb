@@ -1,7 +1,7 @@
 ActiveAdmin.register Logo do
   permit_params :image, :active
 
-  index do
+  index title: "Listado de Logos" do
     selectable_column
     id_column
     column :image do |logo|
@@ -18,7 +18,7 @@ ActiveAdmin.register Logo do
 
   filter :active
 
-  form do |f|
+  form title: "Creación/Edición de Logo" do |f|
     f.inputs do
       f.input :image, as: :file, input_html: { accept: 'image/jpeg,image/png,image/jpg,image/svg+xml' }
       f.input :active, as: :boolean
@@ -29,7 +29,7 @@ ActiveAdmin.register Logo do
     f.actions
   end
 
-  show do
+  show title: "Destalle de Logos" do
     attributes_table do
       row :id
       row :image do |logo|

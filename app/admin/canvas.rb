@@ -2,9 +2,11 @@
 require 'fastimage'
 
 ActiveAdmin.register Canva do
+  menu label: "Viñetas"
+
   permit_params :title, :chapter_id, :image, :active, :user_profile_id
 
-  index do
+  index title: "Listado de Viñetas" do
     selectable_column
     id_column
     column :title
@@ -27,7 +29,7 @@ ActiveAdmin.register Canva do
   filter :active
   filter :user_profile
 
-  form do |f|
+  form title: "Creación/Edición de Viñeta" do |f|
     f.inputs do
       f.input :title
       f.input :chapter_id, as: :select, collection: Chapter.all
@@ -41,7 +43,7 @@ ActiveAdmin.register Canva do
     f.actions
   end
 
-  show do
+  show title: "Detalle de Viñeta" do
     attributes_table do
       row :id
       row :title

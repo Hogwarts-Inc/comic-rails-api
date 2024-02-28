@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Description do
+  menu label: "Descripciones"
+
   permit_params :title , :text, :active, :descriptionable_id, :descriptionable_type
 
-  index do
+  index title: "Listado de Descripciones" do
     selectable_column
     id_column
     column :title
@@ -19,7 +21,7 @@ ActiveAdmin.register Description do
   filter :text
   filter :active
 
-  form do |f|
+  form title: "Creacion/Edición de Descripcion" do |f|
     f.inputs do
       f.input :title, required: true
       f.input :text, required: true
@@ -33,7 +35,7 @@ ActiveAdmin.register Description do
     f.actions
   end
 
-  show do
+  show title: "Detalle de Descripcion" do
     attributes_table do
       row :id
       row :title

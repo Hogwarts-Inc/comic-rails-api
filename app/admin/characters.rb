@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Character do
+  menu label: "Personajes"
+
   permit_params :name, :active, description_ids: [], images: []
 
-  index do
+  index title: "Listado de Personajes" do
     selectable_column
     id_column
     column :name
@@ -23,7 +25,7 @@ ActiveAdmin.register Character do
   filter :descriptions
   filter :active
 
-  form do |f|
+  form title: "Creación/Edición de Personaje" do |f|
     f.inputs do
       f.input :name, required: true
       f.input :images, as: :file, input_html: { multiple: true, accept: 'image/jpeg,image/png,image/jpg' }
@@ -38,7 +40,7 @@ ActiveAdmin.register Character do
     f.actions
   end
 
-  show do
+  show title: "Detalle de Personaje" do
     attributes_table do
       row :id
       row :name

@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Opinion do
+  menu label: "Comentarios"
+
   permit_params :canva_id, :user_profile_id, :active, :text
 
-  index do
+  index title: "Listado de Comentarios" do
     selectable_column
     id_column
     column :canva_id
@@ -18,7 +20,7 @@ ActiveAdmin.register Opinion do
   filter :user_profile
   filter :active
 
-  form do |f|
+  form title: "Creación/Edición de Comentarios" do |f|
     f.inputs do
       f.input :canva, as: :select, collection: Canva.all.map { |c| [c.id, c.id] }
       f.input :user_profile, as: :select, collection: UserProfile.all
@@ -31,7 +33,7 @@ ActiveAdmin.register Opinion do
     f.actions
   end
 
-  show do
+  show title: "Detalle de Comentario" do
     attributes_table do
       row :id
       row :canva

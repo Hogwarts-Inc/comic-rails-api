@@ -1,7 +1,9 @@
 ActiveAdmin.register UserProfile do
+  menu label: "Usuarios"
+
   permit_params :email, :given_name, :name, :family_name, :wallet_address, :image, :picture, :sub
 
-  index do
+  index title: "Listado de Usuarios" do
     selectable_column
     id_column
     column :email
@@ -22,7 +24,7 @@ ActiveAdmin.register UserProfile do
   filter :given_name
   filter :family_name
 
-  form do |f|
+  form title: "Creación/Edición de Usuario" do |f|
     f.inputs do
       f.input :given_name
       f.input :family_name
@@ -37,7 +39,7 @@ ActiveAdmin.register UserProfile do
     f.actions
   end
 
-  show do
+  show title: "Detalle de Usuario" do
     attributes_table do
       row :name
       row :given_name

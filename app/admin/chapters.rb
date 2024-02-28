@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Chapter do
+  menu label: "Capitulos"
+
   permit_params :title, :description, :storiette_id, :active
 
-  index do
+  index title: "Listado de Capitulos" do
     selectable_column
     id_column
     column :title
@@ -19,7 +21,7 @@ ActiveAdmin.register Chapter do
   filter :storiette
   filter :active
 
-  form do |f|
+  form title: "Creación/Edición de Capitulo" do |f|
     f.inputs do
       f.input :title
       f.input :description
@@ -32,7 +34,7 @@ ActiveAdmin.register Chapter do
     f.actions
   end
 
-  show do
+  show title: "Detalle de Capitulo" do
     attributes_table do
       row :id
       row :title

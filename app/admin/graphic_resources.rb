@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register GraphicResource do
+  menu label: "Recursos Graficos"
+
   permit_params :resource_type, :image
 
-  index do
+  index title: "Listado de Recursos Graficos" do
     selectable_column
     id_column
     column :resource_type
@@ -20,7 +22,7 @@ ActiveAdmin.register GraphicResource do
 
   filter :resource_type
 
-  form do |f|
+  form title: "Creación/Edición de Recurso Grafico" do |f|
     f.inputs do
       f.input :resource_type
       f.input :image, as: :file
@@ -31,7 +33,7 @@ ActiveAdmin.register GraphicResource do
     f.actions
   end
 
-  show do
+  show title: "Detalle de Recurso Grafico" do
     attributes_table do
       row :id
       row :resource_type

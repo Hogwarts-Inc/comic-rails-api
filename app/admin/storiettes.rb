@@ -1,7 +1,9 @@
 ActiveAdmin.register Storiette do
+  menu label: "Historieta"
+
   permit_params :title, :description, :active
 
-  index do
+  index title: "Listado de Historietas" do
     selectable_column
     id_column
     column :title
@@ -15,7 +17,7 @@ ActiveAdmin.register Storiette do
   filter :description
   filter :active
 
-  form do |f|
+  form title: "Creación/Edición de Historieta" do |f|
     f.inputs do
       f.input :title
       f.input :description
@@ -27,7 +29,7 @@ ActiveAdmin.register Storiette do
     f.actions
   end
 
-  show do
+  show title: "Detalle de Historieta" do
     attributes_table do
       row :id
       row :title

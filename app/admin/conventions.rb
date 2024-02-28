@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Convention do
+  menu label: "Eventos"
+
   permit_params :name, :active, :image, description_ids: []
 
-  index do
+  index title: "Listado de Eventos" do
     selectable_column
     id_column
     column :name
@@ -21,7 +23,7 @@ ActiveAdmin.register Convention do
   filter :descriptions
   filter :active
 
-  form do |f|
+  form title: "Creación/Edición de Evento" do |f|
     f.inputs do
       f.input :name, required: true
       f.input :image, as: :file, input_html: { accept: 'image/jpeg,image/png,image/jpg' }
@@ -33,7 +35,7 @@ ActiveAdmin.register Convention do
     f.actions
   end
 
-  show do
+  show title: "Detalle de Evento" do
     attributes_table do
       row :id
       row :name

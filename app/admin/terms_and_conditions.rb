@@ -1,7 +1,9 @@
 ActiveAdmin.register TermsAndCondition do
+  menu label: "Terminos y condiciones"
+
   permit_params :file, :active
 
-  index do
+  index title: "Listado de terminos y condiciones" do
     selectable_column
     id_column
     column :file do |terms_and_condition|
@@ -18,7 +20,7 @@ ActiveAdmin.register TermsAndCondition do
 
   filter :active
 
-  form do |f|
+  form title: "Creación/Edición de terminos y condiciones" do |f|
     f.inputs do
       f.inputs "Upload" do
         if f.object.file.attached?
@@ -36,7 +38,7 @@ ActiveAdmin.register TermsAndCondition do
     f.actions
   end
 
-  show do
+  show title: "Detalle de terminos y condiciones" do
     attributes_table do
       row :id
       row :file do |terms_and_condition|

@@ -3,7 +3,7 @@
 ActiveAdmin.register Like do
   permit_params :canva_id, :user_profile_id
 
-  index do
+  index title: "Listado de Likes" do
     selectable_column
     id_column
     column :canva_id
@@ -15,7 +15,7 @@ ActiveAdmin.register Like do
   filter :canva
   filter :user_profile
 
-  form do |f|
+  form title: "Creación/Edición de Like" do |f|
     f.inputs do
       f.input :canva, as: :select, collection: Canva.all.map { |c| [c.id, c.id] }
       f.input :user_profile, as: :select, collection: UserProfile.all
@@ -26,7 +26,7 @@ ActiveAdmin.register Like do
     f.actions
   end
 
-  show do
+  show title: "Detalle de Like" do
     attributes_table do
       row :id
       row :canva
