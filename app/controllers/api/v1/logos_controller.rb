@@ -9,11 +9,16 @@ module Api
       def index
         @logos = Logo.active
 
-        render json: @logos.active.map { |logo| logo.as_json.merge({ image_url: url_for(logo.image) }) }
+        render json: @logos.active.first.as_json.merge({ image_url: url_for(logo.image) })
       end
 
       # GET /api/v1/logos/1
       def show
+        if !@logo.active?
+          error_message = 'El logo no puede ser accedido porque no existe o no tiene autorización'
+          return render json: { error: error_message }, status: :forbidden
+        end
+
         render json: @logo.as_json.merge({ image_url: url_for(@logo.image) })
       end
 

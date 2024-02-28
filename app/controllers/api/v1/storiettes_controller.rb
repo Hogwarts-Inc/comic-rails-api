@@ -15,6 +15,11 @@ module Api
 
       # GET /api/v1/storiettes/1
       def show
+        if !@storiette.active?
+          error_message = 'La historieta no puede ser accedida porque no existe o no tiene autorización'
+          return render json: { error: error_message }, status: :forbidden
+        end
+
         render json: @storiette.as_json.merge({ chapters: @storiette.chapters.active })
       end
 

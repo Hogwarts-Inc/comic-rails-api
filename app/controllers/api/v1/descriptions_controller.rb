@@ -15,6 +15,11 @@ module Api
 
       # GET /api/v1/descriptions/1
       def show
+        if !@description.active?
+          error_message = 'La descripcion no puede ser accedida porque no existe o no tiene autorización'
+          return render json: { error: error_message }, status: :forbidden
+        end
+
         render json: @description
       end
 

@@ -13,6 +13,11 @@ module Api
 
       # GET /api/v1/queue_times/1
       def show
+        if !@queue_time.active?
+          error_message = 'El tiempo de cola no puede ser accedido porque no existe o no tiene autorización'
+          return render json: { error: error_message }, status: :forbidden
+        end
+
         render json: @queue_time
       end
 

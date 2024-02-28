@@ -15,6 +15,11 @@ module Api
 
       # GET /api/v1/characters/1
       def show
+        if !@character.active?
+          error_message = 'El personaje no puede ser accedido porque no existe o no tiene autorización'
+          return render json: { error: error_message }, status: :forbidden
+        end
+
         render json: merge_image_and_description(@character)
       end
 

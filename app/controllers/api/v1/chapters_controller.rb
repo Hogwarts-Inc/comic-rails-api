@@ -20,6 +20,11 @@ module Api
 
       # GET /api/v1/chapters/1
       def show
+        if !@chapter.active?
+          error_message = 'El capitulo no puede ser accedido porque no existe o no tiene autorización'
+          return render json: { error: error_message }, status: :forbidden
+        end
+
         render json: @chapter.as_json.merge(chapter_attributes(@chapter))
       end
 
