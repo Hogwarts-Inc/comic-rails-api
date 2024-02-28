@@ -8,8 +8,9 @@ module Api
       # GET /api/v1/terms_and_conditions
       def index
         @terms_and_conditions = TermsAndCondition.active
+        @terms_and_condition = @terms_and_conditions.active.first
 
-        render json: @terms_and_conditions.active.first.as_json.merge({ file_url: url_for(terms_and_condition.file) })
+        render json: @terms_and_condition.active.first.as_json.merge({ file_url: url_for(@terms_and_condition.file) })
       end
 
       # GET /api/v1/terms_and_conditions/1

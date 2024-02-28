@@ -8,8 +8,9 @@ module Api
       # GET /api/v1/logos
       def index
         @logos = Logo.active
+        @logo = @logos.active.first
 
-        render json: @logos.active.first.as_json.merge({ image_url: url_for(logo.image) })
+        render json: @logo.as_json.merge({ image_url: url_for(@logo.image) })
       end
 
       # GET /api/v1/logos/1
