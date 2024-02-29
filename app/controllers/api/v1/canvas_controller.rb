@@ -6,7 +6,7 @@ module Api
       include UserInfo
 
       before_action :set_canva, only: %i[show update destroy remove_like]
-      before_action :authorize, except: [:index, :show, :remove_like]
+      before_action :authorize, except: [:index, :show]
       before_action :get_user_info, only: %i[show create remove_like]
 
       # GET /api/v1/canvas
@@ -67,6 +67,16 @@ module Api
         return render json: { error: 'No existe el like' }, status: :unprocessable_entity unless @like.present?
 
         @like.destroy
+      end
+
+      def image_verification
+        images = params[:images]
+        images = [images] unless images.is_a?(Array)
+
+        validated_images_message = validate_images(images)
+        return render json: { error: validated_images_message }, status: :unprocessable_entity unless validated_images_message.flatten.blank?
+
+        render json: { message: 'Todas las imagenes son correctas' }
       end
 
       private

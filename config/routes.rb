@@ -23,6 +23,9 @@ Rails.application.routes.draw do
         member do
           delete :remove_like
         end
+        collection do
+          post :image_verification
+        end
       end
       resources :storiettes, only: [:index, :show]
       resources :characters, only: [:index, :show]
