@@ -27,4 +27,17 @@ ActiveAdmin.register AdminUser do
     end
     f.actions
   end
+
+  controller do
+    def update
+      admin_user = AdminUser.find(params[:id])
+
+      if admin_user == current_admin_user
+        super
+      else
+        flash[:error] = "Solo podes editar tu cuenta"
+        redirect_back fallback_location: admin_root_path
+      end
+    end
+  end
 end

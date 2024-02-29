@@ -8,8 +8,8 @@ ActiveAdmin.register Opinion do
   index title: "Listado de Comentarios" do
     selectable_column
     id_column
-    column :canva_id
-    column :user_profile_id
+    column :canva
+    column :user_profile
     column :text
     toggle_bool_column :active
 

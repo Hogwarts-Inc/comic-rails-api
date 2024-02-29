@@ -6,8 +6,8 @@ ActiveAdmin.register Like do
   index title: "Listado de Likes" do
     selectable_column
     id_column
-    column :canva_id
-    column :user_profile_id
+    column :canva
+    column :user_profile
 
     actions
   end

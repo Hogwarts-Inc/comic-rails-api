@@ -9,7 +9,6 @@ ActiveAdmin.register Canva do
   index title: "Listado de Viñetas" do
     selectable_column
     id_column
-    column :title
     column :chapter
     column :user_profile
     column :image do |canva|
