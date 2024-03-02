@@ -127,7 +127,7 @@ module Api
         return render json: { error: 'El capitulo no existe' }, status: :unprocessable_entity unless @chapter.present?
 
         begin
-          canvas = @chapter.canvas.order("created_at DESC").limit(3).order("created_at ASC").map { |canva| canva_json(canva) }
+          canvas = @chapter.canvas.order("created_at DESC").limit(3).reverse.map { |canva| canva_json(canva) }
           render json: { canvas: canvas }
         rescue StandardError => e
           render json: { error: "Error: #{e.message}" }, status: :unprocessable_entity
